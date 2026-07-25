@@ -1,0 +1,1648 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,longtable,array,graphicx}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+\usepackage{xcolor}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  citecolor=blue!55!black,
+  urlcolor=blue!55!black,
+  pdftitle={Generalized RISEI Theory},
+  pdfauthor={}
+}
+
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.2em,itemsep=0.25em,topsep=0.4em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{protocol}[theorem]{Protocol convention}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{numericalphenomenon}[theorem]{Numerical phenomenon}
+
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\Ran}{Ran}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\spec}{spec}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\id}{\mathbb I}
+\newcommand{\cL}{\mathcal L}
+\newcommand{\cU}{\mathcal U}
+\newcommand{\cG}{\mathcal G}
+\newcommand{\cV}{\mathcal V}
+\newcommand{\cC}{\mathcal C}
+\newcommand{\cR}{\mathcal R}
+\newcommand{\PhiF}{\Phi}
+\newcommand{\OmegaI}{\Omega}
+\newcommand{\XiI}{\Xi}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\PV}{\operatorname{P.V.}}
+\newcommand{\cM}{\mathcal M}
+\newcommand{\cT}{\mathcal T}
+\newcommand{\cP}{\mathcal P}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\cE}{\mathcal E}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\CC}{\mathbb C}
+
+\title{\textbf{Generalized RISEI Theory}\\
+\large Protocol-Resolved Interventional Response Hierarchies and\\
+End-to-End Certified Schur--Riesz Tube Calculus}
+\author{}
+\date{23 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We formulate a generalized RISEI theory that preserves the original operational core while removing six restrictive assumptions: stationarity, first-moment closure, static single-sector cuts, order blindness, the primacy of ideal cuts, and classification by a single pointwise exponent. The theory is built on finite-dimensional time-local GKSL dynamics and physically admissible completely positive trace-preserving intervention protocols. Its primary object is a finite-time, protocol-resolved hierarchy of connected multi-time responses, equipped with subset-M\"obius irreducibility, order irreducibility, observable-dependent asymptotic valuations, scaling signatures, protection depths, and minimal intervention costs. We then add a stationary strong-dissipation subtheory, the local Schur--Riesz tube calculus. A response-relevant Riesz cluster defines a parameter-dependent selection manifold through source/readout overlap constraints; the real Jacobian rank fixes its local codimension, while a cluster-restricted Schur derivative Gram matrix predicts the finite-$\Gamma$ normal cross section. A response-jet selector determines the response-active cluster rank, a Schur self-energy exponent fixes the scale-matching law, and a projected slow-loss jet separates exact-kernel, approximate-kernel, and no-kernel branches. Tube geometry is kept distinct from Pattern~(b) survival. Under explicit spectral-separation, constant-rank, Schur-attribution, and finite-window assumptions, we prove a conditional local tube theorem and close a reproducible forward--certificate--inverse numerical protocol. A frozen Phase~1--3 campaign passed $13/13$, $19/19$, and $23/23$ production, refinement, and cross-phase gates, respectively, with unchanged thresholds and source hashes. Thus the declared finite-dimensional calculation system is end-to-end certified. This is neither an unconditional theorem for arbitrary GKSL generators nor a completion of non-Markovian, infinite-dimensional, continuum, or experimental extensions. The former stationary scalar theory is recovered exactly as the time-independent, linear, static, single-intervention limit.
+\end{abstract}
+
+\tableofcontents
+
+\section{Scope and organizing principle}
+
+The original RISEI framework is retained at the level of six structural ideas:
+\begin{enumerate}
+  \item operational intervention on identified sectors;
+  \item comparison of full and intervened responses;
+  \item subset-M\"obius decomposition into irreducible sector contributions;
+  \item asymptotic classification under strong dissipation or large intervention scales;
+  \item explicit accounting of finite intervention resources;
+  \item local prediction of finite-$\Gamma$ selection tubes from response-relevant spectral clusters.
+\end{enumerate}
+The revised framework removes the assumptions that only stationary first-moment responses matter, that cuts are static and unordered, that an ideal cut is primary, and that one pointwise exponent exhausts the response class.
+
+The central replacement is
+\begin{equation}
+\boxed{
+\begin{gathered}
+\text{stationary scalar response theory}\\[-0.2em]
+\Longrightarrow\\[-0.2em]
+\text{protocol-resolved interventional response hierarchy}
+\end{gathered}}
+\end{equation}
+The old theory is not discarded. It is recovered as the stationary, linear, static, single-intervention section of the generalized construction. The tube calculus is likewise not imposed on the full finite-time hierarchy. It is a conditional local chart inside the stationary strong-dissipation sector. This separation prevents a successful local computation rule from being mistaken for an unrestricted global ontology.
+
+\section{Original stationary theory and its hidden restrictions}
+
+A representative object of the original formulation is the stationary linear response
+\begin{equation}
+\chi_U(\omega;\Gamma,\kappa)
+ = c^{\mathsf T}
+ \bigl(A_U(\Gamma,\kappa)-\ii\omega\id\bigr)^{-1}p,
+\label{eq:old-response}
+\end{equation}
+where $U$ is the set of cut sectors, $A_U$ is the effective generator after intervention, $p$ is a preparation or source vector, $c$ is a readout vector, $\Gamma$ is the dominant dissipative scale, and $\kappa$ is the intervention strength.
+
+Equation~\eqref{eq:old-response} implicitly invokes the following restrictions.
+\begin{enumerate}[label=\textbf{O\arabic*.}]
+  \item \textbf{Stationarity.} The generator is time independent and time-translation invariant.
+  \item \textbf{Infinite-time or frequency-domain closure.} Transients are removed in favor of a stationary state or a Fourier-domain transfer function.
+  \item \textbf{First-moment restriction.} Only mean observables, linear susceptibilities, or equivalent transfer functions are retained.
+  \item \textbf{Static intervention.} Each cut strength is time independent.
+  \item \textbf{Order blindness.} Multiple interventions are represented by a set rather than an ordered protocol.
+  \item \textbf{Ideal-cut primacy.} The limit $\kappa\to\infty$ is treated as the basic object and finite interventions as approximations.
+  \item \textbf{Scalar asymptotic class.} A response is chiefly classified by $R\sim C\Gamma^{-\nu}$ at a fixed point or fixed band.
+\end{enumerate}
+These restrictions are useful for a minimal theory, but they can erase finite-time amplification, path dependence, fluctuation-level mechanisms, nonmonotonic accessibility, and order-sensitive sector composition.
+
+\section{Generalized dynamical and operational assumptions}
+
+\begin{assumption}[Finite-dimensional time-local dynamics]\label{ass:gksl}
+The system is finite dimensional and evolves according to
+\begin{equation}
+\frac{\dd\rho}{\dd t}
+ = \cL_{\Gamma,\pi,h}(t)\rho(t),
+\label{eq:gksl-master}
+\end{equation}
+where, for every admissible protocol $\pi$ and probe $h$, the instantaneous generator is of GKSL form. The generalized theory therefore remains Markovian and time local.
+\end{assumption}
+
+\begin{assumption}[Physical admissibility of interventions]\label{ass:physical-cut}
+An intervention is not defined by formally deleting matrix entries. It is represented by a physical generator modification
+\begin{equation}
+\cL_{\Gamma,\pi,h}(t)
+ = \cL_0(\Gamma,t)
+ + \sum_{j=1}^{m}\kappa_j(t)\cG_{S_j}(t)
+ + \cV_h(t),
+\label{eq:protocol-generator}
+\end{equation}
+for which the total instantaneous generator remains GKSL admissible. Possible realizations include selective dephasing, physical switch-off of a coupling, level or polarization selection, Hamiltonian detuning, Zeno measurement channels, and reservoir engineering.
+\end{assumption}
+
+\begin{definition}[Intervention protocol]\label{def:protocol}
+A protocol is the ordered list
+\begin{equation}
+\pi
+ = \bigl[(S_1,\kappa_1,I_1),\ldots,(S_m,\kappa_m,I_m)\bigr],
+\label{eq:protocol}
+\end{equation}
+where $S_j$ is an operational sector, $\kappa_j:t\mapsto\kappa_j(t)$ is its strength profile, and $I_j$ is the time window on which the intervention is active. Two protocols with the same sector set but different temporal order are distinct.
+\end{definition}
+
+\begin{assumption}[Finite-time primacy]\label{ass:finite-time}
+The primary dynamical object is the protocol-resolved propagator
+\begin{equation}
+\cU_{\pi}(t,t_0)
+ = \mathcal T\exp\!\left[
+ \int_{t_0}^{t}\cL_{\Gamma,\pi,0}(\tau)\dd\tau
+ \right].
+\label{eq:propagator}
+\end{equation}
+Stationary and frequency-domain responses are derived limits or transforms of this object.
+\end{assumption}
+
+\begin{assumption}[Fixed comparison class]\label{ass:comparison}
+Unless explicitly promoted to protocol data, the initial state, probe, readout, observation window, operator ordering, measurement scheme, and normalization are held fixed when full and intervened responses are compared.
+\end{assumption}
+
+\begin{assumption}[Regular asymptotic scaling]\label{ass:regular-variation}
+For a selected response functional $\PhiF$ and an asymptotic scale $\Gamma\to\infty$, the framework allows
+\begin{equation}
+\PhiF[R](\Gamma)
+ = \Gamma^{-\nu}(\log\Gamma)^m\bigl(C+o(1)\bigr),
+\qquad C\neq0,
+\label{eq:regular-variation}
+\end{equation}
+with real or fractional $\nu$. Fractional Puiseux scaling near exceptional points is therefore not excluded.
+\end{assumption}
+
+\begin{assumption}[Robustness and non-fine-tuning]\label{ass:robustness}
+A new response class or physical phenomenon must persist on a finite parameter region, remain stable under specified perturbations, or possess a clearly identified finite codimension. An isolated exact zero is not sufficient by itself.
+\end{assumption}
+
+\section{Protocol-resolved response hierarchy}
+
+\subsection{Connected multi-time observables}
+
+For a fixed measurement convention, let
+\begin{equation}
+C_{\pi}^{(n)}(t_n,\ldots,t_1)
+ = \bigl\langle O_n(t_n)\cdots O_1(t_1)\bigr\rangle_{\pi,c}
+\label{eq:connected-cumulant}
+\end{equation}
+denote the connected $n$-time cumulant under protocol $\pi$. The ordering and measurement backaction are part of the observational protocol. Distinct orderings are not silently identified.
+
+The hierarchy has the interpretations
+\begin{equation}
+\begin{aligned}
+ n=1 &: \text{mean response},\\
+ n=2 &: \text{two-time noise and correlations},\\
+ n\ge3 &: \text{higher fluctuations and non-Gaussian structure}.
+\end{aligned}
+\end{equation}
+
+\begin{definition}[Protocol-resolved interventional response]\label{def:response}
+Let $\varnothing$ denote the no-intervention protocol. The order-$n$ interventional response is
+\begin{equation}
+\boxed{
+R_{\pi}^{(n)}(t_n,\ldots,t_1)
+ = C_{\varnothing}^{(n)}(t_n,\ldots,t_1)
+ - C_{\pi}^{(n)}(t_n,\ldots,t_1).
+}
+\label{eq:general-response}
+\end{equation}
+The sign convention is always full minus intervention. Multi-frequency versions are obtained by the appropriate Fourier transform when stationarity or controlled time windows make such a transform meaningful.
+\end{definition}
+
+\subsection{Full counting statistics}
+
+When a counting process is available, introduce a tilted generator and define
+\begin{align}
+Z_{\pi}(\lambda,t)
+ &= \Tr\!\left[\cU_{\pi,\lambda}(t,0)\rho_0\right],\\
+K_{\pi}^{(n)}(t)
+ &= \left.\partial_{\lambda}^{n}\log Z_{\pi}(\lambda,t)\right|_{\lambda=0}.
+\label{eq:fcs}
+\end{align}
+These cumulants provide another implementation of the response hierarchy.  They permit fluctuation-only sectors to be tested without reducing the data to a mean signal.
+
+\section{Observable functionals and generalized asymptotic classification}
+
+The response tensor should not be compressed to one number before the physical feature of interest is declared. We therefore introduce observable functionals.
+
+\begin{definition}[Response functional]\label{def:functional}
+A response functional $\PhiF$ maps a protocol-resolved response to a nonnegative scalar feature suitable for comparison or asymptotic analysis. Representative choices are
+\begin{align}
+\PhiF_{\mathrm{pt}}[R]
+ &= |R(t_*,\omega_*)|,
+\\
+\PhiF_{\max}[R]
+ &= \sup_{t\in I}|R(t)|,
+\\
+\PhiF_{\mathrm{sgn}}[R]
+ &= \left|\PV\int_{-\infty}^{\infty}R(\omega)\dd\omega\right|,
+\\
+\PhiF_{1}[R]
+ &= \int_{-\infty}^{\infty}|R(\omega)|\dd\omega,
+\\
+\PhiF_{T}[R]
+ &= \int_{0}^{T}|R(t)|\dd t,
+\\
+t_{\max}[R]
+ &= \argmax_{t\in I}|R(t)|.
+\end{align}
+Functionals may also encode widths, lifetimes, integrated cumulants, information metrics, or distances to target responses.
+\end{definition}
+
+\begin{definition}[Asymptotic valuation]\label{def:valuation}
+For a nonnegative functional $\PhiF[R](\Gamma)$, define
+\begin{equation}
+\boxed{
+\nu_{\PhiF}[R]
+ = -\lim_{\Gamma\to\infty}
+ \frac{\log\PhiF[R](\Gamma)}{\log\Gamma},
+}
+\label{eq:valuation}
+\end{equation}
+whenever the limit exists. Otherwise one uses upper and lower valuations or a piecewise scaling classification.
+\end{definition}
+
+\begin{definition}[Scaling signature]\label{def:signature}
+A finite scaling signature is a selected tuple
+\begin{equation}
+\boxed{
+\Sigma_{\pi}^{(n)}
+ = \bigl(
+ \nu_{\max},\nu_{1},\nu_{\mathrm{pt}},z_t,z_{\omega},m_{\log},\ldots
+ \bigr),
+}
+\label{eq:signature}
+\end{equation}
+where the components may include peak-amplitude, absolute-weight, pointwise, characteristic-time, characteristic-width, and logarithmic-correction exponents. Only components relevant to a stated physical question are required.
+\end{definition}
+
+The single exponent $\nu$ of the original theory is recovered by choosing a stationary first-order response and one pointwise functional.
+
+\section{Irreducible sector structure}
+
+\subsection{Subset-M\"obius irreducibility}
+
+Fix a finite sector set $T$ and a common convention for simultaneous interventions, including the same time envelope and normalization for every subset $U\subseteq T$.
+
+\begin{definition}[M\"obius-irreducible response]\label{def:mobius}
+The irreducible contribution associated with $T$ is
+\begin{equation}
+\boxed{
+\OmegaI_T^{(n)}
+ = \sum_{U\subseteq T}(-1)^{|T|-|U|}C_U^{(n)}.
+}
+\label{eq:mobius}
+\end{equation}
+It extracts the part of the $T$-sector response that cannot be represented as a sum of lower-order subset contributions within the fixed intervention convention.
+\end{definition}
+
+\begin{theorem}[Uniqueness of the subset decomposition]\label{thm:mobius-unique}
+For a finite sector lattice, the family $\{\OmegaI_T^{(n)}\}$ defined by \eqref{eq:mobius} is the unique family satisfying
+\begin{equation}
+C_U^{(n)}=\sum_{T\subseteq U}\OmegaI_T^{(n)}
+\qquad\text{for every }U.
+\label{eq:zeta-transform}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Equation~\eqref{eq:zeta-transform} is the zeta transform on the Boolean subset lattice. The inverse of the zeta function is the M\"obius function $\mu(U,T)=(-1)^{|T|-|U|}$ for $U\subseteq T$. Applying the finite-lattice M\"obius inversion formula gives \eqref{eq:mobius}, and invertibility proves uniqueness.
+\end{proof}
+
+\begin{definition}[Observable-dependent protection depth]\label{def:protection-depth}
+For cumulant order $n$ and functional $\PhiF$, define
+\begin{equation}
+\boxed{
+k_{\min}^{(n,\PhiF)}
+ = \min\left\{|T|:\nu_{\PhiF}[\OmegaI_T^{(n)}]=0\right\},
+}
+\label{eq:protection-depth}
+\end{equation}
+provided the set is nonempty. If no such subset exists, set $k_{\min}^{(n,\PhiF)}=\infty$.
+\end{definition}
+
+The generalized depth distinguishes, for example, mean pointwise protection, transient peak protection, and noise-level protection. In particular,
+\begin{equation}
+k_{\min}^{(1,\mathrm{pt})}>k_{\min}^{(2,\mathrm{noise})}
+\end{equation}
+means that a collective mechanism hidden in the mean becomes visible at lower intervention order in fluctuations.
+
+\subsection{Order irreducibility}
+
+\begin{definition}[Order-irreducible response]\label{def:order-response}
+For two sectors $S$ and $T$, define
+\begin{equation}
+\boxed{
+\XiI_{S,T}^{(n)}
+ = R_{S\rightarrow T}^{(n)}-R_{T\rightarrow S}^{(n)}.
+}
+\label{eq:order-response}
+\end{equation}
+A nonzero value is an operational witness of order dependence.
+\end{definition}
+
+\begin{proposition}[A sufficient condition for order blindness]\label{prop:order-vanish}
+Consider two protocols that differ only by exchanging two intervention blocks with propagators $\cU_S$ and $\cU_T$. If
+\begin{equation}
+\cU_S\cU_T=\cU_T\cU_S
+\label{eq:block-commute}
+\end{equation}
+and the preparation, readout, observation times, and measurement convention are invariant under the exchange, then
+\begin{equation}
+\XiI_{S,T}^{(n)}=0
+\end{equation}
+for every measured cumulant order $n$.
+\end{proposition}
+
+\begin{proof}
+Under \eqref{eq:block-commute}, the total propagator of the two protocols is identical. The fixed-comparison assumption then implies equality of every measured joint distribution, hence equality of all connected cumulants and of the corresponding interventional responses.
+\end{proof}
+
+\begin{remark}[Noncommutativity is not contextuality]
+The condition $\XiI_{S,T}^{(n)}\neq0$ witnesses order-sensitive operational composition. It does not by itself prove response-mechanism contextuality. Such a claim additionally requires a no-go statement showing that the full protocol data admit no context-independent Boolean sector assignment.
+\end{remark}
+
+\section{Finite intervention resources and accessibility}
+
+\begin{definition}[Protocol cost]\label{def:cost}
+A protocol cost is a nonnegative functional such as
+\begin{equation}
+\boxed{
+\cC[\pi]
+ = \sum_j\left[
+ a_j\int_{I_j}|\kappa_j(t)|\dd t
+ + b_j\tau_j+c_jN_j
+ \right],
+}
+\label{eq:protocol-cost}
+\end{equation}
+where $\tau_j$ is the active duration, $N_j$ is a pulse or switching count, and the coefficients specify the implementation-dependent resource convention. A minimal theoretical convention is $\cC[\pi]=\int|\kappa(t)|\dd t$.
+\end{definition}
+
+\begin{definition}[Minimal identification cost]\label{def:minimal-cost}
+For a response distance $D$, target response $R_{\mathrm{target}}$, and tolerance $\eps>0$, define
+\begin{equation}
+\boxed{
+\cC_{\mathrm{req}}(\Gamma,\eps)
+ = \inf_{\pi}\left\{
+ \cC[\pi]:D(R_{\pi},R_{\mathrm{target}})\le\eps
+ \right\}.
+}
+\label{eq:minimal-cost}
+\end{equation}
+Its accessibility exponent is
+\begin{equation}
+\boxed{
+\alpha_{\mathrm{acc}}
+ = \lim_{\Gamma\to\infty}
+ \frac{\log\cC_{\mathrm{req}}}{\log\Gamma},
+}
+\label{eq:accessibility-exponent}
+\end{equation}
+when the limit exists.
+\end{definition}
+
+Near an exceptional point at distance $\delta$, the testable scaling ansatz is
+\begin{equation}
+\cC_{\mathrm{req}}\sim\Gamma^{\alpha}\delta^{-q}.
+\label{eq:ep-cost}
+\end{equation}
+No universal proportionality to a Petermann factor is assumed. The exponent $q$ must be obtained from model-specific analysis or numerics before a broader conjecture is promoted.
+
+\begin{definition}[Ideal cut as a derived limit]\label{def:ideal-cut}
+An ideal cut associated with a protocol family $\{\pi_a\}_{a>0}$ is
+\begin{equation}
+R_S^{\mathrm{ideal}}=\lim_{a\to\infty}R_{\pi_a},
+\label{eq:ideal-cut}
+\end{equation}
+provided the limit exists.
+\end{definition}
+
+\begin{definition}[Operational nonuniqueness of an ideal cut]\label{def:nonunique-cut}
+If two physically admissible protocol families formally suppress the same sector but satisfy
+\begin{equation}
+\lim_{a\to\infty}R_{\pi_a}
+\neq
+\lim_{a\to\infty}R_{\widetilde\pi_a},
+\label{eq:cut-nonunique}
+\end{equation}
+then the ideal cut is operationally nonunique. The intervention implementation class must then be included in the theory data; a sector projector alone is insufficient.
+\end{definition}
+
+\section{Exact recovery of the original theory}
+
+\begin{theorem}[Stationary linear embedding]\label{thm:embedding}
+Assume that
+\begin{enumerate}
+  \item the generator is time independent;
+  \item the probe is weak and only first-order response is retained;
+  \item the intervention is a single static sector modification with constant strength $\kappa$;
+  \item the readout is a one-time mean observable;
+  \item the unperturbed and intervened generators are stable on the response subspace.
+\end{enumerate}
+Then the generalized first-order response admits a Laplace--Fourier representation of the form
+\begin{equation}
+\chi_U(\omega)
+ = c^{\mathsf T}(A_U-\ii\omega\id)^{-1}p,
+\label{eq:embedded-old}
+\end{equation}
+up to the sign convention used to define $A_U$ and the Fourier transform. Hence the original stationary RISEI response is an exact special section of the generalized theory.
+\end{theorem}
+
+\begin{proof}
+Linearize the master equation about the fixed reference state and vectorize the first-order deviation $x(t)$. Under the stated assumptions it obeys
+\begin{equation}
+\dot x(t)=A_Ux(t)+p\,h(t),
+\qquad y(t)=c^{\mathsf T}x(t).
+\end{equation}
+Stability gives the causal solution
+\begin{equation}
+x(t)=\int_{-\infty}^{t}e^{A_U(t-s)}p\,h(s)\dd s.
+\end{equation}
+For a harmonic probe $h(s)=h_0e^{-\ii\omega s}$, direct integration yields
+\begin{equation}
+y(t)=h_0e^{-\ii\omega t}
+ c^{\mathsf T}(\ii\omega\id-A_U)^{-1}p.
+\end{equation}
+Rewriting the sign convention produces \eqref{eq:embedded-old}.
+\end{proof}
+
+\begin{corollary}[Recovery of the old asymptotic class]\label{cor:old-nu}
+Under the assumptions of \cref{thm:embedding}, selecting a fixed-frequency pointwise functional reduces the generalized valuation $\nu_{\PhiF}$ to the original scalar exponent $\nu$.
+\end{corollary}
+
+\subsection{Inherited spectral-weight statement}
+
+The original theory may contain a principal-value spectral-neutrality theorem of the form
+\begin{equation}
+\PV\int_{-\infty}^{\infty}R_S^{(1)}(\omega)\dd\omega=0.
+\label{eq:old-neutrality}
+\end{equation}
+In the generalized manuscript, \eqref{eq:old-neutrality} is retained only inside its previously proved stationary linear domain with common preparation and readout. It is not promoted here to arbitrary time-dependent protocols or multi-frequency cumulants. A generalized sum rule requires a separate derivation.
+
+\section{Pattern (b) and the stationary selection problem}
+
+The tube calculus is motivated by a specific stationary irreducible-response hierarchy. Let $\OmegaI_1$, $\OmegaI_2$, and $\OmegaI_{12}$ denote the one-sector and joint M\"obius components in the stationary linear subtheory. Let $\PhiF_\infty$ be a peak or supremum functional and $\PhiF_1$ an integrated absolute-weight functional.
+
+\begin{definition}[Pattern (b) hierarchy]\label{def:pattern-b}
+A parameter point belongs to Pattern (b), relative to the declared observation window and functionals, if
+\begin{equation}
+\nu_{\PhiF_\infty}(\OmegaI_1)>0,
+\qquad
+\nu_{\PhiF_\infty}(\OmegaI_2)>0,
+\qquad
+\nu_{\PhiF_\infty}(\OmegaI_{12})=0,
+\qquad
+\nu_{\PhiF_1}(\OmegaI_{12})>0.
+\label{eq:pattern-b}
+\end{equation}
+Thus the single-sector peaks vanish, the joint irreducible peak remains protected, and the integrated joint weight still vanishes. Equality to zero is interpreted through the asymptotic or finite-window tolerance declared before fitting.
+\end{definition}
+
+\begin{remark}
+Definition~\ref{def:pattern-b} is operational. It does not identify a mechanism by itself. The production results motivating the present revision support a response-relevant protected slow cluster, a source/readout overlap zero, and two nontrivial intervention actions as a conditional mechanism. They do not prove that this mechanism is mathematically necessary for every finite-dimensional GKSL realization.
+\end{remark}
+
+\section{Local Schur--Riesz tube calculus}\label{sec:tube-calculus}
+
+\subsection{Stationary strong-dissipation chart}
+
+Let $\theta\in\Theta\subset\RR^d$ denote control, preparation, and readout parameters after all comparison conventions have been fixed. In the stationary linear embedding, write the response generator as $A(\Gamma,\theta)$. Choose slow and fast coordinate projections and use the block form
+\begin{equation}
+A(\Gamma,\theta)
+=
+\begin{pmatrix}
+A_{ss}(\theta) & B(\theta)\\
+C(\theta) & \Gamma D(\theta)+E(\theta)
+\end{pmatrix}.
+\label{eq:slow-fast-block}
+\end{equation}
+The affine dependence on $\Gamma$ is a declared chart assumption, not a universal property of GKSL generators. Whenever the fast block is invertible on the spectral window of interest, its Schur complement is
+\begin{equation}
+S(z;\Gamma,\theta)
+=
+A_{ss}(\theta)-z\id
+-B(\theta)
+\bigl(\Gamma D(\theta)+E(\theta)-z\id\bigr)^{-1}
+C(\theta).
+\label{eq:schur-complement}
+\end{equation}
+For a uniformly invertible fast block,
+\begin{equation}
+S(z;\Gamma,\theta)
+=
+S_0(z;\theta)
++\Gamma^{-1}S_1(z;\theta)
++\mathcal O(\Gamma^{-2})
+\label{eq:schur-expansion}
+\end{equation}
+locally and uniformly on a compact contour. The expansion is used only in a verified $\Gamma$ window.
+
+\subsection{Response-relevant Riesz cluster}
+
+\begin{definition}[Riesz cluster projector]\label{def:riesz-projector}
+Let $\cC_z$ be a positively oriented contour enclosing a finite spectral cluster and no other point of $\spec A(\Gamma,\theta)$. The associated Riesz projector is
+\begin{equation}
+P_{\cC}(\Gamma,\theta)
+=
+\frac{1}{2\pi\ii}
+\oint_{\cC_z}
+(z\id-A(\Gamma,\theta))^{-1}\dd z.
+\label{eq:riesz-projector}
+\end{equation}
+The cluster is response relevant for source $p$ and readout $c$ when the cluster contribution is nonzero, for example
+\begin{equation}
+c^{\mathsf T}P_{\cC}p\neq0
+\end{equation}
+for the scalar channel, or when the corresponding multi-output overlap map is not identically zero.
+\end{definition}
+
+The projector, rather than an individual pole label, is the invariant computational object. Pole exchange around an exceptional-point region may change local labels while leaving the closed-loop cluster response unchanged.
+
+\begin{definition}[Protected cluster]\label{def:protected-cluster}
+A response-relevant Riesz cluster is protected on a declared $\Gamma$ window if its induced response scale decays more slowly than the competing single-sector contributions required by the target hierarchy and if its spectral subspace remains contour separated throughout the continuation.
+\end{definition}
+
+\subsection{Selection manifold and rank--codimension law}
+
+Let $F=(F_1,\ldots,F_q)$ be the complex source/readout overlap constraints associated with the protected cluster. A representative component is
+\begin{equation}
+F_j(\Gamma,\theta)
+=c_j(\theta)^{\mathsf T}
+P_{\cC}(\Gamma,\theta)
+p_j(\theta).
+\label{eq:overlap-map}
+\end{equation}
+Realify the constraint map as
+\begin{equation}
+f(\Gamma,\theta)
+=
+\bigl(
+\Re F_1,\Im F_1,\ldots,
+\Re F_q,\Im F_q
+\bigr)
+\in\RR^m,
+\label{eq:realified-selection-map}
+\end{equation}
+with redundant components removed when symmetry lowers the real rank.
+
+\begin{definition}[Selection set and selection Jacobian]\label{def:selection-manifold}
+The local selection set is
+\begin{equation}
+\cM_\Gamma=f(\Gamma,\cdot)^{-1}(0),
+\label{eq:selection-manifold}
+\end{equation}
+and the selection Jacobian at a center $\theta_c(\Gamma)\in\cM_\Gamma$ is
+\begin{equation}
+J_f(\Gamma)=D_\theta f(\Gamma,\theta_c(\Gamma)).
+\label{eq:selection-jacobian}
+\end{equation}
+Its real rank is denoted $r$.
+\end{definition}
+
+At a regular point, $\Ker J_f$ is the tangent space of the selection manifold and $\Ran J_f^{\mathsf T}$ is its normal space. Hence the previously observed codimension-one curves are rank-one sections of a more general finite-codimension geometry.
+
+\subsection{Finite-\texorpdfstring{$\Gamma$}{Gamma} response defect and tube Gram matrix}
+
+The zero set $\cM_\Gamma$ describes the asymptotic or leading-order selection geometry. A finite-$\Gamma$ tube requires a response-space tolerance. Let
+\begin{equation}
+\cE_{\mathrm{full}}(\Gamma,\theta)
+\in\cH_R
+\label{eq:response-defect}
+\end{equation}
+collect the declared finite-$\Gamma$ deviations from the target Pattern (b) constraints. The response space $\cH_R$ may be a finite vector of sampled response features or a discretized function space, equipped with a positive weight operator $W$.
+
+Let $\cE_{\cC}$ be the same response defect after restriction to the Riesz cluster and let $\cE_{\mathrm{Schur}}$ be its Schur approximation. Define
+\begin{equation}
+G_{\mathrm{Schur}}(\Gamma)
+=D_\theta\cE_{\mathrm{Schur}}
+(\Gamma,\theta_c(\Gamma)),
+\label{eq:schur-response-derivative}
+\end{equation}
+and
+\begin{equation}
+\boxed{
+Q_{\mathrm{tube}}(\Gamma)
+=
+\Re\!\bigl[
+G_{\mathrm{Schur}}(\Gamma)^\dagger
+W
+G_{\mathrm{Schur}}(\Gamma)
+\bigr].
+}
+\label{eq:tube-gram}
+\end{equation}
+The off-diagonal entries are physical cross terms between parameter directions. Removing them changes the predicted boundary whenever the response-normal directions are coupled.
+
+\begin{definition}[Local finite-$\Gamma$ response tube]\label{def:response-tube}
+For a tolerance $\eps>0$, the operational tube is the local sublevel set
+\begin{equation}
+\cT_{\eps,\Gamma}
+=
+\left\{
+\theta:
+\|\cE_{\mathrm{full}}(\Gamma,\theta)\|_W
+\le\eps
+\right\},
+\label{eq:operational-tube}
+\end{equation}
+where $\|x\|_W^2=x^\dagger Wx$. Its normal quadratic predictor is
+\begin{equation}
+\delta\theta^{\mathsf T}
+Q_{\mathrm{tube}}(\Gamma)
+\delta\theta
+\le\eps^2,
+\qquad
+\delta\theta\in N_{\theta_c}\cM_\Gamma.
+\label{eq:tube-ellipsoid}
+\end{equation}
+The tube extends along tangent directions only within the local chart and within the range in which the target hierarchy remains unchanged.
+\end{definition}
+
+\subsection{Conditional local tube theorem}
+
+\begin{theorem}[Conditional local Schur--Riesz tube theorem]\label{thm:local-tube}
+Fix a compact $\Gamma$ interval and a center $(\Gamma,\theta_c)$. Assume:
+\begin{enumerate}[label=\textbf{T\arabic*.}]
+  \item $A(\Gamma,\theta)$, $p(\theta)$, $c(\theta)$, and the intervention data are twice continuously differentiable in a neighborhood of $\theta_c$;
+  \item the affine slow/fast chart \eqref{eq:slow-fast-block} exists and the fast block is uniformly invertible on the declared spectral contour;
+  \item the response-relevant Riesz cluster is isolated by one contour of constant rank in that neighborhood;
+  \item the real selection Jacobian has constant rank $r$;
+  \item the full, cluster-restricted, and Schur response derivatives satisfy declared attribution bounds
+  \begin{equation}
+  \|D\cE_{\mathrm{full}}-D\cE_{\cC}\|\le\eta_R,
+  \qquad
+  \|D\cE_{\cC}-G_{\mathrm{Schur}}\|\le\eta_S;
+  \label{eq:attribution-bounds}
+  \end{equation}
+  \item the tolerance and neighborhood are small enough that the quadratic Taylor remainder is controlled.
+\end{enumerate}
+Then:
+\begin{enumerate}[label=(\roman*)]
+  \item $P_{\cC}(\Gamma,\theta)$ is continuously differentiable and has constant rank locally;
+  \item $\cM_\Gamma$ is a local $C^1$ submanifold of real codimension $r$;
+  \item on a normal slice through $\theta_c$,
+  \begin{equation}
+  \|\cE_{\mathrm{full}}(\Gamma,\theta_c+\delta\theta)\|_W^2
+  =
+  \delta\theta^{\mathsf T}Q_{\mathrm{tube}}\delta\theta
+  +\mathcal R_3
+  +\mathcal R_{\mathrm{attr}},
+  \label{eq:local-tube-expansion}
+  \end{equation}
+  where $|\mathcal R_3|\le C_3\|\delta\theta\|^3$ and $|\mathcal R_{\mathrm{attr}}|\le C_A(\eta_R+\eta_S)\|\delta\theta\|^2$;
+  \item if $Q_{\mathrm{tube}}$ is positive definite on the normal space, the finite-$\Gamma$ cross section is an ellipsoid up to the stated remainder bounds.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Uniform contour separation makes the resolvent smooth in $\theta$ on the contour, so differentiation under the integral in \eqref{eq:riesz-projector} proves (i). The constant-rank theorem applied to the realified selection map gives (ii), with tangent space $\Ker J_f$ and normal space $\Ran J_f^{\mathsf T}$. Taylor expansion of the Schur response defect at $\theta_c$ gives
+\begin{equation}
+\cE_{\mathrm{Schur}}(\theta_c+\delta\theta)
+=
+G_{\mathrm{Schur}}\delta\theta
++\mathcal O(\|\delta\theta\|^2).
+\end{equation}
+Taking the weighted squared norm yields the Gram form \eqref{eq:tube-gram} and a cubic remainder. The attribution bounds transfer the expansion from the Schur response to the cluster and then to the full response, producing $\mathcal R_{\mathrm{attr}}$. Positive definiteness on the normal space gives an ellipsoidal normal section. No claim is made beyond the local chart or after contour separation, constant rank, or attribution control fails.
+\end{proof}
+
+\begin{corollary}[Rank--codimension law]\label{cor:rank-codim}
+Under \cref{thm:local-tube},
+\begin{equation}
+\boxed{
+\operatorname{codim}_{\RR}\cM_\Gamma
+=
+\rank_{\RR}J_f.
+}
+\label{eq:rank-codim}
+\end{equation}
+Normal perturbations are detected to first order, while tangent perturbations leave the leading selection constraints unchanged.
+\end{corollary}
+
+\begin{corollary}[Principal widths and axis bundles]\label{cor:tube-widths}
+Let $\lambda_1,\ldots,\lambda_r>0$ be the positive eigenvalues of $Q_{\mathrm{tube}}$ on the normal space. The leading principal half-widths are
+\begin{equation}
+w_i(\Gamma,\eps)
+=
+\frac{\eps}{\sqrt{\lambda_i(Q_{\mathrm{tube}}(\Gamma))}}.
+\label{eq:principal-widths}
+\end{equation}
+If $\lambda_i(Q_{\mathrm{tube}})=q_i\Gamma^2[1+\mathcal O(\Gamma^{-1})]$ with $q_i>0$, then
+\begin{equation}
+w_i(\Gamma,\eps)
+=
+\frac{\eps}{\sqrt{q_i}}\Gamma^{-1}
+[1+\mathcal O(\Gamma^{-1})].
+\label{eq:gamma-minus-one-width}
+\end{equation}
+When eigenvalues are nearly degenerate, the invariant object is the associated axis subspace projector, not an arbitrarily rotated individual eigenvector.
+\end{corollary}
+
+\subsection{\texorpdfstring{$\Gamma$}{Gamma}-adaptive center and cluster transport}
+
+A fixed exceptional-point coordinate need not follow a moving singular region. The local center must therefore be transported with $\Gamma$. On a chosen transverse gauge, the regular equation
+\begin{equation}
+f(\Gamma,\theta_c(\Gamma))=0
+\label{eq:center-equation}
+\end{equation}
+obeys
+\begin{equation}
+\frac{\dd\theta_c}{\dd\Gamma}
+=-J_{f,N}^{-1}\partial_\Gamma f
+\label{eq:center-transport}
+\end{equation}
+whenever the normal restriction $J_{f,N}$ is invertible. Numerically, this continuation is audited through contour-projector distance, cluster rank, response-loop closure, and non-enclosing controls. Individual pole matching may be retained as a diagnostic but is not a pass criterion.
+
+\subsection{Separation of geometry and the slow-loss gate}
+
+The local tube theorem predicts where the response constraints are approximately satisfied. It does not by itself guarantee that the protected hierarchy survives physical slow loss.
+
+\begin{definition}[Slow-loss/protection ratio]\label{def:slow-loss-ratio}
+Let $\gamma_{\mathrm{slow}}(\Gamma,\theta)$ be the projected regular loss rate within the response-relevant slow cluster, and let $\Delta_{\mathrm{prot}}(\Gamma,\theta)$ be the Schur-induced protection scale. Define
+\begin{equation}
+\boxed{
+z_{\mathrm{loss}}(\Gamma,\theta)
+=
+\frac{\gamma_{\mathrm{slow}}(\Gamma,\theta)}
+{\Delta_{\mathrm{prot}}(\Gamma,\theta)}.
+}
+\label{eq:slow-loss-ratio}
+\end{equation}
+In the minimal Zeno-mediated realization, $\Delta_{\mathrm{prot}}$ is proportional to $J_{\mathrm{eff}}^2/\Gamma$, so $z_{\mathrm{loss}}$ is proportional to $\Gamma\gamma_{\mathrm{slow}}/J_{\mathrm{eff}}^2$.
+\end{definition}
+
+\begin{protocol}[Finite-window slow-loss gate]\label{prot:slow-loss-gate}
+Choose thresholds $0<z_-<z_+$ before inspecting the classification data. Label a point
+\begin{equation}
+\begin{cases}
+\text{protected}, & z_{\mathrm{loss}}\le z_-,\\
+\text{crossover}, & z_-<z_{\mathrm{loss}}<z_+,\\
+\text{loss dominated}, & z_{\mathrm{loss}}\ge z_+.
+\end{cases}
+\label{eq:slow-loss-gate}
+\end{equation}
+The thresholds are calibration conventions for a finite observation window. The asymptotic distinction is $z_{\mathrm{loss}}\to0$, $z_{\mathrm{loss}}=\mathcal O(1)$, or $z_{\mathrm{loss}}\to\infty$.
+\end{protocol}
+
+\begin{proposition}[Geometry--survival separation]\label{prop:geometry-survival}
+Suppose the hypotheses of \cref{thm:local-tube} hold and the cluster remains contour separated while $z_{\mathrm{loss}}$ is varied by a regular slow-loss term. Then $Q_{\mathrm{tube}}$ and the existence of the local geometric tube need not change class at the same point as the Pattern (b) valuations. Consequently,
+\begin{equation}
+\boxed{
+\text{tube geometry}
+\not\equiv
+\text{Pattern (b) survival}.
+}
+\label{eq:geometry-not-survival}
+\end{equation}
+A response classification requires both the geometric computation and the independent slow-loss gate.
+\end{proposition}
+
+\begin{proof}
+The tube metric depends on derivatives of the cluster-restricted response defect and remains defined while the spectral contour and local rank conditions persist. Pattern (b), by contrast, is defined by asymptotic valuations of response functionals and may change when a regular loss competes with the Schur-induced protection scale. Since these objects depend on different conditions, equality of their transition points is not implied.
+\end{proof}
+
+\subsection{Applicability domain and failure certificates}
+
+The present calculus is valid only when all of the following can be certified:
+\begin{enumerate}
+  \item an affine-in-$\Gamma$ slow/fast chart is available on the selected window;
+  \item the response-relevant Riesz cluster is contour separated;
+  \item the selection Jacobian has the declared locally constant rank;
+  \item the leading Schur approximation and attribution bounds are numerically or analytically controlled;
+  \item the slow-loss/protection ratio is evaluated independently;
+  \item both interventions act nontrivially on the response-relevant pathway when a joint M\"obius class is claimed.
+\end{enumerate}
+Failure has two logically distinct meanings. The physical tube or Pattern (b) may disappear, or only the current coordinate chart may become inadequate. Non-affine $\Gamma$ dependence, cluster-gap closure, complete rank drop, and failure of the Schur window must therefore be recorded as explicit certificates rather than merged into one generic numerical failure.
+
+\subsection{Tube-calculus computation protocol}
+
+\begin{protocol}[Adaptive Schur--Riesz tube computation]\label{prot:tube-computation}
+For each declared $\Gamma$ window:
+\begin{enumerate}
+  \item locate and continue the response-relevant spectral cluster using a contour Riesz projector;
+  \item verify constant projector rank, contour separation, projector continuity, and closed-loop cluster response;
+  \item solve the selection constraints for $\theta_c(\Gamma)$ on a transverse gauge;
+  \item compute $J_f$, its singular values, tangent bundle, and normal bundle;
+  \item compare full, cluster-restricted, and Schur response derivatives;
+  \item construct the full Gram matrix $Q_{\mathrm{tube}}$, retaining cross terms;
+  \item predict and directly test normal-section boundaries at multiple tolerances and directions;
+  \item track near-degenerate axes by subspace projectors;
+  \item compute $z_{\mathrm{loss}}$ and classify protected, crossover, and loss-dominated windows;
+  \item run non-enclosing, cluster-splitting, diagonal-Gram, rank-drop, and slow-loss controls.
+\end{enumerate}
+The output is the tuple
+\begin{equation}
+\boxed{
+(\cL_\Gamma,p,c)
+\longmapsto
+P_{\cC}(\Gamma)
+\longmapsto
+\theta_c(\Gamma)
+\longmapsto
+J_f(\Gamma)
+\longmapsto
+Q_{\mathrm{tube}}(\Gamma)
+\longmapsto
+z_{\mathrm{loss}}(\Gamma)
+\longmapsto
+\text{response class}.
+}
+\label{eq:tube-computation-chain}
+\end{equation}
+\end{protocol}
+
+\section{Closed finite-dimensional tube-calculus system}\label{sec:closed-calculus}
+
+The local theorem supplies the geometric chart, but a usable calculation system must also decide which cluster is response active, which strong-dissipation scaling is matched, whether a protected kernel is exact or only approximate, and whether the predicted response survives all numerical and physicality checks.  This section extends \cref{prot:tube-computation} into a closed finite computation.  The construction is conditional: every successful branch is accompanied by its assumptions, while every failed condition produces a named rejection certificate.
+
+\subsection{Blind response-jet cluster selection}
+
+For each cut $U\subseteq\{1,2\}$, let the response-relevant poles and residues of the protected chart have the expansions
+\begin{align}
+ \lambda_{U,a}(\Gamma)
+ &=\lambda_{0,U,a}+\Gamma^{-1}\lambda_{1,U,a}
+   +\mathcal O(\Gamma^{-2}),
+ \label{eq:pole-jet}\\
+ r_{U,a}(\Gamma,x)
+ &=r_{0,U,a}+\Gamma^{-1}r_{1,U,a}
+   +(D_xr_{0,U,a})\,\delta x
+   +\mathcal O(\Gamma^{-2},\|\delta x\|^2).
+ \label{eq:residue-jet}
+\end{align}
+Here $x$ denotes the declared source/readout controls.  The four-cut joint predictor is the M\"obius pole sum
+\begin{equation}
+ \widehat\Omega_{12}(\omega;\Gamma,x)
+ =\sum_{U\subseteq\{1,2\}}(-1)^{2-|U|}
+   \sum_{a\in\cC_U}
+   \frac{r_{U,a}(\Gamma,x)}{\lambda_{U,a}(\Gamma)-\ii\omega}.
+ \label{eq:schur-mobius-pole-sum}
+\end{equation}
+It therefore retains cut-to-cut cancellation and conjugate or multi-resonant pole clusters; it is not a single-pole approximation.
+
+\begin{protocol}[Response-jet rank selector]\label{prot:jet-rank-selector}
+Seed the cluster with the slow poles having the largest root residues.  A root-dark slow pole is eligible for inclusion only when a declared source/readout derivative satisfies
+\begin{equation}
+ \|D_xr_{0,U,a}\|>\tau_{\mathrm{jet}}
+ \label{eq:jet-activity}
+\end{equation}
+and its distance to the seeded cluster enters the certified Riesz resolution radius.  The selected rank is the dimension of the resulting response-active cluster.  If no response-active protected cluster exists, return
+\begin{equation}
+ \texttt{reject\_no\_protected\_kernel}
+ \label{eq:no-kernel-reject}
+\end{equation}
+before a full response scan is evaluated.
+\end{protocol}
+
+This rule separates spectral proximity from operational relevance.  A nearby pole with a vanishing root residue and vanishing response jet is not promoted merely because an eigensolver can enumerate it.
+
+\subsection{Blind scale matching}
+
+Let the protected/fast blocks of the reference generator be denoted by $P$ and $Q$.  The slow Schur self-energy is
+\begin{equation}
+ \Sigma(\Gamma)
+ =B_{PQ}\bigl(\Gamma D_{QQ}+B_{QQ}\bigr)^{-1}B_{QP}.
+ \label{eq:self-energy}
+\end{equation}
+On a verified regular window define the self-energy exponent
+\begin{equation}
+ q_*
+ =-\frac{\dd\log\|\Sigma(\Gamma)\|}{\dd\log\Gamma},
+ \label{eq:q-star}
+\end{equation}
+or its finite-window log--log estimate together with local-slope and residual bounds.  If an independently controlled coupling is scaled as $J_{\mathrm{EP}}\propto\Gamma^{-q}$, the tested first-order predictor is
+\begin{equation}
+ \widehat\nu_{12}^{(\infty)}=q_*-q.
+ \label{eq:scale-matched-exponent}
+\end{equation}
+The scale-matched band is declared before held-out response evaluation.  Values below, inside, or above that band are labeled mixing-dominated suppression, matched plateau, or under-coupled growth, respectively.  Equation~\eqref{eq:scale-matched-exponent} is a certified law for the frozen finite-dimensional model families, not a theorem for arbitrary GKSL dependence on $\Gamma$.
+
+\subsection{Exact, approximate, and absent protected kernels}
+
+Let $\gamma_0\ge0$ be a regular projected slow loss and $\epsilon\ge0$ a strong-scale tail that lifts the protected kernel.  Their physical combination in the tested affine class is
+\begin{equation}
+ \gamma_{\mathrm{phys}}(\Gamma)
+ =\gamma_0+\epsilon\Gamma.
+ \label{eq:physical-slow-loss}
+\end{equation}
+For the cut-$12$ protected cluster, define response weights
+\begin{equation}
+ w_a=\frac{|r_{1,12,a}|}{\sum_b|r_{1,12,b}|},
+ \qquad \sum_aw_a=1,
+ \label{eq:response-jet-weights}
+\end{equation}
+and the projected coefficients
+\begin{align}
+ \kappa_{\mathrm{eff}}
+ &=\sum_aw_a\,\Re\lambda_{1,12,a},
+ \label{eq:kappa-eff}\\
+ \alpha_{\mathrm{eff}}
+ &=\sum_aw_a
+ \left.
+ \partial_{\gamma_{\mathrm{phys}}}
+ \Re\lambda_{0,12,a}
+ \right|_{\gamma_{\mathrm{phys}}=0}.
+ \label{eq:alpha-eff}
+\end{align}
+The blind crossover coordinate is then
+\begin{equation}
+ \boxed{
+ z_{\mathrm{jet}}(\Gamma)
+ =\frac{\Gamma\alpha_{\mathrm{eff}}
+ (\gamma_0+\epsilon\Gamma)}{\kappa_{\mathrm{eff}}}.
+ }
+ \label{eq:z-jet}
+\end{equation}
+For a target $z>0$, its positive inverse is
+\begin{equation}
+ \Gamma(z)
+ =
+ \begin{cases}
+ \dfrac{z\kappa_{\mathrm{eff}}}
+ {\alpha_{\mathrm{eff}}\gamma_0},
+ & \epsilon=0,\\[1.1em]
+ \dfrac{2z\kappa_{\mathrm{eff}}}
+ {\sqrt{(\alpha_{\mathrm{eff}}\gamma_0)^2
+ +4\alpha_{\mathrm{eff}}\epsilon z\kappa_{\mathrm{eff}}}
+ +\alpha_{\mathrm{eff}}\gamma_0},
+ & \epsilon>0.
+ \end{cases}
+ \label{eq:z-jet-inverse}
+\end{equation}
+Thus the pure regular-loss branch has $\Gamma_\times\propto\gamma_0^{-1}$, while the pure tail branch has $\Gamma_\times\propto\epsilon^{-1/2}$.  This replaces the rejected bare law $\Gamma_\times\propto\gamma_0/\epsilon$.
+
+\begin{remark}[Relation to the general survival ratio]
+Equation~\eqref{eq:z-jet} is the response-weighted implementation of \eqref{eq:slow-loss-ratio} for the certified affine chart: $\Delta_{\mathrm{prot}}=\kappa_{\mathrm{eff}}/\Gamma$ and $\gamma_{\mathrm{slow}}=\alpha_{\mathrm{eff}}\gamma_{\mathrm{phys}}$.  The symbol $z_{\mathrm{loss}}$ denotes the general conceptual ratio, while $z_{\mathrm{jet}}$ denotes the coefficient-level predictor actually audited in Phase~3.
+\end{remark}
+
+\begin{definition}[Protected-kernel branch classifier]\label{def:kernel-branch}
+Fix a local-exponent tolerance $\tau_\nu$ and a certified observation window.
+\begin{enumerate}
+  \item An \emph{exact-kernel asymptotic tube} has an accepted protected response jet and $\gamma_0=\epsilon=0$.
+  \item An \emph{approximate-kernel finite-$\Gamma$ tube} has an accepted jet, nonzero physical slow loss, and $|\widehat\nu_{12}^{(\infty)}|<\tau_\nu$ on the declared pre-crossover window.
+  \item A \emph{loss-dominated branch} has an accepted jet but crosses $|\widehat\nu_{12}^{(\infty)}|\ge\tau_\nu$.
+  \item A \emph{no-kernel branch} lacks a response-relevant protected cluster and is rejected by \cref{prot:jet-rank-selector}.
+\end{enumerate}
+The first three labels separate the existence of the geometric chart from survival of Pattern~(b); the fourth states that the chart itself is absent.
+\end{definition}
+
+The coefficients in \eqref{eq:pole-jet}--\eqref{eq:alpha-eff} may be extended to second order,
+\begin{equation}
+ \lambda_{U,a}
+ =\lambda_{0,U,a}
+ +\Gamma^{-1}\lambda_{1,U,a}
+ +\Gamma^{-2}\lambda_{2,U,a},
+ \qquad
+ r_{U,a}
+ =r_{0,U,a}
+ +\Gamma^{-1}r_{1,U,a}
+ +\Gamma^{-2}r_{2,U,a},
+ \label{eq:second-order-schur-jet}
+\end{equation}
+with projected slow-loss derivatives.  In the final Phase~3 refinement this expansion is used to remove endpoint bias without changing the physical classifier or its thresholds.
+
+\subsection{Multi-resonant global response convention}
+
+For a pole sum such as \eqref{eq:schur-mobius-pole-sum}, a bounded optimizer around one nominal resonance is not a valid definition of the peak.  The operational norm is
+\begin{equation}
+ N_\infty[\Omega]
+ =\sup_{\omega\in\mathcal W}|\Omega(\omega)|,
+ \label{eq:global-ninf}
+\end{equation}
+where $\mathcal W$ is the declared frequency window.  Numerically, every Schur-pole neighborhood is subdivided, all resolved local maxima are enumerated and locally refined, and the largest candidate is selected.  The result is accepted only when increasing the search span and density changes the peak by less than the predeclared stability factor.  This convention removes any hidden single-resonance assumption.
+
+\subsection{Forward, certificate, and inverse closure}
+
+The completed finite-dimensional calculation chain is
+\begin{equation}
+\boxed{
+\begin{aligned}
+ &(\cL_\Gamma,\cG_1,\cG_2,p,c,\Theta,\mathcal W)
+ \longrightarrow \text{GKSL/health checks}
+ \longrightarrow P_{\cC}(\Gamma)\\
+ &\longrightarrow \text{response-jet rank}
+ \longrightarrow \theta_c(\Gamma)
+ \longrightarrow J_f(\Gamma)
+ \longrightarrow Q_{\mathrm{tube}}(\Gamma)\\
+ &\longrightarrow q_*,(\kappa_{\mathrm{eff}},\alpha_{\mathrm{eff}})
+ \longrightarrow z_{\mathrm{jet}}(\Gamma)
+ \longrightarrow \widehat\Omega_{12}
+ \longrightarrow N_\infty\\
+ &\longrightarrow
+ \{\text{exact},\text{approximate},\text{lost},\text{no-kernel}\}
+ \longrightarrow \mathsf{Cert}.
+\end{aligned}}
+\label{eq:closed-computation-chain}
+\end{equation}
+It closes three tasks.
+\begin{description}[leftmargin=7em,style=nextline]
+ \item[Forward.] Predict the selection center, normal bundle, anisotropic tube, response hierarchy, and crossover from generator, intervention, source, and readout data.
+ \item[Certificate.] Return either a passed applicability/accuracy certificate or a named failure at the physicality, cluster, rank, attribution, response, or reproducibility stage.
+ \item[Inverse.] Given a target tolerance or target crossover coordinate, solve \eqref{eq:tube-ellipsoid} or \eqref{eq:z-jet-inverse} for admissible control displacements or dissipative windows.
+\end{description}
+
+\begin{proposition}[Conditional algorithmic closure]\label{prop:algorithmic-closure}
+Fix finite-dimensional matrices, finite parameter and frequency grids, tolerances, contours, and fit windows.  Suppose the physicality checks pass, the response-relevant Riesz cluster remains isolated, the selected rank is finite and locally constant, and every linear solve and attribution gate is accepted.  Then the chain \eqref{eq:closed-computation-chain} terminates with either a finite response-class certificate or an explicit rejection certificate.  No individual pole labeling is required as an invariant input.
+\end{proposition}
+
+\begin{proof}
+Every stage consists of finite-dimensional linear algebra, contour quadrature on a finite grid, a finite constant-rank test, or a bounded scalar/root continuation.  Riesz-projector and subspace data replace globally consistent pole labels.  The protocol is fail closed: a violated precondition stops the chain with its stage label rather than silently supplying the previous branch.  Under the stated assumptions all stages terminate, and \eqref{eq:tube-ellipsoid} and \eqref{eq:z-jet-inverse} provide the finite inverse maps.
+\end{proof}
+
+\begin{definition}[End-to-end numerical certificate]\label{def:e2e-certificate}
+An end-to-end certificate is the tuple
+\begin{equation}
+ \mathsf{Cert}
+ =(\mathsf{status},\mathsf{config},\mathsf{gates},
+ \mathsf{coverage},\mathsf{thresholds},
+ \mathsf{source\ hash},\mathsf{evidence\ hash}),
+ \label{eq:e2e-certificate}
+\end{equation}
+with strict finite serialization.  A pass requires a fresh output root, complete Cartesian coverage, unchanged thresholds, passing physical/numerical gates, unchanged frozen sources before and after execution, and passing regression sentinels.  Partial output, stale output, nonfinite values, or a missing stage cannot be promoted to a pass.
+\end{definition}
+
+\section{Candidate phenomenon classes enabled by the revision}
+
+\begin{definition}[Transient-only sector protection]\label{def:transient-only}
+A response exhibits transient-only protection with respect to a chosen pointwise stationary functional and a peak-transient functional if
+\begin{equation}
+\nu_{\mathrm{pt}}>0,
+\qquad
+\nu_{\max}=0.
+\label{eq:transient-only}
+\end{equation}
+The protected mechanism survives at finite times although it disappears from the stationary or fixed-frequency observation.
+\end{definition}
+
+\begin{definition}[Fluctuation-only sector protection]\label{def:fluctuation-only}
+A response exhibits fluctuation-only protection if the relevant first cumulant decays asymptotically while a higher cumulant remains protected, for example
+\begin{equation}
+\nu^{(1)}>0,
+\qquad
+\nu^{(2)}=0.
+\label{eq:fluctuation-only}
+\end{equation}
+\end{definition}
+
+\begin{definition}[Protocol-order protection]\label{def:protocol-order}
+Protocol-order protection occurs when exchanging two intervention blocks changes the asymptotic class,
+\begin{equation}
+\nu_{S\rightarrow T}\neq\nu_{T\rightarrow S},
+\label{eq:protocol-order}
+\end{equation}
+and the difference persists on a finite parameter region rather than at an isolated tuned point.
+\end{definition}
+
+\begin{definition}[Intervention-path opacity]\label{def:path-opacity}
+Suppose two protocols end at the same nominal intervention setting but produce different responses,
+\begin{equation}
+\pi_1(\mathrm{final})=\pi_2(\mathrm{final}),
+\qquad
+R_{\pi_1}\neq R_{\pi_2}.
+\label{eq:path-opacity}
+\end{equation}
+The inability to infer the response mechanism from the final cut alone is called intervention-path opacity.
+\end{definition}
+
+\begin{definition}[Reentrant sector accessibility]\label{def:reentrant}
+A sector is reentrantly accessible if increasing intervention resources drives the sequence
+\begin{equation}
+\text{inaccessible}
+\longrightarrow
+\text{accessible}
+\longrightarrow
+\text{inaccessible},
+\label{eq:reentrant}
+\end{equation}
+according to a declared response distance, tolerance, and cost convention.
+\end{definition}
+
+\begin{remark}
+Non-normal transient amplification, exceptional-point sensitivity, slow-subspace formation, Zeno effects, and destructive interference are possible mechanisms for these classes, not definitions of them. This distinction prevents a known mechanism from being renamed as a new phenomenon merely because the notation has become more ceremonial.
+\end{remark}
+
+\section{Repositioning of the leading candidate phenomena}
+
+\subsection{Spectral partner formation of protected irreducible responses}
+
+This candidate remains inside the stationary linear subtheory. The minimal diagnostic set is
+\begin{equation}
+\OmegaI_{12}^{(1)}(\omega),
+\qquad
+\PhiF_{\mathrm{sgn}},
+\qquad
+\PhiF_{1},
+\qquad
+\PhiF_{\max},
+\qquad
+\text{width scaling}.
+\end{equation}
+The generalized theory adds the finite-time inverse transform and asks whether the partner feature corresponds to a delayed, transient, or oscillatory compensation process.
+
+\subsection{Exceptional-point-induced mechanism opacity}
+
+The previous scalar intervention scale is replaced by
+\begin{equation}
+\cC_{\mathrm{req}}(\Gamma,\delta,\eps).
+\end{equation}
+A concrete candidate law is \eqref{eq:ep-cost}. One should simultaneously test whether
+\begin{equation}
+\nu_{\mathrm{steady}}>0,
+\qquad
+\nu_{\mathrm{transient}}=0,
+\end{equation}
+which would connect mechanism opacity to transient-only protection rather than merely to a large condition number.
+
+\subsection{Self-interfering sector removal}
+
+A static function of cut strength is insufficient. One must compare protocol paths $\kappa(t)$, including sudden, slow, and pulsed interventions, at matched resource cost. If the asymptotic response depends robustly on the path, the phenomenon belongs to intervention-path opacity or reentrant accessibility. If it reduces to ordinary Zeno saturation under all matched comparisons, the stronger terminology should be abandoned.
+
+\subsection{Response-mechanism contextuality}
+
+The order witness \eqref{eq:order-response} provides a numerical target but not a contextuality theorem. A legitimate contextuality claim requires an explicit consistency inequality or a no-go proof excluding every context-independent global sector assignment compatible with the observed protocol marginals.
+
+\section{Numerical program and validation gates}
+
+\subsection{Gate G0: final test inside the old theory}
+
+Before using the generalized hierarchy, test the three leading candidates in the smallest CPTP Lindblad models using:
+\begin{enumerate}
+  \item $5$--$10\%$ parameter perturbations;
+  \item at least two readouts;
+  \item full frequency scans;
+  \item several decades in $\Gamma$, intervention strength, and exceptional-point distance;
+  \item explicit positivity, trace-preservation, and stability checks.
+\end{enumerate}
+If one candidate is robust and clearly exceeds existing descriptions, further enlargement of the basic theory should pause while the result is formalized.
+
+\subsection{Gate G1: finite-time response}
+
+Compute
+\begin{equation}
+R_{\pi}^{(1)}(t)
+ = \Tr\!\left[O\cU_{\varnothing}(t,0)\rho_0\right]
+ - \Tr\!\left[O\cU_{\pi}(t,0)\rho_0\right]
+\label{eq:G1}
+\end{equation}
+and extract peak amplitude, peak time, integrated absolute response, stationary value, and transient growth. The first decisive test is
+\begin{equation}
+\nu_{\mathrm{steady}}\neq\nu_{\max}.
+\end{equation}
+
+\subsection{Gate G2: time-dependent finite interventions}
+
+At matched cost compare step, linear ramp, exponential ramp, finite pulse, and repeated-pulse protocols. Evaluate a declared distance $D(R_{\pi_1},R_{\pi_2})$ and test path dependence, reentrant accessibility, and correlations with spectral gaps or resolvent/Riesz norms.
+
+\subsection{Gate G3: sequential noncommuting interventions}
+
+Compute
+\begin{equation}
+\XiI_{S,T}^{(1)}(t),
+\qquad
+\XiI_{S,T}^{(1)}(\omega),
+\qquad
+\XiI_{S,T}^{(2)}.
+\end{equation}
+A useful result requires more than a phase delay: the order exchange should change a robust response feature or asymptotic valuation.
+
+\subsection{Gate G4: two-time correlations and full counting statistics}
+
+Use the quantum regression theorem where valid, or a tilted Liouvillian, to compute
+\begin{equation}
+C_{\pi}^{(2)}(t_2,t_1),
+\qquad
+S_{\pi}^{(2)}(\omega),
+\qquad
+K_{\pi}^{(2)}(t).
+\end{equation}
+The primary classification test is
+\begin{equation}
+k_{\min}^{(1,\PhiF)}\neq k_{\min}^{(2,\PhiF)}.
+\end{equation}
+
+\subsection{Gate G5: nonlinear probe response}
+
+Only if G1--G4 are uninformative, introduce
+\begin{equation}
+\langle O\rangle=\sum_{m\ge1}\chi^{(m)}h^m
+\end{equation}
+and define the visibility order
+\begin{equation}
+m_{\min}(S)=\min\{m:\chi_S^{(m)}\neq0\}.
+\end{equation}
+
+\subsection{Gate G6: non-Markovian extension}
+
+Non-Markovian dynamics are deferred until G1--G5 fail and there is positive evidence that a finite environmental correlation time produces a stable sector phenomenon absent from every tested time-local GKSL model.
+
+\subsection{Numerical implementation requirements}
+
+For piecewise constant protocols use
+\begin{equation}
+\cU_{\pi}=\cU_m\cdots\cU_2\cU_1,
+\qquad
+\cU_j=e^{\cL_j\Delta t_j}.
+\end{equation}
+For smooth ramps use a controlled ODE solver or a converged Magnus expansion. Each calculation must verify trace preservation, Hermiticity preservation, positivity of propagated density operators, and stability where a stationary limit is invoked.
+
+Scaling extraction must include local slopes
+\begin{equation}
+\nu_{\mathrm{loc}}(\Gamma)
+ = -\frac{\dd\log\PhiF}{\dd\log\Gamma},
+\end{equation}
+fit-window dependence, comparison of power and power--log models, residual analysis, and checks for leading-coefficient zero crossings. A straight line on one log--log plot is not a theorem, despite its long and successful career impersonating one.
+
+\section{Completed validation of the local tube calculus}\label{sec:tube-validation}
+
+This section records numerical evidence and does not promote cross-model observations to universal theorems. The production calculations used finite-dimensional physical GKSL models, contour Riesz projectors, full four-cut responses, and independent negative controls.
+
+\subsection{Adaptive Schur--Riesz production}
+
+The completed production covered two spectral architectures, rank-three and rank-four tubes, a near-rank-drop case, and a dimensionless slow-loss stress test over $\Gamma\in[10^4,10^6]$. The principal results were
+\begin{center}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrr}
+\toprule
+Case & max surface error & max Schur/full error & max Riesz error & width exponents\\
+\midrule
+five-level rank 3 & $4.381\times10^{-4}$ & $8.990\times10^{-4}$ & $2.490\times10^{-9}$ & $1.0124,0.9990,0.9992$\\
+five-level rank 4 & $5.263\times10^{-4}$ & $9.067\times10^{-4}$ & $2.485\times10^{-9}$ & $1.0102,1.0368,0.9991,0.9988$\\
+six-level rank 3 & $3.587\times10^{-4}$ & $9.145\times10^{-4}$ & $2.517\times10^{-9}$ & $0.9998,1.0001,1.0001$\\
+six-level rank 4 & $5.779\times10^{-4}$ & $9.222\times10^{-4}$ & $2.513\times10^{-9}$ & $0.9974,1.0247,1.0003,0.9996$\\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+The largest tube-surface error was $5.779\times10^{-4}$ and the largest Schur/full derivative error was $9.222\times10^{-4}$. The Riesz cluster captured the full derivative to approximately $2.5\times10^{-9}$. Diagonal-Gram ablation increased the boundary error by as much as a factor $6.619$, supporting the use of the full cross-term structure.
+
+For the five- and six-level architectures, the maximum cluster-loop errors were $3.188\times10^{-16}$ and $3.323\times10^{-16}$, respectively. Non-enclosing controls produced no exchange. These results support the use of the $\Gamma$-dependent Riesz cluster rather than a fixed pole label.
+
+\subsection{Rank--codimension and directional controls}
+
+Independent production calculations tested real Jacobian ranks one through six. All $42$ independent normal directions destroyed Pattern (b), while all tested roots and tangent directions retained it. A symmetry-induced rank drop from two to one reduced the number of response-active normal directions accordingly. This supports \eqref{eq:rank-codim} within the tested constructions, while not proving it beyond the regularity assumptions already used in \cref{cor:rank-codim}.
+
+\subsection{Cross-model Schur law}
+
+A separate cross-model production included $20$ positive models across candidate-A, coupled five-level rank-three and rank-four, and a four-level sector-B architecture, with six held-out models and ranks two through four. The held-out pole-error ninetieth percentile was $1.303\times10^{-6}$, the held-out low-rank tube factor ninetieth percentile was $1.000063$, and the maximum coupled ellipsoid surface error was $2.621\times10^{-4}$. The minimum off-diagonal Gram fraction was $0.465$, again excluding a generally adequate diagonal approximation.
+
+\subsection{Slow-loss gate}
+
+The adaptive production evaluated target ratios $0$, $0.25$, $1$, and $4$. The predicted classes protected, crossover, crossover, and loss dominated matched the observed functional classes in all four cases. Earlier necessary-condition breaking calculations independently found that regular slow loss converts the protected joint peak into a finite-$\Gamma$ crossover when it competes with $J_{\mathrm{eff}}^2/\Gamma$. This evidence motivates \cref{prot:slow-loss-gate}; it does not establish universal numerical thresholds.
+
+\subsection{Phase 1--2: blind rank, scale matching, and held-out prediction}
+
+The frozen Phase~1 rank campaign contained $165$ main cases and $15$ inactive negative controls.  It varied five $\Gamma$ values, eleven external-gap values, and three response-jet realizations.  Every physicality, rank-label, inactive-control, positive-metric, and selected-surface gate passed.  The selected cluster expanded when a response-active dark mode entered the Riesz resolution radius and remained at the seed rank when the same mode was made response inactive.
+
+Phase~2 evaluated $174$ aggregate scale-matching cases and $1740$ full exceptional-point response cases, including six held-out seeds.  All eight blind-scale, physicality, sign, center, boundary, and exponent gates passed.  The largest errors in the final rerun were
+\begin{equation}
+ \begin{aligned}
+  e_{\mathrm{surface}}^{\max}&=0.0151264,&
+  e_{\mathrm{center}}^{\max}&=0.0180842,\\
+  e_{\mathrm{boundary}}^{\max}&=0.0239589,&
+  e_{\nu}^{\max}&=0.0541824.
+ \end{aligned}
+ \label{eq:phase12-final-errors}
+\end{equation}
+The campaign passed $13/13$ production gates.  These numbers certify the frozen model families and fixed finite windows; they are not universal constants.
+
+\subsection{Phase 3: exact-to-approximate crossover}
+
+An initial continuum-inspired test correctly showed that full-support loss destroys the asymptotic plateau, but rejected the bare collapse variable $\Gamma\epsilon/\gamma_0$.  The fitted crossover exponents were inconsistent with the proposed $\Gamma_\times\propto\gamma_0\epsilon^{-1}$ law even though the numerical-regularizer control passed.  This negative result is retained: the physical slow loss changes projected eigenvectors, residues, and Schur couplings and cannot generally be treated as one bare scalar linewidth.
+
+The corrected finite-dimensional predictor uses \eqref{eq:z-jet}.  The final Phase~3 production evaluated $4470$ baseline full-response points and $4200$ endpoint-refinement points over twelve models and fourteen slow-loss paths per model, for $168$ curves.  Exact-kernel plateau, approximate-kernel pre-crossover plateau, post-crossover decay, paired-$\epsilon$ collapse, single/joint hierarchy, no-kernel blind rejection, physicality, and numerical-regularizer independence all passed.  The refinement gates gave
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Metric & observed maximum & fixed bound\\
+\midrule
+refined peak factor & $1.00028266$ & $1.05$\\
+refined local-logfit exponent error & $6.4834\times10^{-5}$ & $0.05$\\
+stable-response span factor & $1.0000000000000004$ & $1.002$\\
+second-order Schur calibration factor & $1.0000001217$ & $1.002$\\
+multi-resonant legacy/stable factor & $1.0000285273$ & $1.002$\\
+\bottomrule
+\end{tabular}
+\end{center}
+All $19/19$ combined Phase~3 gates passed without changing the thresholds, campaign size, regression sentinels, or the $180$-point uniform peak-search setting.
+
+\subsection{Final comprehensive certification}
+
+The Phase~1--3 code and evidence were frozen and rerun once as a fresh fail-closed campaign on 23 July 2026.  The result was
+\begin{equation}
+ \boxed{\texttt{FINAL\_COMPREHENSIVE\_CERTIFICATION\_PASS}.}
+ \label{eq:final-certification-pass}
+\end{equation}
+The full run took $876.58\,\mathrm{s}$.  Its contract was
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Audit layer & result\\
+\midrule
+Phase 1--2 production & $13/13$ PASS\\
+Phase 3 production/refinement & $19/19$ PASS\\
+cross-phase artifact/readiness audit & $23/23$ PASS\\
+orchestration gates & $6/6$ PASS\\
+runtime preflight & $6/6$ PASS\\
+frozen numerical sources & $26/26$ unchanged\\
+final run state & \texttt{COMPLETE}\\
+\bottomrule
+\end{tabular}
+\end{center}
+Two previously observed numerical failures were converted into mandatory regression sentinels.  The high-$\Gamma$ endpoint failure was removed by a scale-stable response representation.  The multi-resonant failure was traced to a peak selector that assumed one local maximum; enumeration and refinement of all local maxima recovered the global branch.  Neither repair changed a physical law or an acceptance threshold.
+
+\subsection{Resulting claim boundary}
+
+The completed evidence supports the following conditional statement:
+\begin{quote}
+When a response-relevant protected Riesz cluster exists in a finite-dimensional strong-dissipation GKSL model satisfying the declared chart, isolation, rank, attribution, and finite-window conditions, the local normal geometry of the selection set and the finite-$\Gamma$ tube cross section can be predicted from a cluster-restricted Schur derivative Gram matrix.  The response-active rank, scale-matching band, exact/approximate/no-kernel branch, and slow-loss crossover are selected from generator and source/readout jets before held-out full-response classification.  The center, axis bundle, and widths are transported along a $\Gamma$-adaptive Riesz continuation.  Pattern~(b) survival is conditioned separately by the projected slow-loss coordinate.  On the frozen certified model class this chain is complete from input through inverse prediction and fail-closed certificate.
+\end{quote}
+The data do not support the stronger statement that one coefficient law holds without conditions for every GKSL architecture. In particular, the affine chart, spectral isolation, regular Jacobian, Schur window, and slow-loss balance remain part of the applicability domain.  ``End-to-end certified'' therefore describes the declared finite-dimensional numerical calculus, not universal completion of the entire RISEI theory.
+
+\section{Claim hierarchy}
+
+Every result should be labeled as one of the following.
+\begin{description}[leftmargin=3.4em,style=nextline]
+  \item[Definition.] A declared object or classification internal to the framework.
+  \item[Exact.] A statement proved from the declared assumptions.
+  \item[Conditional.] An exact statement under additional stated conditions.
+  \item[Conjecture.] A regularity supported by multiple models or partial analysis but lacking a general proof.
+  \item[Numerical phenomenon.] A robust observation in a specified CPTP model that is not claimed to be universal.
+  \item[Numerical certificate.] A finite, reproducible statement that frozen code, data coverage, thresholds, physicality conditions, and regression gates pass for a declared model class.
+\end{description}
+The intended promotion path is
+\begin{equation}
+\begin{gathered}
+\text{numerical phenomenon}
+\longrightarrow
+\text{numerical certificate or conjecture}\\
+\longrightarrow
+\text{conditional or general theorem}.
+\end{gathered}
+\end{equation}
+
+The final comprehensive pass is a numerical certificate.  It does not convert a cross-model scaling observation into an unconditional theorem.
+
+\section{Controlled stopping rules}
+
+\subsection{Stop A: success of an existing leading candidate}
+
+The stopping condition has been reached for the finite-dimensional Markov--GKSL tube-calculus branch: the conditional Schur--Riesz construction survived CPTP validation, perturbations, held-out prediction, exact/approximate/no-kernel discrimination, and a frozen end-to-end rerun.  The manuscript core should therefore not be enlarged by non-Markovian or infinite-dimensional machinery.  Subsequent work belongs to theorem refinement, controlled applicability-boundary testing, inverse experimental design, and external physical validation.
+
+\subsection{Stop B: success of a generalized response class}
+
+Also stop if any of the following is robustly established:
+\begin{equation}
+\begin{gathered}
+\text{transient-only protection},\qquad
+\text{fluctuation-only protection},\\
+\text{protocol-order protection},\qquad
+\text{reentrant accessibility},\qquad
+\text{ideal-cut nonuniqueness}.
+\end{gathered}
+\end{equation}
+The next task would then be theorem construction and physical realization, not another decorative layer of abstraction.
+
+\subsection{Stop C: null classification theorem}
+
+If G1--G5 reveal no new class and a model family can be shown to reduce to the stationary first-order classification, close the theory with a limitation theorem. A representative target would be a carefully qualified statement that a specified class of primitive finite-dimensional GKSL systems admits no finite-order interventional class beyond the stationary first-moment one.
+
+\subsection{Stop D: failure of predictive surplus}
+
+If broad model and observable searches produce only phenomena already equivalently derived from Zeno physics, Fano interference, non-normal response, full counting statistics, or control theory, and no RISEI-specific invariant, prohibition, or finite certificate emerges, classify RISEI as a unified operational framework rather than a new physical theory.
+
+\section{Minimal eight-layer definition of generalized RISEI}
+
+The end-to-end form consists of eight layers.
+\begin{enumerate}
+  \item \textbf{Dynamics:} time-local CPTP evolution generated by $\cL_{\Gamma,\pi,h}(t)$.
+  \item \textbf{Intervention protocol:} the ordered, finite-resource object $\pi=[(S_j,\kappa_j,I_j)]_{j=1}^{m}$.
+  \item \textbf{Response hierarchy:} $R_{\pi}^{(n)}(t_n,\ldots,t_1)$ for means, correlations, noise, and counting statistics.
+  \item \textbf{Irreducible decomposition:} $\OmegaI_T^{(n)}$ for subset irreducibility and $\XiI_{S,T}^{(n)}$ for order irreducibility.
+  \item \textbf{Spectral support:} the response-relevant Riesz projector $P_{\cC}$ and its $\Gamma$-adaptive cluster continuation.
+  \item \textbf{Selection geometry:} the selection manifold $\cM_\Gamma$, Jacobian rank, tube metric $Q_{\mathrm{tube}}$, and normal/tangent bundles.
+  \item \textbf{Applicability and resource classification:} $q_*$, $(\kappa_{\mathrm{eff}},\alpha_{\mathrm{eff}})$, $z_{\mathrm{loss}}$, $z_{\mathrm{jet}}$, $\nu_{\PhiF}$, $\Sigma_{\pi}^{(n)}$, $k_{\min}^{(n,\PhiF)}$, and $\cC_{\mathrm{req}}$.
+  \item \textbf{Finite certification:} the branch classifier, held-out prediction, regression sentinels, and fail-closed certificate $\mathsf{Cert}$.
+\end{enumerate}
+The compact central object is
+\begin{equation}
+\boxed{
+\mathfrak R_{\mathrm{tube}}
+ = \left\{
+ R_{\pi}^{(n)},
+ \OmegaI_T^{(n)},
+ \XiI_{S,T}^{(n)},
+ P_{\cC},
+ \cM_\Gamma,
+ Q_{\mathrm{tube}},
+ z_{\mathrm{loss}},
+ z_{\mathrm{jet}},
+ q_*,
+ \nu_{\PhiF},
+ \cC_{\mathrm{req}},
+ \mathsf{Cert}
+ \right\}.
+}
+\label{eq:central-object}
+\end{equation}
+Generalized RISEI therefore classifies how intervention protocols expose, protect, obscure, geometrically select, or render costly the identification of internal response mechanisms. The tube calculus is a conditional stationary layer inside this larger hierarchy, not a replacement for the finite-time theory.
+
+\section{Old-to-new correspondence}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.20\textwidth} >{\raggedright\arraybackslash}p{0.34\textwidth} >{\raggedright\arraybackslash}p{0.38\textwidth}}
+\toprule
+\textbf{Item} & \textbf{Original RISEI} & \textbf{Generalized RISEI}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Item} & \textbf{Original RISEI} & \textbf{Generalized RISEI}\\
+\midrule
+\endhead
+Primary time object & Stationary or frequency-domain response & Finite-time protocol propagator\\
+Dynamics & Mainly time-independent Markovian & Time-dependent, time-local GKSL\\
+Intervention & Static and characterized by one strength & Finite strength, temporal profile, pulse, or ramp\\
+Multiple cuts & An unordered subset & Both subset and ordered protocol\\
+Ideal cut & Primary theoretical object & Derived limit of a physical protocol family\\
+Observable & First mean or linear response & Multi-time cumulants, noise, and FCS\\
+Class & One exponent $\nu$ & Functional-dependent valuation and scaling signature\\
+Protection depth & $k_{\min}$ & $k_{\min}^{(n,\PhiF)}$\\
+Spectral carrier & Individual poles often used as labels & Response-relevant Riesz cluster and projector\\
+Selection geometry & Usually implicit or codimension one & Real-rank-controlled manifold $\cM_\Gamma$\\
+Finite-$\Gamma$ neighborhood & Scalar calibration width & Full Schur--Riesz Gram ellipsoid $Q_{\mathrm{tube}}$\\
+Physical survival & Folded into geometric classification & Independent slow-loss gate $z_{\mathrm{loss}}$\\
+Kernel status & Usually assumed exact & Blind exact/approximate/no-kernel classifier\\
+Scale matching & Response-fitted exponent & Schur self-energy exponent $q_*$ with held-out audit\\
+Multi-resonant peak & Local peak or fixed band & Global maximum over all resolved pole neighborhoods\\
+Accessibility & Magnitude of $\kappa$ & Protocol cost and minimal identification cost\\
+Exceptional-point effect & Candidate scalar-cost enhancement & Model-derived exponents in $\cC_{\mathrm{req}}$\\
+Noncommutativity & Auxiliary feature & Explicit order-irreducible response $\XiI$\\
+Robustness & Parameter perturbations & Parameters, readout, protocol envelope, and fit window\\
+Markovianity & Assumed & Retained; non-Markovianity deferred\\
+Physicality & Model-dependent constraint & Instantaneous GKSL admissibility of protocols\\
+Completion criterion & Successful model calculation & Fail-closed end-to-end certificate with frozen thresholds and sources\\
+\bottomrule
+\end{longtable}
+
+\section{Deliberately deferred extensions}
+
+The present revision does not yet include non-Markovian memory kernels, initial system--environment correlations, infinite-dimensional fields, generic many-body systems, or unrestricted nonlinear response. This restraint is methodological: introducing them prematurely would make it difficult to decide whether an observed effect originates from sector intervention, environmental memory, initial correlations, colored noise, many-body structure, or probe nonlinearity.
+
+The next preferred search space is therefore
+\begin{equation}
+\boxed{
+\text{finite time}
++\text{finite-resource protocols}
++\text{multi-time fluctuations}
++\text{intervention order}.
+}
+\end{equation}
+
+\section{Conclusion}
+
+The generalized theory replaces the old central response $R_S(\omega;\Gamma,\kappa)$ by the protocol-resolved hierarchy
+\begin{equation}
+R_{S_1\rightarrow\cdots\rightarrow S_m}^{(n)}
+\!\left(
+ t_n,\ldots,t_1;
+ \Gamma,
+ \kappa_1(t),\ldots,\kappa_m(t)
+\right),
+\end{equation}
+while the stationary strong-dissipation sector is governed by the closed chain \eqref{eq:closed-computation-chain}.  The central conceptual correction is the separation of four objects: the selection manifold, the finite-$\Gamma$ tube geometry, the protected-kernel branch, and the physical survival gate.  The first determines where the protected hierarchy is selected, the second predicts how parameter errors are tolerated, the third determines whether an asymptotic, finite-window, or absent tube is mathematically available, and the fourth determines where projected physical loss erases the response hierarchy.
+
+The conditional local tube theorem is exact under its stated smoothness, spectral-separation, constant-rank, attribution, and local-remainder assumptions.  The response-jet rank rule, Schur scale matching, $\Gamma^{-1}$ principal widths, projected crossover law, and multi-resonant response reconstruction are numerically certified for the frozen finite-dimensional model class.  The final fresh rerun passed every Phase~1--3, cross-phase, orchestration, physicality, coverage, and source-integrity gate.  Consequently,
+\begin{equation}
+ \boxed{\text{finite-dimensional RISEI tube calculus:
+ end-to-end numerically certified}.}
+ \label{eq:final-completion-statement}
+\end{equation}
+
+This completion statement has a precise boundary.  It does not assert an unconditional theorem for every GKSL generator, remove the assumptions of \cref{thm:local-tube}, or cover non-Markovian dynamics, infinite-dimensional and continuum limits, or experimental detectability.  Those are extensions of the certified domain, not missing stages of the present calculation system.
+
+The theory has therefore moved from identifying Pattern~(b) to predicting its response-active cluster, selection geometry, finite-$\Gamma$ tolerance, scale-matching law, loss-induced disappearance, and inverse admissible window with a reproducible failure certificate.  Universality would be a broader claim.  Closure inside a declared domain is the claim actually established here.
+
+\appendix
+
+\section{Notation}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.23\textwidth} >{\raggedright\arraybackslash}p{0.69\textwidth}}
+\toprule
+\textbf{Symbol} & \textbf{Meaning}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Symbol} & \textbf{Meaning}\\
+\midrule
+\endhead
+$\Gamma$ & Dominant dissipative or asymptotic scale\\
+$S,T,U$ & Operational sectors or sector subsets\\
+$\pi$ & Ordered intervention protocol including sectors, strengths, and time windows\\
+$\kappa_j(t)$ & Time-dependent intervention strength\\
+$\cG_{S_j}$ & Sector-selective intervention generator\\
+$\cU_{\pi}$ & Protocol-dependent propagator\\
+$C_{\pi}^{(n)}$ & Connected $n$-time cumulant\\
+$R_{\pi}^{(n)}$ & Full-minus-protocol interventional response\\
+$\OmegaI_T^{(n)}$ & Subset-M\"obius irreducible response\\
+$\XiI_{S,T}^{(n)}$ & Order-irreducible response\\
+$\PhiF$ & Functional selecting a response feature\\
+$\nu_{\PhiF}$ & Functional-dependent asymptotic valuation\\
+$\Sigma_{\pi}^{(n)}$ & Multi-component scaling signature\\
+$k_{\min}^{(n,\PhiF)}$ & Observable- and feature-dependent protection depth\\
+$\cC[\pi]$ & Protocol resource cost\\
+$\cC_{\mathrm{req}}$ & Minimal cost required to identify a target response\\
+$P_{\cC}$ & Contour Riesz projector onto the response-relevant spectral cluster\\
+$f$ & Realified protected-cluster source/readout selection map\\
+$J_f$ & Real selection Jacobian $D_\theta f$\\
+$\cM_\Gamma$ & Local selection manifold $f^{-1}(0)$\\
+$\cE_{\mathrm{full}}$ & Finite-$\Gamma$ response-defect vector relative to the target hierarchy\\
+$Q_{\mathrm{tube}}$ & Cluster-restricted Schur derivative Gram matrix\\
+$\cT_{\eps,\Gamma}$ & Finite-$\Gamma$ operational response tube\\
+$z_{\mathrm{loss}}$ & Dimensionless slow-loss/protection ratio\\
+$q_*$ & Finite-window Schur self-energy exponent controlling scale matching\\
+$\kappa_{\mathrm{eff}}$ & Response-weighted Schur protection coefficient\\
+$\alpha_{\mathrm{eff}}$ & Response-weighted projected slow-loss derivative\\
+$z_{\mathrm{jet}}$ & Blind projected crossover coordinate, Eq.~\eqref{eq:z-jet}\\
+$\mathsf{Cert}$ & End-to-end finite numerical certificate\\
+$\Delta_{\mathrm{prot}}$ & Schur-induced cluster-protection scale\\
+\bottomrule
+\end{longtable}
+
+\section{Logical status of principal statements}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.36\textwidth} >{\raggedright\arraybackslash}p{0.20\textwidth} >{\raggedright\arraybackslash}p{0.36\textwidth}}
+\toprule
+\textbf{Statement} & \textbf{Status} & \textbf{Required support}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Statement} & \textbf{Status} & \textbf{Required support}\\
+\midrule
+\endhead
+\midrule
+\multicolumn{3}{r}{\emph{Continued on the next page}}\\
+\endfoot
+\bottomrule
+\endlastfoot
+Stationary linear embedding & Exact & Proved in \cref{thm:embedding}\\
+M\"obius decomposition uniqueness & Exact & Finite Boolean-lattice inversion\\
+Order-witness vanishing under commuting blocks & Conditional exact & Propagator commutation and fixed comparison class\\
+Stationary spectral neutrality & Inherited conditional statement & Must cite or reproduce the prior proof\\
+Smooth local Riesz continuation & Conditional exact & Uniform contour separation and differentiability\\
+Rank--codimension law & Conditional exact & Constant-rank theorem; \cref{cor:rank-codim}\\
+Local Schur--Riesz tube theorem & Conditional exact & Assumptions T1--T6 and proof in \cref{thm:local-tube}\\
+$\Gamma^{-1}$ principal-width law & Conditional asymptotic / numerical support & $Q_{\mathrm{tube}}\sim\Gamma^2Q_0$ and production fits\\
+Geometry--survival separation & Conditional exact distinction & Separate dependence of $Q_{\mathrm{tube}}$ and response valuations\\
+Finite-window slow-loss thresholds & Protocol convention / numerical support & Predeclared calibration and stress tests\\
+Response-jet cluster-rank selector & Certified numerical protocol & Frozen derivative, resolution, physicality, and negative-control gates\\
+Scale-matched law $\widehat\nu_{12}^{(\infty)}=q_*-q$ & Numerical law in certified families & Schur self-energy fit and held-out response audit\\
+Exact/approximate/no-kernel classification & Certified numerical protocol & Accepted projected jet, finite-window exponent gate, and no-kernel controls\\
+Projected crossover coordinate $z_{\mathrm{jet}}$ & Derived within affine loss chart / numerically certified & Positive $\kappa_{\mathrm{eff}},\alpha_{\mathrm{eff}}$ and Phase~3 held-out audit\\
+Bare law $\Gamma_\times\propto\gamma_0/\epsilon$ & Rejected & Physical slow-loss production failed the proposed collapse\\
+Multi-resonant global peak rule & Numerical definition and regression contract & Enumeration of all local maxima and span-stability gate\\
+Conditional algorithmic closure & Conditional exact & Proposition~\ref{prop:algorithmic-closure}\\
+Phase 1--3 end-to-end completion & Numerical certificate & Frozen fresh rerun; all production and cross-phase gates pass\\
+Cross-architecture tube universality & Not established & Requires broader physical architectures and analysis\\
+Exceptional-point cost divergence & Conjecture & Multi-model numerics and partial analysis\\
+Spectral partner feature & Numerical candidate / conjecture & Robust full-band scans and asymptotics\\
+Reentrant accessibility & Numerical candidate & Matched-cost protocol comparison\\
+Fluctuation-only hierarchy & Numerical candidate / conjecture & Multi-time correlations or FCS\\
+Contextuality of response mechanisms & Unproved target & Explicit noncontextuality inequality or no-go theorem\\
+\end{longtable}
+
+\section{Revision record for the certified tube-calculus integration}
+
+Relative to the 18 July 2026 generalized theory, this edition makes the following substantive changes.
+\begin{enumerate}
+  \item Pattern (b) is defined as an operational functional hierarchy rather than referenced only as a numerical label.
+  \item The response-relevant spectral carrier is changed from individual pole labels to a contour Riesz cluster.
+  \item The source/readout overlap zero is promoted to a selection manifold with real rank-controlled codimension.
+  \item The finite-$\Gamma$ neighborhood is represented by the full Schur--Riesz derivative Gram matrix, including cross terms.
+  \item The tube center and axis bundles are transported adaptively with $\Gamma$.
+  \item Tube geometry and Pattern (b) survival are separated.  The slow-loss/protection ratio is evaluated independently.
+  \item A conditional local theorem, proof, applicability domain, failure certificates, and reproducible computation protocol are added.
+  \item Blind response-jet rank selection and Schur self-energy scale matching are added.
+  \item The rejected bare slow-loss collapse is replaced by the projected coordinate $z_{\mathrm{jet}}$, with exact-, approximate-, loss-dominated-, and no-kernel branches.
+  \item Multi-resonant peak extraction is defined as a global local-maximum enumeration problem rather than a single bounded optimization.
+  \item Phase~1--3 production evidence, fixed gates, negative controls, regression sentinels, and the final comprehensive rerun are recorded.
+  \item The minimal framework is expanded from five to eight layers by adding finite certification, and the notation and logical-status tables are updated accordingly.
+  \item The completion boundary is made explicit: the finite-dimensional Markov--GKSL calculus is closed, while universal, non-Markovian, infinite-dimensional, continuum, and experimental extensions remain outside the certificate.
+\end{enumerate}
+
+\end{document}
