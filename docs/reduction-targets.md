@@ -237,3 +237,31 @@ The shortest credible route is a resource lower-bound theorem, not the qualitati
 - exact observable-dependent open-system reduction.
 
 A surviving claim should therefore certify that the same observed interface forces at least one resource above a frozen threshold, with an explicit robustness margin.
+
+
+## H. Compatibility / common-implementation gate
+
+候補family `{N_x}` または `{I_x}` を、C-JOINT / I-JOINT / P-PROG / D-SHARED / R-BOUNDのどれとして主張するか事前固定する。
+
+### Kill tests
+
+1. Choi operatorsを構成し、channel marginal SDPのjoint extension可否とdual witnessを求める。
+2. minimal Stinespring complementに対するpost-processing channelの存在をCP/TP制約付きSDPで検査する。instrumentではcomplementary instrumentを使う。
+3. 排他的counterfactualならprogrammability問題として、processor、program次元、program orthogonality、ancilla、許容誤差を固定する。
+
+DCIT witnessが既知compatibility dual coneの元なら候補はkillされる。強いsurvival certificateは、unrestricted implementationの存在を認めた上で、任意の許容processorに対し `D_prog>D_max`、`D_E>D_max`、またはmemory上限超過を証明することである。
+
+## I. Information-theoretic shot-lower-bound gate
+
+下界の前に、state preparation、intervention set/depth、adaptivity、ancilla、shot間quantum memory、coherent multi-query、time resolution、measurement class、target、error norm、成功確率を凍結する。
+
+二点法では、
+
+```text
+|g(Theta_0)-g(Theta_1)| >= 2 epsilon,
+D(transcript_0^n || transcript_1^n) <= n D_A(Theta_0 || Theta_1)
+```
+
+を満たすDCIT固有hard pairを構成し、仮説検定converseから必要shot数を得る。Fano法ではtarget metricで分離したpackingと1 query当たりの相互情報上限を用いる。
+
+一つのalgorithmのshot数、optimizer failure、full tomography costだけでは下界と認めない。
