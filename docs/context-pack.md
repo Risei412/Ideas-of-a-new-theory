@@ -55,14 +55,16 @@
 
 - Zeno効果 / Zeno narrowing
 - 例外点（exceptional point, EP）
-- Full counting statistics (FCS)
+- Full counting statistics (FCS) / tilted-GKSL
 - unravelling依存性
-- 群同期（group synchronization）
-- 構造化系同定（structured system identification）
-- shared ancilla による説明
+- 群同期（compact-group synchronization）
+- 構造化系同定（structured state-space identification / controlled HMM）
+- shared ancilla enlargement による説明
+- bounded-memory process tensor
 - 平均場近似の破れ
 - 有限サイズ効果
 - 対称性からの自明な帰結
+- Riesz projector / Schur complement / Zeno型縮約 / 制御・realization理論の組合せ（Tube calculus regular branchの説明に使われた組）
 
 ---
 
@@ -72,13 +74,20 @@
 ただしリストにある機構へ無理に当てはめる偽陽性が増える副作用がある。
 カスタム指示の「具体的な写像を数式で示せ」で潰す前提。判定が雑になったらこの節を外す。
 
+出典：`docs/source-material/RISEI_Unique_Phenomena_Computation_Summary_and_Search_Strategy_2026-07-23.tex`（2026-07-23完了）。
+
 | 主張 | 還元先 | 写像・極限操作 | 判定日 |
 |---|---|---|---|
-| *TODO* | | | |
+| Response–Mechanism Contextuality（reduced sector gluing obstruction） | shared ancilla enlargement | 共有ancillaを含む単一のcontext-independent additive GKSL模型への埋め込み | 2026-07-23 |
+| 平均に盲目な protocol-order fluctuation | tilted-GKSL / FCS | standard tilted generatorでexact再現（最大誤差 \(1.84\times10^{-8}\)） | 2026-07-23 |
+| Relative-gauge exact witness \(\Delta K_2=2\ell_Y(G-I)r_X\) | switched GKSL / FCSの代数 | write/relative-defect/read の三因子分解として導出可能 | 2026-07-23 |
+| Continuous quantum gauge（\(SU(d)\) tree calibration atlas） | （非還元性未確立） | tree calibrationでの予測圧縮則が破綻。一般則としては不成立 | 2026-07-23 |
+| Held-out quotient predictor | compact-group synchronization | 中立latent-frame estimatorと目的関数が完全一致（残差0） | 2026-07-23 |
+| Global cycle-consistent quotient atlas（cycle threshold / abstention） | compact-group synchronization / 構造化系同定 | 予測値・fit residual・abstention判定が完全一致 | 2026-07-23 |
+| Tube calculus（regular branch）全般 | Riesz理論 + Schur complement + Zeno型縮約 + 制御/realization理論 | 個別の再構成による説明可能性（凍結・保留、棄却ではない） | — |
 
-> 既存文書には tube、Pattern (b)、protocol-order fluctuation、relative gauge、quotient atlas 等が
-> Zeno／FCS／shared ancilla／群同期／構造化系同定 へ還元された旨の記述がある。
-> 正確な還元経路を確認のうえ転記すること。
+> **探索順序の教訓：** 競合理論族を先に固定し、それが満たす恒等式・resource lower boundを先に抽出してから、
+> それを破るwitnessを逆設計する順序に転換すること（現象を先に構成して後から還元監査する順序は非効率）。
 
 ---
 

@@ -297,13 +297,29 @@ Supplemental Materialは補助的導出、追加図、パラメータ表、再�
 
 ### 6.4 却下・保留になったアイデア（再提案禁止）
 
+出典：`docs/source-material/RISEI_Unique_Phenomena_Computation_Summary_and_Search_Strategy_2026-07-23.tex`（競合理論監査、2026-07-23完了）。
+
 | アイデア | 却下理由（何に還元されたか） | 判定日 |
 |---|---|---|
-| *TODO* | | |
+| Response–Mechanism Contextuality（reduced sector gluing obstruction） | 共有ancillaを含む単一のcontext-independent additive GKSL模型から生成したデータであり、shared-ancilla enlargementで完全に説明される | 2026-07-23 |
+| 平均に盲目な protocol-order fluctuation（二次累積量の順序依存分裂） | tilted-GKSL / full counting statistics (FCS) で最大誤差 \(1.84\times10^{-8}\) 以内に再現される | 2026-07-23 |
+| Relative-gauge splitting（exact witness \(\Delta K_2=2\ell_Y(G-I)r_X\) 自体） | switched GKSLとFCSの代数から導出可能。式は資産として残すが、固有性の根拠にはならない | 2026-07-23 |
+| Continuous quantum gauge / tree calibration atlas（\(SU(d)\) scaling production） | 無条件の予測圧縮則がtree calibrationで破綻（\(K\ge q\) は必要条件だが十分条件でない）。一般には非還元性が確認できず | 2026-07-23 |
+| Held-out quotient predictor（observational stabilizerによる quotient class） | 中立なcompact-group latent-frame estimatorと目的関数が完全一致（残差0） | 2026-07-23 |
+| Global cycle-consistent quotient atlas（cycle threshold / predict-or-abstain certificate） | compact-group synchronization / structured state-space identificationと予測・棄却判定が完全一致 | 2026-07-23 |
 
-> 既存文書によれば、tube、Pattern (b)、protocol-order fluctuation、relative gauge、quotient atlas 等は
-> Zeno／FCS／shared ancilla／群同期／構造化系同定 などへの還元を免れなかったと記録されている。
-> 正確な理由と適用範囲を所有者が確認のうえ、この表に転記すること。
+> **Tube calculus（regular branch）についての注記：** 上表とは別に、Tube calculus自体も現時点ではRISEI固有現象とは判定されていない。
+> regular tube geometryとその主要な発生機構は、Riesz理論・Schur complement・Zeno型縮約・制御/realization理論の組合せで再構成できるためである。
+> ただし棄却ではなく、**完成済みの計算基盤・実験予言系として凍結**し、固有現象探索とは別の資産として保持する方針が取られている（§4.1参照）。
+
+**探索順序の教訓（重要）：** 上記6件はいずれも「まず現象を構成し、後で還元監査した」結果である。
+出典文書は、この順序が非還元性を証明する上で非効率であるとし、次の順序へ転換した。
+
+1. 競合理論族（shared-ancilla拡張GKSL、tilted-GKSL/FCS、compact-group synchronization、構造化系同定、bounded-memory process tensor）を**先に固定する**
+2. それらが必ず満たす恒等式・rank制約・resource lower boundを**先に抽出する**
+3. その恒等式を破るwitnessを**逆設計する**
+
+新候補を探索する際は、この順序（競合理論のnull identityを先に固定 → それを破る構成を逆設計）に従うこと。
 
 ---
 
@@ -335,7 +351,7 @@ Supplemental Materialは補助的導出、追加図、パラメータ表、再�
 | finite-Γ tubeをopen asymptotic phaseと解釈 | tube幅は条件下で `Γ^{-1}` にcollapseしうる | manifold、finite-Γ tube、survival gateを別々に報告する | 同 §11、Tube Calculus Roadmap |
 | physical matched interfaceの不足 | fullとcutでsource/readout/steady stateまで変える、または非GKSLのentry deletionを物理介入と呼ぶ危険 | physical protocol familyを定義し、ideal cutはderived limitとして扱う。比較クラスを固定する | `Revised Generalized RISEI` §3, §15；本guide初期監査項目 |
 | predictive surplusの不足 | 既知現象を新しい言葉で再記述するだけではPRXに届かない | blind prediction、inverse design、new witness、no-go boundary、未使用dataでの検証のいずれかを要求する | Tube Calculus Roadmap Step 9；本guide初期監査項目 |
-| 理論固有性の監査不足 | tubeやPattern (b)候補がZeno、EP、FCS、shared ancilla、群同期、control/system identification等へ還元された | 既知機構、Frozen-Theories、競合論文の三方向で非還元性を検査し、還元された候補を却下表へ移す | §3, §6；探索メモ群 |
+| 理論固有性の監査不足 | tubeやPattern (b)候補がZeno、EP、FCS、shared ancilla、群同期、control/system identification等へ還元された（2026-07-23の競合理論監査で完了。§6.4参照） | 既知機構、Frozen-Theories、競合論文の三方向で非還元性を検査し、還元された候補を却下表へ移す。今後は競合理論のnull identityを先に固定してから逆設計する順序へ転換する（§6.4末尾） | §3, §6；`docs/source-material/RISEI_Unique_Phenomena_Computation_Summary_and_Search_Strategy_2026-07-23.tex` |
 | 全応答の零点をno-goと誤認 | perfect EITでは `χ_full=0` だがsector contributionは非零 | no-go objectを `δχ_S` / master responseに固定する | `EIT_no_go_go_theory` §5；SMRT notes §2.4 |
 | floating-point samplingによるexact claim | 多数の周波数点で0でもidentityの証明にはならない | exact arithmetic、Krylov moments、adjugate、symbolic factorizationを使う | SMRT notes §8–§9 |
 | Möbius差分のcancellation fragility | 大きな項の差として小信号が出ると、precision依存の偽信号になりうる | `C_cancel`、floor、multiprecision、analytic reconstructionを報告する | `Revised Generalized RISEI` §14 |
