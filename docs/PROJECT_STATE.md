@@ -110,8 +110,8 @@ GKSL simulationは custom Liouville 実装、symbolic は SymPy で代替。
 
 **実行順序:**
 1. ~~shot予算とprotocol数の整合性を修正~~ — **完了（凍結、下記）**
-2. 理想データで到達可能な `σ₇` をスモーク ← **現在ここ**
-3. P0-D用の6状態以下HMMをcalibration側に明示構成
+2. ~~理想データで到達可能な `σ₇` をスモーク~~ — **完了・判定 GO**
+3. P0-D用の6状態以下HMMをcalibration側に明示構成 ← **現在ここ**
 4. full側のrank-7 minorをexact arithmeticで認証
 5. 統計模型から `τ_H(α)` を導出
 6. P0-D成立後、P0-A・P0-Eの明示構成へ（**SDPを使わず明示構成** — CVXPY不在のため）
@@ -127,8 +127,14 @@ GKSL simulationは custom Liouville 実装、symbolic は SymPy で代替。
   二段階配分（1000–2000 shots/setting）を守れるのは **settings ≤ 2** まで
 - `scripts/budget_manifest.py` で全 protocol-setting pair を列挙（`docs/budget-manifest.csv`）
 
-**ステップ2で確認すべきこと:** `37×37` Hankel・2000 shots/setting なら要求 `σ₇ ≥ 0.54`。
-成分が確率スケールならこれはかなり厳しい。**到達不能なら設計変更が必要**（`m` 縮小／正規化見直し／別族へ主目標切替）。
+**ステップ2の結果（`p0-certificate-spec.md` §4ter）— 判定 GO:**
+- Hankel は `43×43`（m=6, depth≤4語）、`H_cal` は `7×7` — 入れ子構造が自然に出る
+- **要求水準を訂正:** 二項上界 `σ_entry ≤ 1/(2√n)` を使うと `2τ_H = 0.2933`（先の 0.544 は約1.9倍の過大評価だった）
+- 正規化は **`‖M_u‖₂=1`（縮小写像・CPTP的）** を採用。スペクトル半径1は成分が1を超え非物理
+- 入れ子条件 `det(H_cal)=0` を課すと σ₇ は約2.4倍落ちる（制約なし0.38 → 中央値0.162）
+- **ランダム構成では届かない** — 合格率は1 settingで6.8%、2 settingで1.7%
+- **最適化すればクリア** — 射影付き山登り120反復で 0.402 → **0.609**（settings≤4まで許容）
+- → **ステップ3–4の構成は最適化して作ること。ランダム試行では失敗する**
 
 **共通の作業**（`literature-audit-report.md` §6）: 候補を固定する前に neutral notation で
 calibration/held-out tensor を定義し、generalized Hankel matrix と temporal operator-Schmidt matrix を
