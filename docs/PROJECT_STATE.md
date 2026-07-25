@@ -79,7 +79,7 @@ GKSL simulationは custom Liouville 実装、symbolic は SymPy で代替。
 
 ## 未決事項
 
-1. **ガイド §1.2** — 代替投稿先の優先順位（過去の投稿履歴があれば）
+1. ~~ガイド §1.2 代替投稿先~~ — **2026-07-25完了**（PRX → PRX Quantum → PRL → PRA/PRB、降格条件6件つき）
 2. **ガイド §7** — 競合論文表（ChatGPT文献調査で埋める）
 3. **`context-pack.md` §2・§3** — ガイド §4.1・§4.2 からの転記（機械的作業、Claude側で実行可）
 4. **RISEI の正式名称** — 凍結文書内に展開がなく未確認
