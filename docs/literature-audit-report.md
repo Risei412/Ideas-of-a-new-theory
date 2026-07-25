@@ -138,7 +138,7 @@
 2. Sarkar, Roozbehani, Dahleh, *Minimal Realization Problems for Jump Linear Systems*, CDC 2018, arXiv `1809.05948`.
 3. Oymak, Ozay, *Non-asymptotic Identification of LTI Systems from a Single Trajectory*, arXiv `1806.05722`.
 4. Ohta, *On the Realization of Hidden Markov Models and Tensor Decomposition*, IFAC-PapersOnLine 54, 725–730 (2021), DOI `10.1016/j.ifacol.2021.06.170`, arXiv `2008.11487`.
-5. Aloy et al., *Identifiability and minimality bounds of quantum and post-quantum models of classical stochastic processes*, arXiv `2509.03004`.
+5. Riechers and Elliott, *Identifiability and minimality bounds of quantum and post-quantum models of classical stochastic processes*, arXiv `2509.03004`.
 
 **監査結論:** 最優先。candidateごとにclassical/quantum Hankel objectを構成し、`rank>6` またはQHMM lower bound `d_min>6` を示さない限り、bounded hidden realizationとの差分は主張できない。
 
