@@ -262,7 +262,9 @@ symmetry・selection-rule reduction。文書表記は「**競合モデル6族＋
 - 初期状態とreadoutは候補生成後に変更しない。nuisance parameterは候補・競合の両方へ同じpriorで与える
 - sectorラベルをRISEI側だけに与えない。priorに含めるなら競合側にも同じラベル付きgenerator情報を与える
 - **calibration graph**: depth1は全protocol、depth2はρ=1.5の連結グラフ（両順序測定）、depth3は24protocolをseed固定で選択、depth4はcalibration対象外
-- **shots/noise**: 1protocolあたり2,000shots、総上限1.2×10^5shots。通常productionは相対calibration noise 1%、stress testは3%。control-amplitude drift標準偏差1%、timing jitterはpulse長の0.5%
+- **shots/noise**: **【2026-07-25 改訂】** `1.2×10^5` は **calibration専用上限**。held-out は独立予算で最低 `1.28×10^5`。
+  `2000` shots は **1 protocol あたりではなく 1 measurement setting あたりの上限**（protocol と setting は分離計上）。
+  標準探索は `m=6`、`m=8` は予算拡張を要する stress test。詳細は `docs/p0-certificate-spec.md` §4.5。通常productionは相対calibration noise 1%、stress testは3%。control-amplitude drift標準偏差1%、timing jitterはpulse長の0.5%
 - **held-out**: depth2の未使用edge、depth3の未使用protocol、depth4から事前固定した64protocol（sampling seed: 20260723）。候補生成・hyperparameter調整・停止判定には一切使用しない。active design baselineもheld-outへ問い合わせない
 
 ---

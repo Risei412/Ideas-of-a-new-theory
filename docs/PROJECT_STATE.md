@@ -109,18 +109,26 @@ GKSL simulationは custom Liouville 実装、symbolic は SymPy で代替。
 **`P0-D の達成 ≠ P0 の達成`。**
 
 **実行順序:**
-1. **shot予算とprotocol数の整合性を修正** ← 現在ここ。不整合を検出済み（下記）
-2. 理想データで到達可能な `σ₇` をスモーク
+1. ~~shot予算とprotocol数の整合性を修正~~ — **完了（凍結、下記）**
+2. 理想データで到達可能な `σ₇` をスモーク ← **現在ここ**
 3. P0-D用の6状態以下HMMをcalibration側に明示構成
 4. full側のrank-7 minorをexact arithmeticで認証
 5. 統計模型から `τ_H(α)` を導出
 6. P0-D成立後、P0-A・P0-Eの明示構成へ（**SDPを使わず明示構成** — CVXPY不在のため）
 7. P0-D単独なら**PRL型**、複数族を排除できたら**PRX型**へ戻す
 
-**ステップ1で検出した不整合:**
-- calibration は収まる（m=8 で54 protocol・108,000 shots、上限120,000）
-- **held-out の shot 予算が存在しない** — depth-4 の64 protocol だけで128,000 shots となり calibration 上限を単独で超過。m=8 の全held-out は約820,000 shots
-- 「両順序測定」が 1 edge あたり2 protocol か複数測定設定か未確定（後者なら calibration 単独で82%超過）
+**ステップ1の凍結結果（`p0-certificate-spec.md` §4.4–4.7）:**
+- `1.2×10⁵` shots は **calibration 専用上限**。held-out は独立予算で最低 `1.28×10⁵`
+- **protocol と measurement setting を分離計上。** `2000` shots は **1 setting あたりの上限**（一律値ではない）
+- 出典の tree-scaling 表から、測定/edge が gauge次元 `q` に比例（q=3→7、q=8→18、permutation→4）と判明。
+  **「7 measurements」は protocol 数ではなく setting 数**で確定
+- 標準探索 `m=6`、`m=8` は予算拡張を要する stress test
+- **上限が持つのは 1 setting/protocol のときだけ。** 2設定で1.5–1.8×超過。
+  二段階配分（1000–2000 shots/setting）を守れるのは **settings ≤ 2** まで
+- `scripts/budget_manifest.py` で全 protocol-setting pair を列挙（`docs/budget-manifest.csv`）
+
+**ステップ2で確認すべきこと:** `37×37` Hankel・2000 shots/setting なら要求 `σ₇ ≥ 0.54`。
+成分が確率スケールならこれはかなり厳しい。**到達不能なら設計変更が必要**（`m` 縮小／正規化見直し／別族へ主目標切替）。
 
 **共通の作業**（`literature-audit-report.md` §6）: 候補を固定する前に neutral notation で
 calibration/held-out tensor を定義し、generalized Hankel matrix と temporal operator-Schmidt matrix を
