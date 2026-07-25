@@ -12,6 +12,17 @@ Frozen policy (docs/p0-certificate-spec.md §4.5):
   - m = 6 primary, m = 8 stress
   - protocol != measurement setting
 
+Depth-4 selection (revised 2026-07-25, spec §4quater): the original version
+of this script chose the 64 depth-4 protocols by `rng.shuffle`. That does not
+reliably contain a prefix-suffix-closed 7x7 Hankel block (49 words), so the
+rank-7 certificate built in p0d_construct.py/p0d_certify.py would generically
+NOT be measurable under the frozen budget -- exactly the failure mode spec
+§1 warns about ("just slicing data points into a table does not give a
+Hankel submatrix"). Depth-4 words are now the P0D_PREFIXES x P0D_SUFFIXES
+design grid (49 words) used by the certificate, plus 15 additional seed-fixed
+spare words for m=6; for other m the script falls back to the old random
+selection with a warning, since the certificate is currently frozen at m=6.
+
 Usage:
     python3 scripts/budget_manifest.py --m 6 --settings 2 --out docs/budget-manifest.csv
 """
@@ -24,6 +35,13 @@ N_HELD_MIN = 128_000
 RHO = 1.5                 # depth-2 calibration graph redundancy
 N_DEPTH3_CAL = 24
 N_DEPTH4_HELD = 64
+
+# P0-D certificate design grid (scripts/p0d_construct.py, m=6 only): a
+# prefix-suffix-closed 7x7 block, guaranteed measurable as a genuine Hankel
+# submatrix. Kept as a literal copy (not an import) so this script has no
+# hard dependency on p0d_construct.py / numpy at manifest-generation time.
+P0D_PREFIXES = [(4, 0), (1, 0), (2, 0), (3, 0), (5, 1), (5, 0), (0, 1)]
+P0D_SUFFIXES = [(2, 0), (2, 3), (2, 1), (2, 4), (2, 5), (3, 1), (3, 0)]
 
 # shots per setting by split (two-tier allocation; all <= CAP_PER_SETTING)
 SHOTS = {
@@ -92,10 +110,25 @@ def build(m, n_settings):
         split = "cal" if w in cal_d3 else "held_aux"
         emit(w, split, n_settings, SHOTS["cal" if split == "cal" else "held_aux"])
 
-    # depth-4: 64 seed-fixed, all held-out (rank-revealing)
-    d4 = words(m, 4)
-    rng.shuffle(d4)
-    for w in d4[:N_DEPTH4_HELD]:
+    # depth-4: 64 held-out, rank-revealing. For m=6 use the P0-D certificate's
+    # prefix-suffix-closed 7x7 design grid (49 words) plus 15 seed-fixed spare
+    # words, so the measured set actually contains a Hankel submatrix (see
+    # module docstring). For other m, no certificate design exists yet; fall
+    # back to the old random selection with a warning.
+    if m == 6:
+        grid = [p_ + s_ for p_ in P0D_PREFIXES for s_ in P0D_SUFFIXES]
+        assert len(grid) == 49 and len(set(grid)) == 49
+        d4_rest = [w for w in words(m, 4) if w not in set(grid)]
+        rng.shuffle(d4_rest)
+        d4 = grid + d4_rest[: N_DEPTH4_HELD - len(grid)]
+    else:
+        print(f"WARNING: no P0-D design grid for m={m}; depth-4 protocols are "
+              f"randomly selected and are NOT guaranteed to contain a Hankel "
+              f"submatrix. The certificate scripts are frozen at m=6.", file=sys.stderr)
+        d4 = words(m, 4)
+        rng.shuffle(d4)
+        d4 = d4[:N_DEPTH4_HELD]
+    for w in d4:
         emit(w, "held_depth4", n_settings, SHOTS["held_depth4"])
 
     return rows

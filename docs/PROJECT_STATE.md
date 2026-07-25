@@ -111,11 +111,24 @@ GKSL simulationは custom Liouville 実装、symbolic は SymPy で代替。
 **実行順序:**
 1. ~~shot予算とprotocol数の整合性を修正~~ — **完了（凍結、下記）**
 2. ~~理想データで到達可能な `σ₇` をスモーク~~ — **完了・判定 GO**
-3. P0-D用の6状態以下HMMをcalibration側に明示構成 ← **現在ここ**
-4. full側のrank-7 minorをexact arithmeticで認証
-5. 統計模型から `τ_H(α)` を導出
+3. ~~P0-D用の6状態以下HMMをcalibration側に明示構成~~ — **完了**
+4. ~~full側のrank-7 minorをexact arithmeticで認証~~ — **完了・全項目OK**
+5. 統計模型から `τ_H(α)` を導出 ← **現在ここ**
 6. P0-D成立後、P0-A・P0-Eの明示構成へ（**SDPを使わず明示構成** — CVXPY不在のため）
 7. P0-D単独なら**PRL型**、複数族を排除できたら**PRX型**へ戻す
+
+**ステップ3–4の結果（`p0-certificate-spec.md` §4quater）— 判定 GO（P0-D単独）:**
+- スケール規約を確率 `[0,1]` に凍結（§4ter の GO 判定は覆らない）
+- 6状態HMM `M_D`（非負・列和1）を先に構成し、4次元の追加registerで depth-4 にだけ効く rank-1
+  摂動 `Δ=α⊗β` を載せる方式（「rank制約を課して探す」の逆順）
+- `g_u·c=0` という1本の構造条件だけで depth≤3 が厳密に一致（有理数のまま、数値フィッティング不要）
+- `α,β` を競合ブロック `B_D` の厳密ゼロ特異方向に整合させ、7×7ブロックで `σ₇(B)=0.322`
+  （要求 `2τ_H=0.118` に対し余裕 x2.72）
+- `scripts/p0d_certify.py` が SymPy で全項目を厳密検証（competitor の非負性・列和・`g·c=0`・
+  depth≤3全259語の完全一致・`det(B)≠0`・`R∈[0,1]`）— 全OK
+- `budget_manifest.py` の depth-4選択（旧: 乱択）を、証明書の49語設計格子＋予備15語に修正
+  （旧方式では証明書に必要な7×7ブロックが測定集合に入っていなかった）
+- **P0-D の達成 ≠ P0 の達成。** 族A・E・DQ は未着手（次の候補への接続も別作業）
 
 **ステップ1の凍結結果（`p0-certificate-spec.md` §4.4–4.7）:**
 - `1.2×10⁵` shots は **calibration 専用上限**。held-out は独立予算で最低 `1.28×10⁵`
