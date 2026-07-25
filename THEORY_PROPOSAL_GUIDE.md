@@ -251,13 +251,27 @@ Supplemental Materialは補助的導出、追加図、パラメータ表、再�
 - ergotropy、Fisher information、entropy production等の非線形functional。RISEIの差分記法は移植できても、滑らかさ・passivity ordering・thermodynamic consistencyは別途証明が必要
 - unrestricted process tensor、quantum comb、causal modelへの埋め込み。表現可能性とRISEI固有の分類・予測能力は別問題として監査する
 
-探索提案がこの外側を扱う場合、少なくとも次を記す。
+### 4.4 仮定変更の予算
 
-1. 外した仮定
-2. 代替する数学的構造
-3. どの凍結定理が残り、どれが失効するか
-4. 新たに必要なsanity checkと反例
-5. 極限・数値・実験の検証計画
+**各提案は、Frozen-Theoriesの主要仮定のうち、原則として一つだけを外す。**
+
+- 追加で外してよいのは、中心仮定と**数学的に不可分な補助仮定一つまで**とする。
+- 二つの仮定を外す場合、**それぞれが現象に必要であることをablation testで示す**。
+- **三つ以上の独立した仮定を同時に外す提案は採用しない。**
+
+仮定を外す前に、以下を記述する。
+
+1. 外す仮定
+2. **外さず維持する仮定**
+3. 代替する数学的構造
+4. 失効する既存定理
+5. 継承できる既存定理
+6. 元の理論を回収する極限
+7. **仮定変更がなければ現象が消えることを示すcontrol**
+
+> **新規性は「仮定を多く外したこと」では評価しない。**
+> 最小の仮定変更で、既存理論に還元されない現象、分類、no-go、
+> または resource-bounded predictive surplus を得た提案を優先する。
 
 ---
 
@@ -279,21 +293,50 @@ Supplemental Materialは補助的導出、追加図、パラメータ表、再�
 
 ## 6. 探索対象と却下リスト
 
-### 6.1 現在の関心方向（優先度順）
+### 6.1 現在の関心方向・空白地帯（優先度順）
 
-> **TODO:** 例：開放量子系の介入構造／トロピカル幾何と付値異常／因果構造の実現可能性／保護の熱力学 …
+既存理論が扱っていない領域。**壊す仮定は §4.4 の予算に従い、原則として一つ。**
 
-### 6.2 パラメータ空間の空白地帯
+| 優先度 | 空白地帯 | 壊す仮定 | 狙う現象・問い |
+|---|---|---|---|
+| **P0** | **Interface realizability** | ideal cut primacy | 複数の介入counterfactualが同一dilation/interface上で共存できる条件 |
+| **P0** | **Resource-bounded mechanism separation** | unrestricted representation criterion | bounded competitorでは分離不能な最小protocol・functional・shots |
+| P1 | **Multiparameter scaling geometry** | fixed scaling path | physical resource pathによるresponse law・face・class選択 |
+| P1 | **Exact-to-approximate kernel crossover** | exact protected kernel | 有限窓保護と真の漸近抑制を分けるdouble-scaling law |
+| P1 | **Nonlinear functional hierarchy** | linear response functional | mean/energyでは消え、work/QFI/noiseでのみ現れる不可約機構 |
+| P2 | **Nonsemisimple protected geometry** | semisimple kernel | fractional valuation、Jordan-sensitive response class |
+| P2 | **Bounded-memory extension** | time-local Markovity | 有限memoryで初めて生じるprotocol-exclusive witness |
+| P3 | **Strong-probe extension** | weak-probe approximation | response orderによって初めて可視化されるsector |
+| 翻訳層 | **Experimental visibility** | ideal detector / local response | SNR、propagation、ensemble averaging下で残るobservable signature |
 
-既存理論が扱っていない領域。新現象はここに潜む。
+**P0 の2件は §6.3 の未解決項目1（Resource-bounded same-data gap）および §11 の Priority 1 production へ直結する。**
 
-> **TODO:** 極端な極限、未検証のスケール、複数構造の組み合わせなどを列挙。
+### 6.2 現在の探索対象外
+
+以下は §4.3 の適用範囲外のうち、**当面は探索しない**と決めた領域。
+§4.3（凍結が保証しない領域）とは区別する — こちらは「扱えないから外す」ではなく「今は狙わないから外す」。
+
+- unrestricted infinite-dimensional continuum
+- generic many-body / thermodynamic-limit theory
+- gain medium または unstable generator
+- continuum spectrum を finite-grid だけから推定する問題
+- unrestricted process tensor への表現不能性
+- non-Markovity、strong nonlinearity、many-body極限を**同時に**導入する提案（§4.4 の予算違反）
 
 ### 6.3 未解決の異常・矛盾
 
-既存理論同士で説明がつかない事象。新理論のトリガー候補。
+> **前提：現時点で確定した理論間矛盾はない。** 以下は、既存理論のどれが支配するか未決着である境界、
+> 数値現象と一般証明の間の不一致、有限資源下での predictive-surplus 候補である。
 
-> **TODO:**
+| 項目 | 現状 | 次の最短検証 |
+|---|---|---|
+| **Resource-bounded same-data gap** | 単純な三者応答はreachabilityへ還元された。しかしpath support・path count・低次mixed Krylov momentsを一致させたcancellation-protected ternary pairは未検証 | 競合6族を予算固定し、depth≤2をmatched、depth3をheld-out witnessとして逆設計 |
+| **有限gap exact zeroと漸近zeroの差** | 数値的machine zeroはあるが、有限gapでのfull-Liouvillian対称性証明がない。一般に証明されているのは漸近抑制のみ | full Liouvillianと候補superoperatorのcommutatorをSymPyでexact判定 |
+| Exact / approximate kernel crossover | 裸の `Γε/γ₀` collapseは失敗。projected slow-loss jetは凍結模型で成功したが、一般クラスの十分条件は未証明 | 2つ以上の新architectureでblind jet prediction |
+| Calibration redundancy boundary | calibration数を増やしても誤差が単調に減らず、`ρ=1.5` で突然EXACTになる例がある。group synchronizationは再現するが境界定理がない | observability Gram spectrumからPREDICT/ABSTAIN境界を事前予測 |
+
+- **RISEI固有現象探索の最短起点は1番目**（§6.1 の P0-2 に対応、Priority 1 production へ直結）
+- **最短の数学的定理プロジェクトは2番目**（新理論に直結しなくても、exact/asymptoticの論理的不整合を短距離で決着できる）
 
 ### 6.4 却下・保留になったアイデア（再提案禁止）
 
