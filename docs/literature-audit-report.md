@@ -218,3 +218,36 @@
 - arXiv `2505.21932`, `2509.03004`, `2412.17862`, `2410.17942`, `2412.05102` は査読状況を個別に再確認する必要がある。
 - PDF本文の一括保存はこのcommitでは行わず、合法的なopen-access URLと版を `references/manifest.csv` に記録した。
 - 「該当文献を発見できなかった」ことは非還元性の証拠に数えていない。
+
+
+---
+
+## 8. Pass 2追補：Compatibility / Common Dilation と Sample-Complexity Lower Bounds
+
+詳細は `docs/literature-audit-addendum.md` を参照。
+
+### 8.1 Interface realizability の修正
+
+`dilation frustration` は一語で扱わず、次の五問題へ分解する。
+
+- **C-JOINT:** 複数チャネルが一つのjoint channelのmarginalか。
+- **I-JOINT:** 複数instrumentが一つのjoint instrumentから得られるか。
+- **P-PROG:** 固定processorと有限program registerでcounterfactualを選択実装できるか。
+- **D-SHARED:** 同一isometry・environment state・couplingと許可された後処理で実現できるか。
+- **R-BOUND:** 実装は存在するが、凍結したancilla/program/memory上限内では不可能か。
+
+C-JOINT/I-JOINTの不可能性だけなら、channel/instrument compatibilityまたはchannel marginal problemへの既知還元である危険が高い。DCIT固有の差分候補はP-PROG/D-SHARED/R-BOUNDにあり、共通isometry、environment初期状態、program次元、後処理、memory、誤差normを凍結しなければならない。無制限のclassical controlと直和ancillaを許せば、有限個の個別dilationはblock-controlで共通化できる。
+
+最優先kill文献は Heinosaari–Miyadera (2017)、Hsieh–Lostaglio–Acín (2022)、Leppäjärvi–Sedlák (2024) である。
+
+### 8.2 Shot budget の修正
+
+White et al. の約 `4.4×10^7` shotsは特定実装のcostであり、minimax lower boundではない。survival certificateには、アクセス模型を凍結したうえで以下のいずれかを要求する。
+
+- held-out witnessで離れ、calibration transcriptで近いDCIT固有hard pairと、amortized channel divergenceによる二点下界。
+- 多数のhard processesのpackingとFano不等式。
+- single-copy / incoherent / no-quantum-memory等の制約を明示した既知tomography下界への厳密なreduction。
+
+full process tomographyの次元下界を一つのheld-out scalar responseへ自動的に移してはならない。最終目標は同じアクセス模型で `n_min > 1.2×10^5` を示すことである。
+
+**Pass 2判定:** `compatibility prior-art threat = critical`; `shot-lower-bound route = viable but hard family not frozen`.
