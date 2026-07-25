@@ -91,7 +91,77 @@
 
 ---
 
-## 6. 対象外（判定に持ち込まないもの）
+## 6. 競合理論族の資源予算（Priority 0 凍結値）
+
+出典：ChatGPT提案、2026-07-25。「まず現象を構成してから還元監査する」順序を反転し、
+**競合理論族の資源上限を先に凍結してから、それを破る構成を逆設計する**ための土台。
+標準監査で早期killされなかった候補だけ、拡張・最終kill監査まで上げる。
+
+### 6.1 共通の資源上限
+
+| 項目 | 標準監査 | 拡張・最終kill監査 |
+|---|---|---|
+| 介入数 m | 3–6 | 7, 8 |
+| protocol depth d | 1–3 | 4 |
+| cumulant / functional order k | 1–3 | 4 |
+| hidden dimension D | 1–4 | 5, 6 |
+| memory depth μ | 1–2 | 3 |
+| 自由実数パラメータ数 P | ≤128 | ≤256 |
+| optimizer restart | 16 | 32 |
+
+### 6.2 競合理論族ごとの固定値
+
+**(a) Enlarged GKSL with hidden ancilla** — ancilla Hilbert dimension D_hidden 標準1–4／最終6、P≤256、jump operator数最大 2·D_hidden+m、protocol depth d≤4、初期相関は原則積状態（許す場合はRISEI側にも同じpriorを与える）、ancilla readout禁止（観測可能量は元のvisible systemに限定）。
+
+**(b) Tilted-GKSL / full counting statistics** — cumulant order k≤4、protocol depth d≤4、counting field数最大2、counted jump channel数最大4、hidden ancillaなし（必要なら(a)として別計上）、parameter budgetは元のvisible GKSLと同一。
+
+**(c) Compact-group synchronization** — matrix representation dimension r_G≤4、Lie algebra dimension q_G≤15、対象群は permutation群、SO(2)、SO(3)、SU(2)、SU(3)、SU(4)およびblock表現、calibration graph redundancy ρ∈{1.0,1.5,2.0}、global optimizer restart 32、予測形式はpoint predictionまたはcertified ABSTAIN。候補にchart/gauge/relative frameがない場合はN/A可。
+
+**(d) Controlled HMM / structured state-space identification** — hidden-state数またはrealization order D≤6、input/intervention数 m≤8、output alphabet/readout channel最大4、protocol depth d≤4、P≤256、model selectionはcalibration dataだけでBICまたは交差検証、held-out利用は完全禁止。HMMと線形state-spaceは内部実装では別だが、文書上は一つの「有限hidden realization族」としてまとめる。
+
+**(e) Bounded-memory process-tensor model** — memory Hilbert dimension D_M≤6、MPO bond dimension χ≤D_M²=36、memory depth/Markov order μ≤3、protocol depth d≤4、functional order k≤4、P≤256、local system dimensionは候補模型と同一。**full process tensorに表現できないことは要求しない** — D_M, χ, μ, d, k, Pを固定したbounded classに対するpredictive surplusのみを問う。
+
+**(f) Active experimental design baseline** — adaptive round数最大4、選択できるcalibration protocol数最大32、calibration総shots最大1.2×10^5、objective は expected information gain またはBayesian D-optimality、posterior sample数4096、optimizer restart 32、held-out protocolへの問い合わせ禁止、出力はprediction・resource estimate・ABSTAINのいずれか。
+
+### 6.3 解析的kill gate（予算を持たない第7層）
+
+上記6族とは別に、候補を即座に殺せるsymbolic reduction layerを必須監査として置く：
+BCH / nested commutator expansion、Dyson path expansion、Krylov reachability / labelled path counting、
+Schur complement / Zeno reduction、Kalman controllability・observability、quantum regression theorem、
+symmetry・selection-rule reduction。文書表記は「**競合モデル6族＋解析的reduction gate**」。
+
+> 実例：三者不可約応答候補（Ω_i=Ω_ij=0, Ω_123≠0）は頑健に成立したが、四状態Markov過程のlabelled
+> reachabilityとDyson path expansionへ直ちに還元された。6族だけでは同じ候補を再発掘する。
+
+### 6.4 共通prior・calibration・noise（凍結）
+
+- **prior**: J_ref=1、γ,κ∼LogUniform(10⁻²,10²)、ReH_ij,ImH_ij∼Uniform(−1,1)
+- 初期状態とreadoutは候補生成後に変更しない。nuisance parameterは候補・競合の両方へ同じpriorで与える
+- sectorラベルをRISEI側だけに与えない。priorに含めるなら競合側にも同じラベル付きgenerator情報を与える
+- **calibration graph**: depth1は全protocol、depth2はρ=1.5の連結グラフ（両順序測定）、depth3は24protocolをseed固定で選択、depth4はcalibration対象外
+- **shots/noise**: 1protocolあたり2,000shots、総上限1.2×10^5shots。通常productionは相対calibration noise 1%、stress testは3%。control-amplitude drift標準偏差1%、timing jitterはpulse長の0.5%
+- **held-out**: depth2の未使用edge、depth3の未使用protocol、depth4から事前固定した64protocol（sampling seed: 20260723）。候補生成・hyperparameter調整・停止判定には一切使用しない。active design baselineもheld-outへ問い合わせない
+
+---
+
+## 7. 未解決の異常・矛盾（→ ガイド §6.3）
+
+> **前提：現時点で確定した理論間矛盾はない。** 以下は、既存理論のどれが支配するか未決着である境界、
+> 数値現象と一般証明の間の不一致、有限資源下でのpredictive-surplus候補である。
+
+| 項目 | 現状 | 次の最短検証 |
+|---|---|---|
+| Resource-bounded same-data gap | 単純な三者応答はreachabilityへ還元された。しかしpath support・path count・低次mixed Krylov momentsを一致させたcancellation-protected ternary pairは未検証 | §6の予算で6族を固定し、depth≤2をmatched、depth3をheld-out witnessとして逆設計 |
+| 有限gap exact zeroと漸近zeroの差 | 数値的machine zeroはあるが、有限gapでのfull-Liouvillian対称性証明がない。一般に証明されているのは漸近抑制のみ | full Liouvillianと候補superoperatorのcommutatorをSymPyでexact判定 |
+| Exact / approximate kernel crossover | 裸のΓε/γ₀ collapseは失敗。projected slow-loss jetは凍結模型で成功したが、一般クラスの十分条件は未証明 | 2つ以上の新architectureでblind jet prediction |
+| Calibration redundancy boundary | calibration数を増やしても誤差が単調に減らず、ρ=1.5で突然EXACTになる例がある。group synchronizationは再現するが境界定理がない | observability Gram spectrumからPREDICT/ABSTAIN境界を事前予測 |
+
+**RISEI固有現象探索の最短起点は1番目**（Priority 1 productionへ直結）。
+**最短の数学的定理プロジェクトは2番目**（新理論に直結しなくても、exact/asymptoticの論理的不整合を短距離で決着できる）。
+
+---
+
+## 8. 対象外（判定に持ち込まないもの）
 
 - 投稿先の選定・新規性の価値判断（これは人間側の判断）
 - 文章表現の良し悪し
