@@ -25,15 +25,77 @@
 
 ### 1.1 第一想定：Physical Review X (PRX)
 
-> **TODO（リポジトリ所有者が記入）:** PRXの投稿基準・審査基準・字数/図表制限・要求される新規性の水準をここに記述する。
+#### 公式上の位置づけ（2026-07-25確認）
 
-チェックリスト（記入後に運用）:
+Physical Review X (PRX) は、物理学および隣接分野を対象とする、**広範かつ高度に選択的な完全オープンアクセス誌**である。理論提案は、少なくとも次のいずれかに該当する水準を目標とする。
 
-- [ ] 新規性（novelty）：先行研究に対する差分が一段落で言い切れるか
-- [ ] 重要性（importance）：分野横断的なインパクトを主張できるか
-- [ ] 完全性（completeness）：主張が証明または明示的な仮定の下で閉じているか
-- [ ] 検証可能性：実験・観測・数値計算のいずれかで反証可能か
-- [ ] 自己完結性：PRXは広い読者を想定するため、導入部で非専門家に動機が伝わるか
+- 基礎的な理論的・実験的発見を与える。
+- 急速に発展する分野でランドマークとなる結果を与える。
+- 既存理解にパラダイム転換をもたらす。
+- 複数の物理分野を結び、広い読者に影響する創造的かつ実質的な前進を与える。
+
+単に「新しい定義を導入した」「既存計算を統一した」「一つの模型で珍しい挙動が出た」だけでは弱い。PRX候補としては、**新しい問い、一般原理、閉じた証明または強い検証、反証可能な予言**が一つの物語として結ばれている必要がある。
+
+#### 記事種別・長さ・提出形式
+
+- 想定記事種別は **Research Article** とする。
+- Research Article には公式の語数上限はない。ただし、長さは科学的内容によって正当化されなければならない。
+- 固定された図表数上限は公式著者案内に明記されていない。各図は主張に不可欠で、本文中で参照され、単独で理解できるcaptionを持つこと。
+- 初回投稿はPDFで査読可能だが、採択後の処理と数式抽出を考え、**REVTeXによるLaTeX原稿**を標準とする。
+- 本文は American English で作成する。
+- PRXでは参考文献に論文タイトルを含める。
+- **250語以内の非専門家向け Popular Summary** が必要である。
+- APSの現行方針に従い、**Data Availability Statement** を含める。数値結果を主要根拠とする場合は、コード、入力、乱数seed、主要出力、再現手順の公開方針も明記する。
+- PRXは完全オープンアクセス誌であり、採択時には原則としてAPCの支払い責任が生じる。投稿前に所属機関・研究費の扱いを確認する。
+
+#### 読者と構成
+
+導入、議論、結論は、量子光学・開放系・数理物理の専門外の物理学者にも、次の4点が伝わるように書く。
+
+1. 何が未解決だったのか。
+2. なぜ既存理論では解けなかったのか。
+3. 今回導入した概念または定理が何を可能にしたのか。
+4. その結果が他分野の問い・実験・設計原理をどう変えるのか。
+
+推奨構成:
+
+1. Title / Abstract
+2. Introduction and one-paragraph novelty statement
+3. Physical question and failure of existing descriptions
+4. Definitions and assumptions
+5. Main theorem(s) or central phenomenon
+6. Minimal witness and non-reducibility audit
+7. Generality, robustness, and falsification tests
+8. Experimental or computational realization
+9. Discussion, limitations, and broader consequences
+10. Methods / Appendices
+11. Data Availability Statement
+12. References with titles
+
+Supplemental Materialは補助的導出、追加図、パラメータ表、再現情報に使う。**中心命題の理解または成立に不可欠な仮定・証明・反例をSupplemental Materialだけに置かない。**
+
+#### このリポジトリでのPRX判定ゲート
+
+以下のうち一つでも満たせない場合、PRX候補とは呼ばず、探索中・PRL圧縮候補・専門誌候補のいずれかに分類する。
+
+- [ ] **Novelty:** 先行研究との差分を一段落で言い切れ、既知機構への還元監査を通過している。
+- [ ] **Fundamental importance:** 個別材料・単一模型を超える一般則、または複数分野に効く新しい問いを提示する。
+- [ ] **Theoretical closure:** 定義、仮定、主定理、反例、適用限界が区別され、主張の論理が閉じている。
+- [ ] **Predictive surplus:** 既知結果の再説明だけでなく、事前に計算できる新しい予測、設計則、分類、またはno-goを与える。
+- [ ] **Falsifiability:** 棄却条件、null test、対照模型、または実験・数値で区別可能なwitnessがある。
+- [ ] **Robustness:** 数値精度、摂動、有限サイズ、有限時間、観測窓、極限順序に対する監査がある。
+- [ ] **Broad readability:** Popular Summaryと導入だけで、専門外の物理学者が意義を説明できる。
+- [ ] **Reproducibility:** 主結果が独立実装または解析計算でクロスチェックされ、再現用資産が保存されている。
+
+#### 公式情報源
+
+- APS, *About Physical Review X*（scope、selectivity、acceptance criteria）
+- APS, *Physical Review X: Information for Authors*（article types、audience、format）
+- APS, *Length Limits and Guidelines for Physical Review Article Types*（Research Articleはno length limit）
+- APS, *Web Submission Guidelines for Physical Review*（Popular Summaryは250語以内）
+- APS, *Editorial Policies and Practices*（Data Availability Statement等）
+
+> 公式要件は更新されうるため、実際の投稿直前にAPSのPRX著者ページを再確認すること。
 
 ### 1.2 代替投稿先（PRXに届かない場合の降格先）
 
@@ -115,21 +177,87 @@
 
 | ファイル | 内容 | 適用範囲（凍結された前提） | 再利用可能な結果 |
 |---|---|---|---|
-| `Generalized_RISEI_Theory_EndToEnd_Certified_2026-07-23.tex` | *TODO* | *TODO* | *TODO* |
-| `SMRT_two_scale_polyhedral_theorem_integrated_2026-07-24 (1).tex` | *TODO* | *TODO* | *TODO* |
-| `EIT_no_go_go_theory_v6_2_English.tex` | *TODO* | *TODO* | *TODO* |
+| `Generalized_RISEI_Theory_EndToEnd_Certified_2026-07-23.tex` | 物理的介入protocol、full-minus-protocol応答、subset-Möbius不可約成分、操作順序、response functional、protected Riesz cluster、source/readout選択幾何、有限資源、極限順序を統合した一般化RISEI | 有限次元・time-local GKSL。介入後も瞬間generatorがGKSL admissible。比較間で初期状態、probe、readout、観測窓、測定規約、正規化を固定。Schur–Zeno結果にはsemisimpleなresponse-relevant protected clusterとbounded fast resolventが必要。functional、許容摂動クラス、limit protocolを明示する。 | Möbius分解の一意性、Riesz cluster invariance、Schur–Zeno expansion、response-relevant strong dissipatorが可逆な場合のresolvent suppression、選択集合の局所codimension = 実Jacobian rank、stationary linear responseへの埋め込み、`R_π^(n)`, `Ω_T^(n)`, `Ξ_{S,T}^(n)`, `ν_Φ`, `Σ_π^(n)`, `Λ`, `C_req` の定義。Pattern (b) の任意GKSL普遍性は再利用不可。 |
+| `SMRT_two_scale_polyhedral_theorem_integrated_2026-07-24 (1).tex` | sectorを切ったcounterfactualとfull responseとの差であるmaster sector-resolved responseを、exact zero・algebraic suppression・protected survivalへ分類するSMRT。二尺度・scaling-path依存を扱うpolyhedral拡張を含む。 | 有限次元・Markovian・weak-probe/linear response。応答が有限次元のrational transferとして表され、source/readoutと比較規約が固定されること。強散逸族 `A_Γ(z)=ΓD+B(z)` では、どのrateをscaleするかを物理入力として固定する。protected theoremにはsemisimple kernelとprotected blockの可逆性が必要。二尺度polyhedral結果は凍結文書に明記されたscaling pathと正則性条件の範囲だけで使う。 | full-minus-cut差分のdoubling realization、有限個のKrylov/Cayley–Hamilton momentsによるexact-zero certificate、dissipative moment hierarchyと抑制次数、singular dissipator上のprotected transfer、`ν∈{∞, positive finite, 0}` の排他的三分類、有限停止decision algorithm、exact arithmeticを用いる認証方針。polyhedral face/fanとpath-dependent valuationに関する結果は、元定理の仮定をそのまま継承する場合のみ再利用する。 |
+| `EIT_no_go_go_theory_v6_2_English.tex` | 任意材料の特定configurationについて、dark-state rank、Lindblad stationary dark state、Schur-complement susceptibility、sector-resolved EIT no-go/goを判定する理論 | 有限次元、time-independent Markovian GKSL、stationary rotating frame、weak probe、unique steady stateまたはtrace-zero部分空間上のwell-defined group inverse。分類対象は材料名ではなく、準位、偏光、場、温度、observable、target sectorを含むconfiguration。非Markov浴、strong-probe saturation、伝搬支配のcollective effectは範囲外。 | `dim ker Ω = N_g-rank Ω`、pure stationary Lindblad stateの必要十分条件、exact Schur-complement response、`δχ_S = χ_full-χ_cut^(S)`、regular scalar caseの `δχ_S=0 ⇔ K_12K_21=0`、Krylov exact-zero theorem、first nonzero momentによるsuppression order、singular dampingのprotected channel、symmetry audit、Rb/NV/SiV/SnVのsanity-check分類。 |
 
-> **TODO:** 各理論の主要な計算結果・数値例・境界条件を付録としてまとめるか、ここに要約を記入する。
-> 新理論の整合性チェックで再計算せずに済む形が望ましい。
+#### 再利用時の規則
+
+1. **定理名だけを再利用しない。** 仮定、比較規約、source/readout、functional、観測窓、limit protocolを一緒に移植する。
+2. 既存の数値結果を使う場合、元のparameter file、単位、rate convention、precision、fit window、乱数seed、commit hashを記録する。
+3. Frozen theoryの結論を新理論の新規性として数えない。新理論は、凍結結果から何を追加で予測・禁止・分類するかを示す。
+4. `Exact / Conditional / Conjecture / Numerical phenomenon / Model-specific observation` のstatusを維持する。statusの昇格には新しい証明または認証が必要。
 
 ### 4.2 抵触してはいけないno-go定理・制約
 
-> **TODO:** 破ってはいけない結果（CPTP性、熱力学第二法則、既存no-go定理など）を列挙する。
-> 新理論がこれらのいずれかを回避する場合、**どの仮定を外したのか**を必ず明示すること。
+以下は、新理論が黙って破ってはいけない「赤線」である。回避する場合は、外した仮定と新しい整合条件を明示する。
+
+1. **GKSL/CPTP physicality**  
+   RISEIの物理的介入は、原則としてgenerator全体をGKSL admissibleに保つ変更である。任意の行列要素の削除を、そのまま実験的介入と同一視しない。
+
+2. **Fixed comparison class**  
+   full、cut、intervened protocolを比較するとき、初期状態、probe、readout、観測窓、operator ordering、measurement scheme、normalizationを固定する。変更する場合は、それ自体をprotocol dataとして明示する。
+
+3. **no-go対象の取り違え禁止**  
+   EIT/SMRTのno-go対象は、全応答の零点ではなく、指定sectorによる差分 `δχ_S` またはmaster responseである。`χ_full=0` は理想EITのgo signatureになりうるため、no-go判定に使わない。
+
+4. **有限点のnumerical zeroはexact zeroではない**  
+   exact all-frequency zeroは、symbolic identity、有限Krylov moment certificate、adjugate identity、対称性の完全監査などで証明する。浮動小数点samplingだけでは証明済みと書かない。
+
+5. **full-rank strong damping no-go**  
+   response-relevant部分空間上でscaled dissipator `D` が可逆で逆行列が一様有界なら、固定周波数窓のbounded responseは少なくとも `O(Γ^{-1})` に抑制される。追加のsingular scalingなしに `O(1)` protected responseを主張しない。
+
+6. **protected responseの必要条件**  
+   `ker D ≠ {0}` だけでは不十分。semisimpleなresponse-relevant protected Riesz subspace、非零のprojected source/readout、可逆なprotected block、非零のprotected transferが必要である。endpoint overlapだけで保護を判定しない。
+
+7. **fixed kernel lifting no-go**  
+   固定した `ε>0` によりresponse-relevant kernelが持ち上がり、`D_ε` が可逆かつbounded inverseを持つなら、`Γ→∞` でexact-kernel型のprotected asymptotic mechanismは消える。finite-window crossoverをasymptotic phaseと呼ばない。
+
+8. **Pattern (b) の任意GKSL普遍性は禁止**  
+   Pattern (b) は、response-relevant protected kernel、Schur–Zeno coupling、selection geometry、非零residue、許容摂動、固定されたlimit protocol等を必要とする条件付き現象である。
+
+9. **universal codimension-oneは禁止**  
+   observable-selection setの局所codimensionは、active real constraint mapのJacobian rankで決まる。complex scalar constraintは一般にreal codimension twoになりうる。
+
+10. **極限交換禁止**  
+    `Γ→∞`, kernel lifting `ε→0`, grid/domain size、continuum、thermodynamic limitの順序を黙って交換しない。異なるlimit protocolから得た結果を同一視しない。
+
+11. **symmetry zeroの完全監査**  
+    symmetry-protected zeroを主張するときは、Hamiltonian、全jump operator、steady state、source、readout、control polarizationを同じprojectorがreduceすることを確認する。一項でも破ればexact zeroではなくperturbative suppressionとして扱う。
+
+12. **rate convention・次元整合性**  
+    population relaxation rateとoptical-coherence damping rateを混同しない。例として対称orbital hoppingでは、population imbalance rate `Γ_XY=2k` に対し各optical coherenceのdampingは `k/2=Γ_XY/4` となる。すべての無次元化と単位変換を自動テストする。
+
+13. **EITとAutler–Townes splittingの混同禁止**  
+    transparency dipだけではEITを同定できない。ground-coherence依存、control-power scaling、pole/residue、two-photon linewidth、full-minus-cut差分を確認する。
+
+14. **熱力学への拡張時の制約**  
+    GKSL形式だけから熱力学第二法則を自動的に結論しない。bath、Hamiltonian、温度、detailed balanceまたは採用するresource-theoretic assumptionsを明示し、entropy production、passivity、energy bookkeepingを独立に検証する。
 
 ### 4.3 適用範囲外（凍結の外側）
 
-> **TODO:** 確定済み理論が「保証していない」領域を明記する。新理論の探索空間はここに広がる。
+次の領域は、確定済み理論が一般定理として保証していない。新理論の探索空間になりうるが、Frozen-Theoriesの結論をそのまま外挿してはいけない。
+
+- genuinely non-Markovian memory kernel、colored noise、initial system–environment correlation
+- infinite-dimensional Hilbert/Liouville space、essential spectrum、連続体bathを明示的に残す模型
+- generic many-body・thermodynamic-limit scaling、相転移を伴う極限
+- strong-probe、nonlinear response、saturation、multi-photon nonperturbative regime
+- gain medium、unstable generator、physical frequency window内のpole crossing
+- nonsemisimple zero eigenvalue、Jordan block、Puiseux/fractional scalingが必要な場合
+- scaling対象が途中で変わる多parameter path、ランダムpath、adaptive path（凍結されたpolyhedral theoremの範囲外の場合）
+- ideal algebraic cutの実験実装可能性、異なるimplementation family間の同値性
+- ensemble propagation、optical depth、disorder averaging、detector noiseを含む実験可視性
+- finite-grid approximate kernelからcontinuum spectrumへの外挿
+- ergotropy、Fisher information、entropy production等の非線形functional。RISEIの差分記法は移植できても、滑らかさ・passivity ordering・thermodynamic consistencyは別途証明が必要
+- unrestricted process tensor、quantum comb、causal modelへの埋め込み。表現可能性とRISEI固有の分類・予測能力は別問題として監査する
+
+探索提案がこの外側を扱う場合、少なくとも次を記す。
+
+1. 外した仮定
+2. 代替する数学的構造
+3. どの凍結定理が残り、どれが失効するか
+4. 新たに必要なsanity checkと反例
+5. 極限・数値・実験の検証計画
 
 ---
 
@@ -196,10 +324,40 @@
 
 ## 8. 過去に指摘された弱点
 
-同じ失敗を繰り返さないための記録。
+同じ失敗を繰り返さないため、提案時に下表を自己監査する。ここでいう「指摘」は、査読報告に限らず、Frozen-Theoriesの改訂、計算認証、探索失敗、ロードマップ上のstop conditionを含む。
 
-> **TODO:** 査読・自己監査で指摘された点（次元解析の甘さ、既存no-go定理との抵触、
-> physical matched interfaceの欠如、predictive surplusの不足 など）を、指摘された文書名とともに記入。
+| 弱点 | 何が問題だったか | 今後の必須対応 | 主な記録元 |
+|---|---|---|---|
+| 任意GKSLへの過剰な普遍化 | protected responseに必要なresponse-relevant kernelを持たない反例がある | theoremのquantifierを宣言し、必要条件・反例・admissible classを併記する | `Revised_Generalized_RISEI_Theory_2026-07-21` §18 |
+| codimension-oneの普遍化 | selection conditionがcomplexまたは複数制約なら実codimensionは1とは限らない | `codim = rank_R DF` を計算し、rank-dropとpunctureを分ける | 同 §9, §18 |
+| theorem / conjecture / numericsの混同 | finite ensembleや高精度係数を普遍定理へ昇格させた | 全主張にlogical statusを付け、昇格条件を明記する | 同 §2, §18 |
+| exact kernelとapproximate kernelの混同 | finite-gridや有限Γの狭いlossをexact protected phaseと誤認しうる | `x=Γλ_min/J_eff`、limit order、kernel-destroyed controlを必須化する | 同 §11–§13、Tube Calculus Roadmap |
+| finite-Γ tubeをopen asymptotic phaseと解釈 | tube幅は条件下で `Γ^{-1}` にcollapseしうる | manifold、finite-Γ tube、survival gateを別々に報告する | 同 §11、Tube Calculus Roadmap |
+| physical matched interfaceの不足 | fullとcutでsource/readout/steady stateまで変える、または非GKSLのentry deletionを物理介入と呼ぶ危険 | physical protocol familyを定義し、ideal cutはderived limitとして扱う。比較クラスを固定する | `Revised Generalized RISEI` §3, §15；本guide初期監査項目 |
+| predictive surplusの不足 | 既知現象を新しい言葉で再記述するだけではPRXに届かない | blind prediction、inverse design、new witness、no-go boundary、未使用dataでの検証のいずれかを要求する | Tube Calculus Roadmap Step 9；本guide初期監査項目 |
+| 理論固有性の監査不足 | tubeやPattern (b)候補がZeno、EP、FCS、shared ancilla、群同期、control/system identification等へ還元された | 既知機構、Frozen-Theories、競合論文の三方向で非還元性を検査し、還元された候補を却下表へ移す | §3, §6；探索メモ群 |
+| 全応答の零点をno-goと誤認 | perfect EITでは `χ_full=0` だがsector contributionは非零 | no-go objectを `δχ_S` / master responseに固定する | `EIT_no_go_go_theory` §5；SMRT notes §2.4 |
+| floating-point samplingによるexact claim | 多数の周波数点で0でもidentityの証明にはならない | exact arithmetic、Krylov moments、adjugate、symbolic factorizationを使う | SMRT notes §8–§9 |
+| Möbius差分のcancellation fragility | 大きな項の差として小信号が出ると、precision依存の偽信号になりうる | `C_cancel`、floor、multiprecision、analytic reconstructionを報告する | `Revised Generalized RISEI` §14 |
+| pole label追跡への依存 | degeneracyやpole exchangeでラベルが飛び、機構が変わったように見える | individual poleではなくRiesz projectorとcluster responseをcontinuationする | 同 §7、§14 |
+| mechanism attributionの過剰主張 | full responseの予測に成功しても、Schur/Riesz機構への帰属が不十分な場合がある | “prediction succeeds but mechanism attribution fails”を正式branchとして残す | Tube Calculus Roadmap Step 5 |
+| 次元解析・rate mappingの甘さ | population rateとcoherence damping、Hzとrad/s、normalized parameterを混同すると指数・閾値が変わる | 単位付き入力、dimensionless sanity test、rate-convention tableを保存する | `EIT_no_go_go_theory` Example 2.2；本guide初期監査項目 |
+| 実験可視性の不足 | kernel goや理論的nonzeroは、有限SNR・linewidth・optical depthで見えることを保証しない | signal-to-floor、control budget、ensemble averaging、EIT/ATS判別、材料parameter uncertaintyを別gateにする | `EIT_no_go_go_theory` §7–§9；`Revised Generalized RISEI` §14 |
+| onset predictorの過信 | 現行predictorは保守的で、class全体のtight boundではない | right-censoring、local slope、fit-window convergenceを報告し、universal onsetと呼ばない | `Revised Generalized RISEI` §18–§19 |
+| 係数の普遍化 | minimal modelの `0.41` 等を普遍定数と誤認しうる | 構造的scalingとmodel-specific coefficientを分離する | 同 §13 |
+| 非Markov・無限次元・多体系への早すぎる拡張 | 新現象の起源が介入構造かmemory/continuumか判別できなくなる | まず有限次元time-local GKSL内で閉じ、拡張時は失効する定理を列挙する | 同 §20 |
+| PRX向け物語の散漫さ | 現象・定理・実験候補を並べるだけでは中心命題が見えない | 一つの未解決問い、一つの中心定理、一つの決定的witnessを主軸にする | §1のPRX判定ゲート |
+
+### 提案時の弱点申告フォーマット
+
+各提案の「弱点と未解決点」には、最低限次を含める。
+
+- **最も危険な既知還元:** どの既存理論に吸収される可能性が高いか
+- **最も弱い仮定:** 外れると中心命題が失効する条件
+- **最も脆い数値操作:** cancellation、fit、grid、continuation等
+- **最も不足している物理接続:** 実装、SNR、材料parameter、matched interface等
+- **PRXを阻む一点:** 現時点でdesk rejectionを招きうる最大の不足
+- **stop condition:** 何が成立したら中心主張を撤回・縮小・別誌へ移すか
 
 ---
 
@@ -253,8 +411,124 @@
 
 ## 10. 検証環境
 
-> **TODO:** 数式検証・数値計算に使えるツール（Mathematica / SageMath / Python(SymPy, QuTiP) / SDPソルバ等）と、
-> このリポジトリでの実行方針を記入。
+### 10.1 基本方針
+
+解析証明、symbolic certification、数値探索、open-system simulationを一つのツールに依存させない。主結果は原則として、**少なくとも二つの独立な実装または一つの解析証明と一つの数値実装**で照合する。
+
+この節に挙げるversionは固定せず、実行ごとに実際のversion、OS、precision、commit hashを記録する。QuTiPやMathematicaが利用できない環境では、同等機能による代替を明示する。
+
+### 10.2 推奨ツール
+
+| 目的 | 第一選択 | 補助・独立検証 | 注意 |
+|---|---|---|---|
+| exact symbolic algebra | Mathematica | Python/SymPy、SageMath | `FullSimplify`の出力だけを証明とせず、仮定、分母の非零条件、factorization、resultant、Groebner basis等を保存する |
+| rational matrix / Krylov certificate | Mathematica または SymPy | SageMath | 行列要素は可能な限り整数・有理数・代数数で保持する。浮動小数点へ早期変換しない |
+| GKSL/Lindblad simulation | QuTiP | custom NumPy/SciPy Liouville implementation、Mathematica | QuTiPの結果だけでexact identityを主張しない。jump operator、rate convention、vectorization conventionを保存する |
+| steady state / group inverse / resolvent | SciPy、QuTiP、Mathematica | mpmathによるmultiprecision | ordinary inverseとDrazin/group inverseを混同しない。trace-zero subspaceまたはsteady-state projectorを明示する |
+| Riesz projector / cluster continuation | SciPy Schur decomposition、contour quadrature | Mathematica eigensystem / resolvent contour | individual eigenvalue labelではなくprojector distance、subspace angle、contour gapを監視する |
+| asymptotic fitting / fan / tube | Python（NumPy, SciPy, pandas） | Mathematica | fit window、local slope、right-censoring、model comparison、bootstrapを保存する |
+| multiprecision | mpmath、Mathematica arbitrary precision | Arb/SageMath | Möbius cancellationが大きい場合はprecision sweepを必須にする |
+| convexity・CPTP・SDP feasibility | CVXPY + 利用可能なSDP solver | Mathematica optimization | solver status、tolerance、primal/dual residual、certificateを保存する。数値feasibleを厳密存在証明と同一視しない |
+| reproducibility / tests | pytest、Jupyterまたはscript、Git | Mathematica `.wl` test scripts | notebook単体を唯一の実行経路にしない。CLIで再実行できるscriptを用意する |
+| visualization | Matplotlib | Mathematica | 色だけに意味を持たせず、線種・marker・labelを併用する |
+
+### 10.3 主張別の最低検証基準
+
+#### A. Exact theorem / exact no-go
+
+必須:
+
+1. exact arithmeticでのsymbolic derivation
+2. 分母、regular point、spectral gap等の仮定一覧
+3. finite Krylov/adjugate/symmetry certificate
+4. 小次元の直接展開によるsanity check
+5. random numerical substitutionによる反例探索
+
+禁止:
+
+- machine precisionの周波数scanだけで `≡0` と書くこと
+- `Chop` や任意thresholdでexact zeroを作ること
+
+#### B. Conditional theorem
+
+必須:
+
+1. 仮定をmachine-checkableなgateへ変換
+2. 各gateのmarginを出力
+3. gate failure時に結論を返さず、`outside assumptions` と分類
+4. 仮定を一つずつ壊すdestruction test
+
+#### C. Numerical phenomenon
+
+必須:
+
+1. grid、domain、time step、precision convergence
+2. 少なくとも一つの独立実装
+3. parameter perturbationとrandom seed ensemble
+4. null model / destroyed-mechanism control
+5. fit-window dependence、local exponent、right-censoring
+6. raw dataとplot生成scriptの保存
+
+#### D. Physical open-system claim
+
+必須:
+
+1. Hamiltonian Hermiticity、jump rates非負、trace preservation、CPTP/GKSL form
+2. steady-state residualとpositivity
+3. source/readout、polarization、normalization、unit convention
+4. EIT/ATSまたは他の競合機構を区別するcontrol
+5. 実験parameter uncertainty、SNR、finite observation window
+
+### 10.4 標準ワークフロー
+
+1. **Model specification**  
+   `model.yaml` または同等ファイルにHilbert basis、Hamiltonian、jump operators、sector、source、readout、units、scaled rates、parameter rangeを記述する。
+
+2. **Symbolic minimal model**  
+   Mathematica/SymPyで最小模型をexactに構築し、dimension、trace preservation、moments、determinants、factorizationを確認する。
+
+3. **Unit tests**  
+   既知極限、zero coupling、symmetry limit、textbook Λ、full-rank damping、singular-kernel exampleを自動テストする。
+
+4. **Independent implementation**  
+   QuTiPとcustom Liouville code、またはMathematicaとPythonの結果を同一parameter setで比較する。
+
+5. **Precision and convergence sweep**  
+   precision、grid、domain、time step、contour radius、fit windowを変え、主結論が安定する範囲を記録する。
+
+6. **Destruction controls**  
+   protected kernel、selection condition、sector coupling、symmetry、physical interfaceを一つずつ破壊し、現象が予測どおり消えるか確認する。
+
+7. **Claim classification**  
+   出力を `Exact / Conditional / Conjecture / Numerical / Model-specific / Failed / Known-theory reduction` に分類する。
+
+8. **Reproducibility bundle**  
+   最低限、次を保存する。
+
+   ```text
+   environment.yml / requirements.txt
+   Mathematica_version.txt
+   model.yaml
+   symbolic_certificates/
+   src/
+   tests/
+   configs/
+   raw_data/
+   figures/
+   logs/
+   README_reproduce.md
+   git_commit.txt
+   ```
+
+### 10.5 Claude等AIエージェントへの実行規則
+
+- ツールが実際に接続・installされているかを確認する前に「検証済み」と書かない。
+- Mathematicaが使えない場合、必要なsymbolic certificateをSymPy/SageMathで代替し、代替に伴う限界を報告する。
+- QuTiPが使えない場合、custom Liouville implementationを用い、少なくともtrace preservationと既知例で検証する。
+- 長時間計算の前に、small-size smoke test、unit test、runtime estimateを実行する。
+- 数値計算が停止した場合、単なる`failed`ではなく、physical failure、numerical instability、outside scope、insufficient precision、mechanism attribution failureのいずれかを返す。
+- AIが生成した証明・コードは、人間が読めるcertificate、test、再現手順を伴わない限り確定結果としてFrozen-Theoriesへ移さない。
+
 
 ---
 
