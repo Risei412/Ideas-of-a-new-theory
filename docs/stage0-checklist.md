@@ -46,10 +46,14 @@ Fable 5 による理論提案生成（Stage 0）に向けて必要な資料と�
   3. Exact/approximate kernel crossoverの一般十分条件未証明
   4. Calibration redundancy boundary（ρ=1.5での急激なEXACT化に境界定理なし）
 
-### A-4. Revised_Generalized_RISEI_Theory_2026-07-21 【必須・紛失フォルダ内、後日共有予定】
+### A-4. Revised_Generalized_RISEI_Theory_2026-07-21 【完了 — 2026-07-25】
 
-- [ ] テキスト形式（`.tex` / `.md`）で入手 — 前回のPDFは本文抽出に失敗。ゴミ箱の紛失フォルダに含まれる可能性あり
-- [ ] §8の記録元（§18, §9, §11–§13, §14, §20等）を辿れる状態にする
+- [x] PDF入手・`docs/source-material/Revised_Generalized_RISEI_Theory_2026-07-21.pdf` に保存（poppler-utilsでテキスト抽出に成功、前回の抽出失敗を解消）
+- [x] §8の記録元（§2, §7, §9, §11–§13, §14, §18, §20）を実文書と突き合わせて検証済み。引用内容は正確（誤記なし）：
+  - §18「Current status of the central claims」— 任意GKSL普遍性・universal codimension one は "Rejected" と明記
+  - §9 Theorem 9.3 / Corollary 9.4 — rank-codimension theorem、"codimension one is not universal"
+  - §14 — Möbius cancellation condition number C_cancel、signal-to-floor等の証明書要件
+  - §20 — 非Markov・無限次元・多体系・非線形probeは明示的に「deferred」
 
 ### A-5. 精度が上がる資料
 
