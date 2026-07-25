@@ -205,12 +205,46 @@
 **(b) Tilted-GKSL / full counting statistics** — cumulant order k≤4、protocol depth d≤4、counting field数最大2、counted jump channel数最大4、hidden ancillaなし（必要なら(a)として別計上）、parameter budgetは元のvisible GKSLと同一。
 
 **(c) Compact-group synchronization** — matrix representation dimension r_G≤4、Lie algebra dimension q_G≤15、対象群は permutation群、SO(2)、SO(3)、SU(2)、SU(3)、SU(4)およびblock表現、calibration graph redundancy ρ∈{1.0,1.5,2.0}、global optimizer restart 32、予測形式はpoint predictionまたはcertified ABSTAIN。候補にchart/gauge/relative frameがない場合はN/A可。
+**【2026-07-25 追加】hyperedge order `h=3,4` の higher-order synchronization を含める**（Duncan–Kileel 2025, arXiv:2505.21932）。
+pairwise `G_ij=X_jX_i^{-1}` だけを競合とみなすのは不十分 — hypergraph上のtriple/n-wise同期が既に存在する。
+CHMP型baselineを実装し、depth-3 connected calibration objectをhyperedge potentialへ写せるかを検査すること。
 
 **(d) Controlled HMM / structured state-space identification** — hidden-state数またはrealization order D≤6、input/intervention数 m≤8、output alphabet/readout channel最大4、protocol depth d≤4、P≤256、model selectionはcalibration dataだけでBICまたは交差検証、held-out利用は完全禁止。HMMと線形state-spaceは内部実装では別だが、文書上は一つの「有限hidden realization族」としてまとめる。
 
 **(e) Bounded-memory process-tensor model** — memory Hilbert dimension D_M≤6、MPO bond dimension χ≤D_M²=36、memory depth/Markov order μ≤3、protocol depth d≤4、functional order k≤4、P≤256、local system dimensionは候補模型と同一。**full process tensorに表現できないことは要求しない** — D_M, χ, μ, d, k, Pを固定したbounded classに対するpredictive surplusのみを問う。
 
 **(f) Active experimental design baseline** — adaptive round数最大4、選択できるcalibration protocol数最大32、calibration総shots最大1.2×10^5、objective は expected information gain またはBayesian D-optimality、posterior sample数4096、optimizer restart 32、held-out protocolへの問い合わせ禁止、出力はprediction・resource estimate・ABSTAINのいずれか。
+
+### 6.2.1 【2026-07-25】文献監査による予算の修正
+
+出典：`docs/literature-audit-report.md` §5、`docs/literature-audit-addendum.md`。
+いずれも**競合を強くする**方向の変更であり、baselineを狭める禁止規定には触れない。
+
+1. **C族拡張** — pairwise に加え hyperedge order `h=3,4` の higher-order synchronization を含める（上記(c)）
+2. **D族の内部分離** — classical HMM／quasi-HMM・observable operator model／QHMM／switched linear realization を**別baselineとして記録する**（まとめて1族として扱わない）
+3. **E族に rank certificate 追加** — fitted bond dimension だけでなく、temporal cut ごとの operator Schmidt spectrum と**認証された下界**を報告する。`χ≤36` は ansatz の上限であって最小値の証明ではない
+4. **A族とE族の二重計上防止** — ancilla dimension `D_hidden` と process-tensor bond `χ` の変換関係を同一candidateで明示する
+5. **F族に失敗判定を追加** — posterior predictive coverage と ABSTAIN を許す。**点予測の強制失敗を新規性に数えない**
+
+### 6.2.2 【2026-07-25】P0-1 Interface realizability の命題を凍結する必要
+
+`docs/literature-audit-addendum.md` §1 の指摘：
+
+> 任意の classical control register と直和ancillaを無制限に許せば、
+> 各チャネルのStinespring dilationをblock-controlする共通unitaryは**形式的に構成できる**。
+> 従って「共通dilationが存在するか」だけでは非自明な問題にならない。
+
+**判定前に、命題がどの形なのかを必ず確認すること。**
+
+| ラベル | 問う対象 | 既知の近接分野 | 判定 |
+|---|---|---|---|
+| C-JOINT | 一つのjoint channelから各チャネルをmarginalとして**同時に**得る | channel compatibility / channel marginal problem | **既知還元の可能性大** |
+| I-JOINT | classical outcomeとquantum outputを含むjoint instrumentが存在する | parallel instrument compatibility | **既知還元の可能性大** |
+| P-PROG | 同一processorにprogramを与え、counterfactualごとに別チャネルを**選ぶ** | programmable channels / instruments | 差分が残り得る |
+| D-SHARED | 同じisometry・environment state・couplingから、許されたreadout/controlだけで族を得る | Stinespring complement / post-processing preorder | 差分が残り得る |
+| R-BOUND | 実装は存在するが**凍結ancilla/program/memory上限では不可能** | incompatibility robustness / memory cost | 差分が残り得る |
+
+**counterfactualが同時出力ではなく介入ラベルで排他的に選択されるなら、通常のcompatibilityではなく P-PROG が近い。** この区別を外すと誤判定する。
 
 ### 6.3 解析的kill gate（予算を持たない第7層）
 
@@ -228,7 +262,9 @@ symmetry・selection-rule reduction。文書表記は「**競合モデル6族＋
 - 初期状態とreadoutは候補生成後に変更しない。nuisance parameterは候補・競合の両方へ同じpriorで与える
 - sectorラベルをRISEI側だけに与えない。priorに含めるなら競合側にも同じラベル付きgenerator情報を与える
 - **calibration graph**: depth1は全protocol、depth2はρ=1.5の連結グラフ（両順序測定）、depth3は24protocolをseed固定で選択、depth4はcalibration対象外
-- **shots/noise**: 1protocolあたり2,000shots、総上限1.2×10^5shots。通常productionは相対calibration noise 1%、stress testは3%。control-amplitude drift標準偏差1%、timing jitterはpulse長の0.5%
+- **shots/noise**: **【2026-07-25 改訂】** `1.2×10^5` は **calibration専用上限**。held-out は独立予算で最低 `1.28×10^5`。
+  `2000` shots は **1 protocol あたりではなく 1 measurement setting あたりの上限**（protocol と setting は分離計上）。
+  標準探索は `m=6`、`m=8` は予算拡張を要する stress test。詳細は `docs/p0-certificate-spec.md` §4.5。通常productionは相対calibration noise 1%、stress testは3%。control-amplitude drift標準偏差1%、timing jitterはpulse長の0.5%
 - **held-out**: depth2の未使用edge、depth3の未使用protocol、depth4から事前固定した64protocol（sampling seed: 20260723）。候補生成・hyperparameter調整・停止判定には一切使用しない。active design baselineもheld-outへ問い合わせない
 
 ---

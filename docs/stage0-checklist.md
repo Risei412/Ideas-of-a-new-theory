@@ -130,13 +130,13 @@ Fable 5 による理論提案生成（Stage 0）に向けて必要な資料と�
 
 1. [ ] hidden-dimension escalation — `D_hidden = 1,2,3,...D_max` でwitnessが消える次元があるか各段階で判定
 2. [ ] 恒等式の探索そのもの — 競合模型（pairwise latent-group / 有限hidden-state / bounded-memory process）が満たすresponse-tensor恒等式を挙げさせる
-3. [ ] pairwise factorizationからの脱出可否 — depth-3以上のconnected tensorだけが破れる構成の検討
+3. [ ] pairwise factorizationからの脱出可否 — **depth-3への移行だけでは不十分**（Duncan–Kileel 2025 の higher-order synchronization が塞いでいる）。hyperedge order `h=3,4` baselineを破るか、必要order `>4` を証明するか、group-valued hyperedge potentialへ写らない構造的論証が要る
 4. [ ] triangle holonomyの不十分性チェック — group/hidden-state enlargement後も破れるかの判定
 5. [ ] 早期kill 5項目の各PASS/FAIL判定
 
 ---
 
-## C. ChatGPT 文献調査プロジェクトに渡すもの
+## C. ChatGPT 文献調査プロジェクトに渡すもの 【Pass 1・2 完了 — 2026-07-25、56件】
 
 ### C-1. 渡す資料
 
