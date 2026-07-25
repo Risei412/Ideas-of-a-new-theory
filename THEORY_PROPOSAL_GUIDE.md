@@ -547,9 +547,22 @@ Supplemental Materialは補助的導出、追加図、パラメータ表、再�
 | **Held-out quotient predictor** | 20 calibrationから未使用30 protocolを数値精度内で予測。gauge非一意な辺があっても held-out予測の差は \(5.55\times10^{-17}\) 以下。次元3,4,5のランダム36模型で point gauge回収35/36 に対し **held-out予測は36/36成功** | 中立なcompact-group latent-frame estimatorと**目的関数・予測値・残差が完全一致（残差0）** |
 | **Global cycle quotient atlas** | tree方式の破綻を、冗長calibration graph・group synchronization型初期化・global cycle-consistent fit・prediction interval・abstention certificateへ置換。冗長度1.5で tree estimatorの最大誤差 \(8.40\times10^{-3}\) が \(5.81\times10^{-16}\) まで回復。**161 calibration ⇒ 217 held-out予測** | 同上。ABSTAIN判定まで中立モデルと一致 |
 
+> **【2026-07-25 追記】P0-D 証明書がこの教訓の5例目になった。**
+> `docs/p0-certificate-spec.md` §4quater の P0-D は、depth≤3 で局所同値・depth-4 で大域的 rank 障害・
+> `σ₇>τ_H` で有限資源certificate という、まさに下記の構造を厳密に達成した（SymPyで全項目認証済み）。
+> しかし `docs/p0d-derivability-audit.md` の監査で、**`dim K = 7` に対し族A予算は qutrit で 324（46倍）**
+> であり、族Aに対する証拠を一切与えないことが確定した。
+> **この一般則は定量的に確認された — 資源分離の証明書は、それがどれだけ厳密でも固有性を与えない。**
+> 詳細と、そこから導かれる方針転換（受動性障害へ）は同監査文書 §4・§7。
+
 **この4件から読み取るべき教訓:**
 
 - **「局所同値 → 大域的obstruction → 有限資源certificate」という構造まで作り込んでも、それだけでは固有性にならない。** 上記はすべてこの構造を達成した上で死んでいる
+- **組合せ論的・代数的な障害（rank・余次元・多面体・格子・Möbius）は、補助自由度を足せば必ず消える。**
+  補助系1つと手書きのLindblad散逸で、どんなcontext族も単一の加法的GKSLに埋め込める
+  （`Blueprints-of-theories/19_causal_interface_realizability_theory_proposal.md` §0、7連敗の診断）。
+  **固有性を狙うなら「補助系を足しても消えない種類の障害」を最初から中心に置くこと。**
+  現時点でその条件を満たす候補は受動性／因果性（Herglotz類の閉性）のみ
 - 死因はすべて同じ — **pairwise relative-chart因子化 \(G_{ij}=X_jX_i^{-1}\) へ還元された**こと
 - 非零のtriangle holonomyだけでは不十分。一般group synchronizationも不整合cycleを扱える
 
