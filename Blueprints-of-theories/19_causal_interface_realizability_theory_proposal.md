@@ -546,6 +546,36 @@ CG1–CG3 は比較的安価であり、**早期に理論を殺せる設計**に
 
 **この節を完了する前に新規性を主張してはならない。**
 
+> **[監査完了 2026-07-25 — 判定: 仕様書 §9 の即時停止条件に該当。`docs/literature-audit-cirt-passive-realizability.md`]**
+>
+> 本節の監査を実行した結果、**C1・C2・C5・C6・C7、および §6.1 の有限判定体系はすべて先行研究**
+> であることが確定した。さらに **C3 が「quantum surplus」と呼ぶ現象は量子的ではなく**、
+> 古典多ポート受動性として教科書的に既知である（成分ごとのKramers–Kronigが行列受動性を
+> 含意しないことは回路合成の定義そのもの）。**C4 も 1970年代回路理論（正実類のSchur補元閉性、
+> Anderson–Vongpanitlerd 1973）の系**であり、「理論の決定点」ではない。
+>
+> 最重要の prior-art: Löwner 1934（C2・C5）／Youla–Saito 1967「minimum number of reactances」（C6）／
+> Mayo–Antoulas 2007「rank(Loewner)=McMillan次数」（C6）／**Fei–Yeh–Zgid–Gull, PRB 104, 165111 (2021)**
+> 「solutions exist iff the Pick matrix is PSD」＋出荷済みコードの文書（判定手続き全体）／
+> Grivet-Talocia 2004 ほか passivity enforcement（C3の枠組み）／
+> **Solgun–DiVincenzo, Ann. Phys. 361 (2015)**（自己エネルギー↔インピーダンス辞書は既に circuit QED の実用手法）。
+>
+> 本リスト §554 が「最重点」とする James–Nurdin–Petersen は**最も近い先行研究ではない**。
+> 最も近いのは §556 に1行だけ挙がっている Nevanlinna 解析接続系列（Fei–Yeh–Gull）である。
+>
+> **新たに判明した2つの脅威:**
+> 1. **arXiv:2604.17058**（Liu, 2026年4月）— 開放量子系の記憶核に対する
+>    "passivity-analyticity theorem"（Herglotz–Nevanlinna類）。CIRTと同じ動きを3か月前に行っている。
+>    **未読。通読するまで新規性を主張してはならない。**
+> 2. **vacuousness 反論** — 弱結合導出では $\gamma$ と $S$ は同一の $\Gamma(\omega)$ から生じるため、
+>    bathから導出された生成子では Herglotz 性は自動的に成立し、障害は原理的に発生しない。
+>    C2 が非自明なのは $(\gamma,S)$ が現象論的に置かれたか独立に推定された場合に限られる。
+>    **この反論に答えられない限り C3 は空虚である。** これは文献照合では決着しない理論内部の問題。
+>
+> **残る最小の空白:** 「Bohr周波数の $(\gamma,S)$ データに対する行列境界Nevanlinna–Pick実行可能性問題」
+> という定式化のみ。新しい理論でも現象でも数学でもなく、**方法論的寄与**である。
+> 現実的な投稿先は PRA / PRApplied。**PRX・PRL候補ではない。**
+
 - Kramers–Kronig関係、総和則、光学定理
 - Loewner定理、作用素単調関数、行列単調性の次数階層 $P_n$（Donoghue; Hansen; Osaka–Tomiyama）
 - 行列Nevanlinna–Pick補間（Ball–Gohberg–Rodman; Rosenblum–Rovnyak）、Loewner framework（Mayo–Antoulas）
