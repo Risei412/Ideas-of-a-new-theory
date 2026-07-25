@@ -9,23 +9,97 @@
 
 ---
 
-> ⚠️ **現状このファイルは枠のみである。**
-> 下の `TODO` は `THEORY_PROPOSAL_GUIDE.md` の §4・§5・§6.4 と対応しており、
-> そちらが埋まった時点でここへ転記する。**埋まるまでアップロードしても効果は薄い。**
+> **記入状況（2026-07-25）:** §1 記号表・§5 却下リスト・§6 競合予算・§7 未解決項目は記入済み。
+> **§2 適用範囲・§3 抵触禁止制約のみガイド §4.1／§4.2 からの転記待ち。**
+> この2節が埋まればアップロード可能な状態になる。
 
 ---
 
 ## 1. 記号・用語（→ ガイド §5）
 
-| 記号 | 意味 | 備考 |
-|---|---|---|
-| *TODO* | | |
+### 1.1 共通記号（3理論で一致）
 
-略称の展開:
+| 記号 | 意味 |
+|---|---|
+| `Γ` | 支配的な散逸スケール／漸近スケール |
+| `D` | fast damping-shape operator（`A_Γ(z)=ΓD+B(z)`） |
+| `B(z)` | 遅い／周波数依存ブロック |
+| `S, T, U` | 操作的sectorまたはsector部分集合 |
+| `𝒢_S` | sector選択的な GKSL-admissible 介入生成子 |
+| `c` / `p†` | probe source ／ readout covector |
+| `κ` | 介入強度 |
+
+### 1.2 RISEI
+
+`π` 順序付き介入protocol｜`𝒰_π` protocol依存propagator｜`C_π^(n)` connected n-time cumulant｜
+`R_π^(n)` full-minus-protocol応答｜`Ω_T^(n)` subset-Möbius不可約応答｜`Ξ_{S,T}^(n)` order-irreducible応答｜
+`Φ` 応答functional｜`ν_Φ` functional依存valuation｜`N_∞, N_1` 応答ノルム｜`Σ_π^(n)` scaling signature｜
+`k_min^(n,Φ)` protection depth｜`𝒞[π]`/`𝒞_req` protocolコスト/最小同定コスト｜`P_𝒞` Riesz projector｜
+`K_Z` Schur–Zeno結合｜`f`/`J_f` 選択写像/Jacobian｜`ℳ_Γ` 選択多様体｜`𝒜` admissible perturbation class｜
+`Λ` limit protocol｜`ℰ_full` response-defect｜`Q_tube` Gram行列｜`𝒯_{ε,Γ}` response tube｜
+`z_loss`/`z_jet` 無次元crossover座標｜`q_*` Schur self-energy指数｜`κ_eff`/`α_eff`｜`Δ_prot` 保護スケール｜
+`C_cancel` cancellation condition number
+
+### 1.3 SMRT
+
+`𝒱_full ≅ ℂ^{N_full}` full response space｜`A_{full,Γ}(z)=ΓD_full+B_full(z)` native response family｜
+`𝔈=(A_{full,Γ},c_full,p_full,K)` experiment specification｜`𝔓=(𝒢_S,κ₀,q)` path specification｜
+`K ⋐ Ω` 観測窓（`Ω`は周波数領域）｜`q` scaling path指数（`κ=κ₀Γ^q`）｜
+`ℛ_S^op`/`ℛ_{S,Γ}^ideal` operational/ideal master sector-resolved response｜
+`ν_S(q;κ₀)` valuation、`ν ∈ {∞} ∪ (0,∞) ∪ {0}` の排他的三分類｜`𝔉` exact function field
+
+### 1.4 EIT
+
+`ℋ_g, ℋ_e` 下位/励起manifold｜`Ω` optical coupling map（`Ω_c` control Rabi）｜`C` dipole coupling行列｜
+`A(z)` optical-coherence生成子｜`G=A^{-1}` resolvent｜`K_ab` coherent-response kernel｜
+`S_a`/`S_g=G_g-CA^{-1}B` 対角応答/Schur補｜`M_n=p†X^nν` resolvent moment｜`Q` reducing symmetry operator｜
+`P=Proj(ker D)` protected-subspace projector｜`γ_g` lower-coherence decay/detuning｜`β=|Ω_c|²/4` control intensity｜
+`Ξ` 正規化full local probe response｜`χ_full`/`χ_cut^(𝕊)`/`δχ_𝕊` full応答/切断counterfactual/差分｜
+`ν=D^{-1}c` moment symbol｜`C_abs` 相対吸収コントラスト
+
+### 1.5 ⚠️ 衝突記号 — 判定時に必ず確認すること
+
+**同じ文字が理論ごとに別物を指す。命題中にこれらが無修飾で現れたら、どの理論の意味かを確認してから判定すること。**
+文脈の取り違えは、還元の成否判定そのものを誤らせる。
+
+| 記号 | RISEI | SMRT | EIT |
+|---|---|---|---|
+| **`Ω`** | subset-Möbius不可約応答 | **周波数領域** | **optical coupling map** |
+| **`K`** | Schur–Zeno結合 `K_Z` | **観測窓** | **coherent-response kernel** |
+| **`Q`** | tube Gram行列／補projector | — | **reducing symmetry operator** |
+| **`Ξ`** | order-irreducible応答 | — | **正規化full probe response** |
+| **`ν`** | valuation | valuation（RISEIと整合） | **moment symbol `D^{-1}c`** |
+| **`C`** | cumulant／コスト | — | **dipole coupling行列** |
+| **`M`** | 選択多様体 | — | **resolvent moment** |
+| **`P`** | Riesz projector／puncture集合 | **path spec `𝔓`** | protected projector（RISEIと整合） |
+| **`A`** | admissible perturbation class | response family | 生成子（SMRTと整合） |
+| **`G`** | 介入生成子（SMRTと整合） | cut生成子 | **resolvent `A^{-1}`** |
+| **`S`** | sector | sector | **対角応答／Schur補** |
+| **`z`** | **無次元座標** `z_loss`,`z_jet` | 複素周波数 | 複素周波数 |
+| `q` | Schur self-energy指数 | scaling path指数 | — |
+
+> ⚠️ **`D` の三重衝突に特に注意。** 凍結理論では `D` = fast damping-shape operator（`A_Γ(z)=ΓD+B(z)`）だが、
+> **§6 の競合予算表では `D` = hidden dimension**、さらに `D_M` = memory Hilbert dimension である。
+> 命題や判定文で `D` が現れたら、散逸演算子か次元パラメータかを必ず確認すること。
+
+### 1.6 略称
 
 | 略称 | 正式名称 |
 |---|---|
-| *TODO* | |
+| RISEI | *要確認*（凍結文書内に展開なし） |
+| SMRT | Sector-Mediated Response Theory |
+| EIT | Electromagnetically Induced Transparency |
+| ATS | Autler–Townes Splitting |
+| CPT | Coherent Population Trapping |
+| DCIT | Dilation-Consistent Intervention Theory（草案段階） |
+| GKSL | Gorini–Kossakowski–Sudarshan–Lindblad |
+| CPTP | Completely Positive Trace Preserving |
+| FCS | Full Counting Statistics |
+| EP | Exceptional Point |
+| QFI | Quantum Fisher Information |
+| HMM | Hidden Markov Model |
+| MPO | Matrix Product Operator |
+| SNR | Signal-to-Noise Ratio |
 
 ---
 

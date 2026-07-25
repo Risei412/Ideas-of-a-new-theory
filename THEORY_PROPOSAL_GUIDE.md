@@ -278,16 +278,138 @@ Supplemental Materialは補助的導出、追加図、パラメータ表、再�
 ## 5. 記法・用語の統一
 
 複数文書を後で統合できるよう、記号を揃える。
+出典：`Frozen-Theories/` の3文書 + `docs/source-material/Revised_Generalized_RISEI_Theory_2026-07-21.pdf` 付録A。
 
-| 記号 | 意味 | 備考 |
+### 5.1 共通記号（3理論で一致 — 安全に使える）
+
+| 記号 | 意味 | 出典 |
 |---|---|---|
-| *TODO* | | |
+| `Γ` | 支配的な散逸スケール／漸近スケール | RISEI・SMRT・EIT すべてで一致 |
+| `D` | fast damping-shape operator（`A_Γ(z)=ΓD+B(z)` の `D`） | SMRT `D_full`・EIT `D` |
+| `B(z)` | 遅い／周波数依存ブロック | SMRT `B_full(z)` |
+| `S, T, U` | 操作的sectorまたはsector部分集合 | RISEI・SMRT |
+| `𝒢_S` | sector選択的な GKSL-admissible 介入生成子 | RISEI `𝒢_{S_j}`・SMRT `𝒢_S` |
+| `c` / `p†` | probe source ／ readout covector | SMRT・EIT（RISEIは `f` に吸収） |
+| `κ` | 介入強度 | RISEI `κ_j(t)`・SMRT `κ=κ₀Γ^q` |
 
-規約:
+### 5.2 理論別の主要記号
 
-- 新しい概念には英語名と日本語名を両方与える（例：dilation frustration ／ 共通実装フラストレーション）
-- 略称は初出時に必ず展開する（DCIT, RISEI, SMRT …）
-- 既存文書と衝突する記号を使わない。衝突した場合はこの表を更新する。
+**Generalized RISEI**（`Generalized_RISEI_Theory_EndToEnd_Certified_2026-07-23.tex` §Notation、Revised版付録A）
+
+| 記号 | 意味 |
+|---|---|
+| `π` | sector・強度・時間窓を含む順序付き介入protocol |
+| `𝒰_π` | protocol依存propagator |
+| `C_π^(n)` | connected n-time cumulant |
+| `R_π^(n)` | full-minus-protocol 介入応答 |
+| `Ω_T^(n)` | subset-Möbius 不可約応答 |
+| `Ξ_{S,T}^(n)` | order-irreducible 応答 |
+| `Φ` | 応答の特徴を選ぶ functional |
+| `ν_Φ` | functional依存の漸近valuation |
+| `N_∞, N_1` | supremum / 絶対積分 応答ノルム |
+| `Σ_π^(n)` | 多成分scaling signature |
+| `k_min^(n,Φ)` | observable・feature依存の protection depth |
+| `𝒞[π]` / `𝒞_req` | protocol資源コスト ／ 最小同定コスト |
+| `P_𝒞` | response-relevant spectral cluster への contour Riesz projector |
+| `K_Z` | leading Schur–Zeno 実効結合 |
+| `f` / `J_f` | realified 選択写像 ／ 実選択Jacobian `D_θ f` |
+| `ℳ_Γ` | 局所選択多様体 `f^{-1}(0)` |
+| `𝒜` | admissible perturbation class |
+| `Λ` | 順序付き limit protocol |
+| `ℰ_full` | 有限Γ response-defect ベクトル |
+| `Q_tube` | cluster制限 Schur derivative Gram行列 |
+| `𝒯_{ε,Γ}` | 有限Γ operational response tube |
+| `z_loss` / `z_jet` | 無次元 slow-loss/protection比 ／ blind projected crossover座標 |
+| `q_*` | 有限窓 Schur self-energy 指数 |
+| `κ_eff` / `α_eff` | 応答重み付き Schur保護係数 ／ projected slow-loss微分 |
+| `Δ_prot` | Schur誘起 cluster保護スケール |
+| `C_cancel` | Möbius cancellation condition number |
+| `Cert` | end-to-end 有限数値証明書 |
+
+**SMRT (Sector-Mediated Response Theory)**（notation節なし、本文から抽出）
+
+| 記号 | 意味 |
+|---|---|
+| `𝒱_full ≅ ℂ^{N_full}` | full response space |
+| `A_{full,Γ}(z) = ΓD_full + B_full(z)` | native response family |
+| `𝔈 = (A_{full,Γ}, c_full, p_full, K)` | experiment specification |
+| `𝔓 = (𝒢_S, κ₀, q)` | path specification |
+| `K ⋐ Ω` | 観測窓（`Ω` は周波数領域） |
+| `q` | scaling path 指数（`κ = κ₀Γ^q`） |
+| `ℛ_S^op` / `ℛ_{S,Γ}^ideal` | operational ／ ideal master sector-resolved response |
+| `ν_S(q;κ₀)` | valuation。`ν ∈ {∞} ∪ (0,∞) ∪ {0}` の排他的三分類 |
+| `𝔉` | exact function field（決定可能な同一性判定を持つ） |
+
+**EIT no-go/go**（`EIT_no_go_go_theory_v6_2_English.tex` 付録A）
+
+| 記号 | 意味 |
+|---|---|
+| `ℋ_g, ℋ_e` | 下位／励起 manifold |
+| `Ω` | instantaneous optical coupling map（`Ω_c`: control Rabi） |
+| `C` | dipole coupling vector 行列 |
+| `A(z)` | optical-coherence 生成子 |
+| `G = A^{-1}` | resolvent / Green演算子 |
+| `K_ab` | 非対角 coherent-response kernel |
+| `S_a` / `S_g = G_g - CA^{-1}B` | 対角 optical response ／ Schur complement |
+| `M_n = p†X^nν` | resolvent moment |
+| `Q` | reducing symmetry operator |
+| `P = Proj(ker D)` | protected-subspace projector |
+| `γ_g` | 複素 lower-coherence decay/detuning |
+| `β = \|Ω_c\|²/4` | control intensity parameter |
+| `Ξ` | 正規化 full local probe response |
+| `χ_full` / `χ_cut^(𝕊)` / `δχ_𝕊` | full応答 ／ sector切断counterfactual ／ 差分 `χ_full - χ_cut^(𝕊)` |
+| `ν = D^{-1}c` | moment symbol |
+| `C_abs` | 相対吸収コントラスト |
+
+### 5.3 ⚠️ 衝突している記号（新理論で無修飾に使わない）
+
+**同じ文字が理論ごとに別物を指す。** 新提案でこれらを使う場合、**必ず添字か修飾を付けて出典を明示する**こと。
+
+| 記号 | RISEI | SMRT | EIT | 深刻度 |
+|---|---|---|---|---|
+| **`Ω`** | subset-Möbius不可約応答 `Ω_T^(n)` | 周波数領域（`z ∈ Ω`） | optical coupling map | **最悪。3つとも別物** |
+| **`K`** | Schur–Zeno結合 `K_Z` | 観測窓 `K ⋐ Ω` | coherent-response kernel `K_ab` | **高。3つとも別物** |
+| **`Q`** | tube Gram行列 `Q_tube`／補spectral projector | — | reducing symmetry operator | **高** |
+| **`Ξ`** | order-irreducible応答 `Ξ_{S,T}^(n)` | — | 正規化full probe response | 高 |
+| **`ν`** | valuation `ν_Φ` | valuation `ν_S`（**RISEIと整合**） | moment symbol `ν = D^{-1}c` | 中（EITのみ別物） |
+| **`C`** | cumulant `C_π^(n)`／コスト `𝒞[π]` | — | dipole coupling行列 | 中 |
+| **`M`** | 選択多様体 `ℳ_Γ` | — | resolvent moment `M_n` | 中 |
+| **`P`** | Riesz projector `P_𝒞`／puncture集合 `𝒫` | path spec `𝔓` | protected projector `P`（**RISEIと整合**） | 中 |
+| **`A`** | admissible perturbation class `𝒜` | response family `A_{full,Γ}` | 生成子 `A(z)`（**SMRTと整合**） | 中 |
+| **`G`** | 介入生成子 `𝒢_S`（**SMRTと整合**） | cut生成子 `𝒢_S` | resolvent `G = A^{-1}` | 中 |
+| **`S`** | sector | sector | 対角応答 `S_a`／Schur補 `S_g` | 中 |
+| **`z`** | 無次元座標 `z_loss`, `z_jet` | 複素周波数 | 複素周波数 | **中〜高。要注意** |
+| **`q`** | Schur self-energy指数 `q_*` | scaling path指数 | — | 低（どちらも指数） |
+
+**RISEI内部の重複:** Revised版付録Aで `P` が「protected spectral projector」と「puncture集合」の両方に割り当てられている。新提案では puncture を `𝒫_punc` 等に改名して使うこと。
+
+**`D` の三重衝突（最も事故りやすい）:** 凍結理論では `D` = fast damping-shape operator（`A_Γ(z)=ΓD+B(z)`）。
+一方 `docs/context-pack.md` §6 の**競合理論族の資源予算では `D` = hidden dimension**、`D_M` = memory Hilbert dimension。
+提案文書で両方を扱う場合、散逸演算子側を `D_damp`、次元側を `D_hidden` と明示的に書き分けること。
+
+### 5.4 規約
+
+- **新しい概念には英語名と日本語名を両方与える**（例：dilation frustration ／ 共通実装フラストレーション）
+- **略称は初出時に必ず展開する**（下表）
+- **§5.3 の衝突記号を無修飾で使わない。** 使う場合は `Ω^{RISEI}_T` のように理論を明示するか、新しい文字を割り当てる
+- 新しい記号を導入したら §5.2 に追記し、衝突が生じたら §5.3 を更新する
+
+| 略称 | 正式名称 |
+|---|---|
+| RISEI | *要確認* — 凍結文書内に展開なし。所有者確認が必要 |
+| SMRT | Sector-Mediated Response Theory |
+| EIT | Electromagnetically Induced Transparency |
+| ATS | Autler–Townes Splitting |
+| CPT | Coherent Population Trapping |
+| DCIT | Dilation-Consistent Intervention Theory（開放系介入の共通dilation整合性理論。草案段階） |
+| GKSL | Gorini–Kossakowski–Sudarshan–Lindblad |
+| CPTP | Completely Positive Trace Preserving |
+| FCS | Full Counting Statistics |
+| EP | Exceptional Point |
+| QFI | Quantum Fisher Information |
+| HMM | Hidden Markov Model |
+| MPO | Matrix Product Operator |
+| SNR | Signal-to-Noise Ratio |
 
 ---
 
