@@ -163,6 +163,21 @@
 > **探索順序の教訓：** 競合理論族を先に固定し、それが満たす恒等式・resource lower boundを先に抽出してから、
 > それを破るwitnessを逆設計する順序に転換すること（現象を先に構成して後から還元監査する順序は非効率）。
 
+### 5.1 上記のうち「最終監査まで生き延びた」4件の到達点
+
+**単純な還元では死んでいない候補。** 判定時、命題がこれらと同じ構造に到達しているだけでは
+非還元性の根拠にならないことに注意する。
+
+| 候補 | 到達点 | 死因 |
+|---|---|---|
+| Matched operational equivalence | 単独介入で spectrum・stationary state・1〜4次cumulant一致（`D_TV≤1.40e-16`）。深さ2でvarianceのみ分裂。最小分離資源 `(d_min,k_min)=(2,2)`、`N_5%≤137` | 下記3件と共に最終監査で棄却 |
+| Exact second-cumulant witness | `ΔK_2=2ℓ_Y(G−I)r_X`。48例で最大残差 `1.64e-15`、ランダムMarkov 1500模型で非零率99.4%、量子GKSL 300模型で100% | switched GKSL + FCS の代数から導出可能 |
+| Held-out quotient predictor | 20 calibrationから未使用30 protocolを数値精度内で予測。point gauge回収35/36 に対し held-out予測は36/36成功 | 中立compact-group latent-frame estimatorと**目的関数・予測値・残差が完全一致（残差0）** |
+| Global cycle quotient atlas | 冗長度1.5で tree estimatorの誤差 `8.40e-3` → `5.81e-16` に回復。161 calibration ⇒ 217 held-out予測。ABSTAIN certificate付き | 同上。ABSTAIN判定まで中立モデルと一致 |
+
+**4件すべての死因は同一：pairwise relative-chart因子化 `G_ij = X_j X_i^{-1}` への還元。**
+「局所同値 → 大域的obstruction → 有限資源certificate」という構造を達成しても、それ自体は固有性にならない。
+
 ---
 
 ## 6. 競合理論族の資源予算（Priority 0 凍結値）

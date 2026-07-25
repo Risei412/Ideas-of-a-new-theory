@@ -464,14 +464,18 @@ Supplemental Materialは補助的導出、追加図、パラメータ表、再�
 
 出典：`docs/source-material/RISEI_Unique_Phenomena_Computation_Summary_and_Search_Strategy_2026-07-23.tex`（競合理論監査、2026-07-23完了）。
 
-| アイデア | 却下理由（何に還元されたか） | 判定日 |
-|---|---|---|
-| Response–Mechanism Contextuality（reduced sector gluing obstruction） | 共有ancillaを含む単一のcontext-independent additive GKSL模型から生成したデータであり、shared-ancilla enlargementで完全に説明される | 2026-07-23 |
-| 平均に盲目な protocol-order fluctuation（二次累積量の順序依存分裂） | tilted-GKSL / full counting statistics (FCS) で最大誤差 \(1.84\times10^{-8}\) 以内に再現される | 2026-07-23 |
-| Relative-gauge splitting（exact witness \(\Delta K_2=2\ell_Y(G-I)r_X\) 自体） | switched GKSLとFCSの代数から導出可能。式は資産として残すが、固有性の根拠にはならない | 2026-07-23 |
-| Continuous quantum gauge / tree calibration atlas（\(SU(d)\) scaling production） | 無条件の予測圧縮則がtree calibrationで破綻（\(K\ge q\) は必要条件だが十分条件でない）。一般には非還元性が確認できず | 2026-07-23 |
-| Held-out quotient predictor（observational stabilizerによる quotient class） | 中立なcompact-group latent-frame estimatorと目的関数が完全一致（残差0） | 2026-07-23 |
-| Global cycle-consistent quotient atlas（cycle threshold / predict-or-abstain certificate） | compact-group synchronization / structured state-space identificationと予測・棄却判定が完全一致 | 2026-07-23 |
+**列の意味:**
+- **還元の強さ** — `早期kill`（smoke段階で死亡）／`production後`／`最終監査`（長く生き延びた＝情報量が多い）
+- **残る資産** — 固有性は失われたが、計算・実験設計・方法論として再利用できるもの。**空欄でない候補は §6.5 も参照**
+
+| アイデア | 還元先 | 還元の強さ | 残る資産 | 判定日 |
+|---|---|---|---|---|
+| Response–Mechanism Contextuality（reduced sector gluing obstruction） | shared-ancilla enlargement（共有ancillaを含む単一のcontext-independent additive GKSL模型から生成したデータ） | **早期kill** | なし（negative controlとして保存） | 2026-07-23 |
+| 平均に盲目な protocol-order fluctuation（二次累積量の順序依存分裂） | tilted-GKSL / FCS で最大誤差 \(1.84\times10^{-8}\) 以内に再現 | **早期kill** | 現象自体は頑健（10%摂動500例で符号保持率100%）。FCS内の例として有効 | 2026-07-23 |
+| Relative-gauge splitting（exact witness \(\Delta K_2=2\ell_Y(G-I)r_X\) 自体） | switched GKSL + FCS の代数から導出可能 | production後 | **exact式** `ΔK_2=2ℓ_Y(G−I)r_X`（write/relative-defect/read の三因子分解）と明示的消失条件 | 2026-07-23 |
+| Continuous quantum gauge / tree calibration atlas（\(SU(d)\) scaling production） | （非還元性未確立）tree calibrationでの予測圧縮則が破綻 | production FAIL | **`K≥q` は必要条件だが十分条件でない**という否定的知見。破綻要因の分類（local rank不足・非線形branch・tree伝播誤差・global chart inconsistency） | 2026-07-23 |
+| Held-out quotient predictor（observational stabilizerによる quotient class） | compact-group latent-frame estimatorと目的関数が完全一致（残差0） | **最終監査** | **quotient class** `[P_i]=P_iH_i`。「内部chartの非一意性 ⇏ 予測の非一意性」という方法論 | 2026-07-23 |
+| Global cycle-consistent quotient atlas（cycle threshold / predict-or-abstain） | compact-group synchronization / 構造化系同定と予測・棄却判定が完全一致 | **最終監査** | **predict-or-abstain certificate**（点推定を強制せずABSTAINを返す安全機構）。cycle冗長度1.5での予測可能性境界 | 2026-07-23 |
 
 > **Tube calculus（regular branch）についての注記：** 上表とは別に、Tube calculus自体も現時点ではRISEI固有現象とは判定されていない。
 > regular tube geometryとその主要な発生機構は、Riesz理論・Schur complement・Zeno型縮約・制御/realization理論の組合せで再構成できるためである。
@@ -485,6 +489,35 @@ Supplemental Materialは補助的導出、追加図、パラメータ表、再�
 3. その恒等式を破るwitnessを**逆設計する**
 
 新候補を探索する際は、この順序（競合理論のnull identityを先に固定 → それを破る構成を逆設計）に従うこと。
+
+### 6.5 「惜しかった」候補（設計の教材）
+
+**完全に死んだ候補より、あと一歩だったものの方が情報量が多い。**
+§6.4 で `最終監査` まで生き延びた候補は、単純な還元では死んでいない — どこまで進めて、
+**最後に何で死んだか**が次の設計の材料になる。
+
+| 候補 | どこまで到達したか | 最後に何で死んだか |
+|---|---|---|
+| **Matched operational equivalence** | 単独介入では spectrum・stationary state・full count distribution・1〜4次cumulantが一致（\(D_{TV}\le1.40\times10^{-16}\)）。深さ2で `TS` protocolのvarianceのみ分裂。**最小分離資源 \((d_{\min},k_{\min})=(2,2)\)、\(N_{5\%}\le137\)** の有限資源certificateまで取得 | 固有性は未決着のまま、下記3件と共に最終監査で棄却 |
+| **Exact second-cumulant witness** | \(\Delta K_2=2\ell_Y(G-I)r_X\) のexact式。4状態全24 permutation・両順序48例で最大残差 \(1.64\times10^{-15}\)、次元3〜8のランダムMarkov 1500模型で非零率99.4%、量子GKSL 300模型で非零率100% | 式そのものが switched GKSL + FCS の代数から導出可能 |
+| **Held-out quotient predictor** | 20 calibrationから未使用30 protocolを数値精度内で予測。gauge非一意な辺があっても held-out予測の差は \(5.55\times10^{-17}\) 以下。次元3,4,5のランダム36模型で point gauge回収35/36 に対し **held-out予測は36/36成功** | 中立なcompact-group latent-frame estimatorと**目的関数・予測値・残差が完全一致（残差0）** |
+| **Global cycle quotient atlas** | tree方式の破綻を、冗長calibration graph・group synchronization型初期化・global cycle-consistent fit・prediction interval・abstention certificateへ置換。冗長度1.5で tree estimatorの最大誤差 \(8.40\times10^{-3}\) が \(5.81\times10^{-16}\) まで回復。**161 calibration ⇒ 217 held-out予測** | 同上。ABSTAIN判定まで中立モデルと一致 |
+
+**この4件から読み取るべき教訓:**
+
+- **「局所同値 → 大域的obstruction → 有限資源certificate」という構造まで作り込んでも、それだけでは固有性にならない。** 上記はすべてこの構造を達成した上で死んでいる
+- 死因はすべて同じ — **pairwise relative-chart因子化 \(G_{ij}=X_jX_i^{-1}\) へ還元された**こと。次の候補は「全pairwise dataを一致させたまま depth-3以上のconnected tensorだけが破れる」方向を優先する（§6.1 P0-2）
+- 非零のtriangle holonomyだけでは不十分。一般group synchronizationも不整合cycleを扱える
+
+### 6.6 記録の運用ルール
+
+**却下が出るたびに、以下を同一コミットで更新すること。** 片方だけ更新すると赤チームが古い前提で判定し続ける。
+
+1. 本ファイル §6.4（および `最終監査` まで到達していれば §6.5）
+2. `docs/context-pack.md` §5（同じ表のミラー）
+3. `docs/PROJECT_STATE.md` の「決定済み事項」
+
+**番号は再利用しない。** 却下された提案の連番は欠番として残す（欠番自体が「ここで1本死んだ」という記録になる）。
 
 ---
 
@@ -545,7 +578,12 @@ Supplemental Materialは補助的導出、追加図、パラメータ表、再�
 ## 9. 提案の出力フォーマット
 
 新理論の提案は `Blueprints-of-theories/` に以下の構成のMarkdownで置く。
-ファイル名は `NN_<theory_slug>_proposal.md`（NNは連番）。
+ファイル名は `NN_<theory_slug>_proposal.md`。
+
+**番号規約:**
+- `NN` は**リポジトリ全体の通し番号。重複させない**（現状 `19_` が2件あるが、これ以降は追随しない）
+- **却下されても番号は再利用しない。** 欠番のまま残す — 欠番自体が「ここで1本死んだ」という記録になる
+- 次に使う番号は `Blueprints-of-theories/` の最大値 +1。`plan20_` のような接頭辞の揺れは踏襲しない
 
 ```markdown
 # 理論名（英語名 / 略称）
@@ -762,6 +800,20 @@ Supplemental Materialは補助的導出、追加図、パラメータ表、再�
 **Stage 4 — 両方のLLMを信用しない層。**
 次元解析、極限での既存理論の再現（§3.1-5）、反例の数値スキャンを実際に計算する。
 **LLM二者が一致した式ほど危険**である（同じ訓練データ由来の同じ誤りを共有しうる）。
+
+> ⚠️ **held-out を提案間で使い回さない。**
+> `docs/context-pack.md` §6.4 で held-out は `seed 20260723`（depth4から64 protocol等）に固定されている。
+> **この同じ集合を提案1・提案2で使うと、2本目以降は blind ではなくなる** —
+> 提案1のheld-out結果を見た人間／エージェントが提案2を設計する時点で情報が漏れている。
+> 形式上は「候補生成にheld-outを使っていない」が、実質は汚染されている。
+>
+> **運用（どちらか）:**
+> - **分割**：64 protocolを提案ごとに割り当てる（例：提案あたり16、4本で使い切り）
+> - **再抽出**：提案ごとに新しいseedで引き直し、**どのseedがどの提案に対応するかを提案文書に記録する**
+>
+> どちらの場合も、使用したseedと割当を提案の §5 検証計画に明記すること。
+> これは baseline を狭めているわけではないため §4.4 の予算違反にはあたらないが、
+> **blindness だけが静かに失われる**ので明文化しておく。
 
 **Stage 6 — 順序を守る。** 論理が固まる前に推敲すると、内容の弱さが文体で隠れる。
 
