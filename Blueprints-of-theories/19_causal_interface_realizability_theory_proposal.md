@@ -242,6 +242,19 @@ CIRTでは**構造的に起こり得ない**。「Lamb shift は $H$ に吸収�
 （$L$ の対角成分 $h'(\omega_a)$ は $b$ を含むが、$b\succeq0$ は追加条件であって
 障害を弱めない。最小witness (4.2) は対角成分を一切使わない。）
 
+> **[CG2監査による訂正 2026-07-25、`docs/cirt-cg2-covariance-audit.md`]**
+> 上記の不変性主張は正しいが**不完全**である。「最小witnessは対角成分を使わないので $b$ の
+> 影響を受けない」という直前の一文は**誤り**——式(4.1) $L_{ab}=b+\int u_au_b\,d\mu$ は
+> $a\neq b$ でも成立し、$b$ は非対角ブロック $M=L_{12}$ にも入る。判定を保存する変換の全体は
+> 加法群 $\{S\to S+K\}$ ではなく、
+> $$S(\omega)\mapsto T^\dagger S(\omega)T+K-B\omega,\qquad T\ \text{定数可逆},\ B\succeq0\ \text{定数}$$
+> という半群である。ただし $B\succeq0$ 方向は一方向的（PSDデータから違反を作れない）であり、
+> 片側証明書としての健全性は影響を受けない。加えて、congruence方向（$T$）・$\omega$依存な
+> 変換いずれについても、記号計算（CG2、T1・T3・T4）により実際に判定は保存されることを確認済み
+> ——$\omega$依存の「gauge」は式(3.1)の行列Herglotz性と両立せず（上半平面へ解析接続できない）、
+> ポート基底の凍結（§3.1）は規約ではなくこの構造的事実に支えられている。詳細と証明は
+> `docs/cirt-cg2-covariance-audit.md` §3–4を参照。
+
 ### 4.4 quantum surplus：coherence-only 障害
 
 (4.2) の対角成分は
@@ -500,8 +513,8 @@ CIRTは制約を CP から **CP＋因果性** に強めることでこの分類�
 | 優先 | Gate | 目的 | 判定基準 |
 |---:|---|---|---|
 | 0 | **定義凍結** | 結果を見る前に固定 | architecture $\mathfrak A$、ポート基底、窓定義、比較class、競合baseline、一意性判定基準 |
-| 1 | **CG1 exact seed** | C3を成立させる | C2の記号的証明＋C2違反する**具体的有限次元GKSL族**（qutritまたはΛ系、2ポート以上）。**違反領域が有限幅**であること（G4の轍を踏まない）が必須 |
-| 2 | **CG2 gauge監査** | 最大の想定反論を潰す | $S\to S+K$、jump frame unitary混合、$H_{\rm LS}$/bare $H$ 再分割、ポート基底再定義、secular近似の緩和——すべてで障害が残存すること |
+| 1 | **CG1 exact seed** | C3を成立させる | C2の記号的証明＋C2違反する**具体的有限次元GKSL族**（qutritまたはΛ系、2ポート以上）。**違反領域が有限幅**であること（G4の轍を踏まない）が必須。**[2026-07-25更新]** CG2監査（下記）によりΛ系は非対角 $M$ を持てないことが判明（`docs/cirt-cg2-covariance-audit.md` §2）。CG1の具体構成は**縮退多重項構造**（縮退基底/励起2重項→単一準位、ポート=偏光チャンネル、つまみ=等方的光シフト）に差し替える必要がある。qutritまたはΛ系のままでは未着手のまま留める |
+| 2 | **CG2 gauge監査** | 最大の想定反論を潰す | $S\to S+K$、jump frame unitary混合、$H_{\rm LS}$/bare $H$ 再分割、ポート基底再定義、secular近似の緩和——すべてで障害が残存すること。**判定: PASS（2026-07-25、`docs/cirt-cg2-covariance-audit.md`）。** congruence方向・$b$項・$\omega$依存gaugeいずれでも witness は保存される。ただし副産物として secular構造からΛ系がquantum surplusを持てないことが判明し、CG1の実装対象を変更する必要がある（§4.3に errata 追記済み。secular緩和の限界は未決） |
 | 3 | **CG3 ancilla閉性** | **理論の決定点** | C4の証明、および $N=1,\dots,N_{\max}$ の受動dilationによる敵対的実現探索が全滅すること |
 | 4 | CG4 quantum surplus | 古典還元を破る | 対角データは具体的スカラーbathで実現、行列データは実現不能、という明示的分離 |
 | 5 | CG5 頑健性 | 実験可能性 | 残留吸収 $\gamma\le\varepsilon$ と測定CIを入れてもマージン $>0$。C10の定量Loewnerを証明 |
