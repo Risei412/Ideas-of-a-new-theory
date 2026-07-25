@@ -454,6 +454,23 @@ Supplemental Materialは補助的導出、追加図、パラメータ表、再�
 
 **P0 の2件は §6.3 の未解決項目1（Resource-bounded same-data gap）および §11 の Priority 1 production へ直結する。**
 
+> **【2026-07-25 文献監査による制約】** `docs/literature-audit-report.md` / `-addendum.md`（計56件）より。
+> P0の2件はいずれも、**現在の素朴な表現では新規性を主張できない**ことが判明している。
+>
+> **P0-1 Interface realizability** — 「共通dilationが存在しない」だけでは非自明にならない
+> （無制限のcontrol registerと直和ancillaを許せば block-control で常に構成できる）。
+> **C-JOINT / I-JOINT / P-PROG / D-SHARED / R-BOUND のどれを問うのかを凍結すること**（`context-pack.md` §6.2.2）。
+> 前2者は既知の channel/instrument compatibility へ還元される可能性が高い。
+>
+> **P0-2 Resource-bounded mechanism separation** — 「低depthで一致し高depthで分裂する」だけでは不十分
+> （一般位置の有限HMMは有限長word確率からminimal realizationを復元できる：Huang et al. 2016）。
+> **cancellation-protected / rank-deficient な例外集合における、凍結資源内のlower bound** として定式化する必要がある。
+>
+> **維持できない表現**（`literature-audit-report.md` §4.1）:
+> 「multi-time responseはsingle-time responseから分からない」／「pairwise dataが一致してもtriple dataが異なる」／
+> 「hidden ancillaを入れれば説明できるが大きい（最小次元の証明なし）」／「process tensorなら表現できるが非効率（下界なし）」／
+> 「pairwise group synchronizationでは説明できない（higher-order未監査）」
+
 ### 6.2 現在の探索対象外
 
 以下は §4.3 の適用範囲外のうち、**当面は探索しない**と決めた領域。
@@ -527,8 +544,22 @@ Supplemental Materialは補助的導出、追加図、パラメータ表、再�
 **この4件から読み取るべき教訓:**
 
 - **「局所同値 → 大域的obstruction → 有限資源certificate」という構造まで作り込んでも、それだけでは固有性にならない。** 上記はすべてこの構造を達成した上で死んでいる
-- 死因はすべて同じ — **pairwise relative-chart因子化 \(G_{ij}=X_jX_i^{-1}\) へ還元された**こと。次の候補は「全pairwise dataを一致させたまま depth-3以上のconnected tensorだけが破れる」方向を優先する（§6.1 P0-2）
+- 死因はすべて同じ — **pairwise relative-chart因子化 \(G_{ij}=X_jX_i^{-1}\) へ還元された**こと
 - 非零のtriangle holonomyだけでは不十分。一般group synchronizationも不整合cycleを扱える
+
+> ⚠️ **【2026-07-25 訂正】depth-3への移行だけでは逃げられない。**
+> 本節は当初「次の候補は全pairwise dataを一致させたまま depth-3以上のconnected tensorだけが破れる方向を優先する」と記録していたが、
+> **文献監査 T2（Duncan–Kileel 2025, arXiv:2505.21932 _Higher-Order Group Synchronization_）がこの逃げ道を塞いでいる。**
+> 同論文は hypergraph 上の triple / n-wise 局所情報から大域的group elementを推定する枠組みで、
+> higher-order synchronizability の必要十分条件と compact group 向け message passing を与える。
+> したがって「pairwise因子化を破ったので群同期ではない」という論証は**成立しない**。
+>
+> **現在の要件:** depth-3への移行に加えて、以下のいずれかが必要。
+> - hyperedge order `h=3,4` の higher-order synchronization baseline を**実装した上で**破ること
+> - 必要 hyperedge order が `>4` であることの証明
+> - group-valued hyperedge potential へ写らないことの構造的論証（quantum response functional / GKSL physicality / finite-shot予測のいずれかが本質的に効くこと）
+>
+> 詳細は `docs/literature-audit-report.md` §1 T2 および `docs/reduction-targets.md` C族。
 
 ### 6.6 記録の運用ルール
 

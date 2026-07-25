@@ -13,13 +13,19 @@
 
 | パス | 内容 |
 |---|---|
-| `THEORY_PROPOSAL_GUIDE.md` | **作業基準の本体**（803行）。提案前に必読 |
+| `THEORY_PROPOSAL_GUIDE.md` | **作業基準の本体**（約900行）。提案前に必読 |
 | `Frozen-Theories/` | 確定理論3件（RISEI・SMRT・EIT）。書き換えない |
 | `Blueprints-of-theories/` | 草案5件（DCIT・トロピカル付値異常・因果インターフェース・実現可能性錐・保護の熱力学） |
 | `docs/context-pack.md` | **ChatGPTにアップロードする資料層**（命令は書かない） |
 | `docs/redteam-instructions.md` | ChatGPTのカスタム指示欄に貼る（還元／文献／校正の3種） |
 | `docs/claim-template.md` | 各チャットに貼る主張の雛形 |
 | `docs/stage0-checklist.md` | Stage 0 準備チェックリスト |
+| `docs/literature-audit-report.md` | **文献監査 Pass 1**（30件、競合族A–G） |
+| `docs/literature-audit-addendum.md` | **文献監査 Pass 2**（26件、H compatibility / L 下界） |
+| `docs/literature-audit-specification.md` | 監査の基準 |
+| `docs/literature-master-table.csv` | 全56件の索引（threat level・decisive difference つき） |
+| `docs/reduction-targets.md` | 族ごとの target object / kill test / survival certificate |
+| `references/` | `references.bib` + `manifest.csv`（PDFは未取得、URL索引のみ） |
 | `docs/source-material/` | 内部資料4件（RISEI改訂版PDF・競合監査tex・Tubeロードマップ・SMRTスモーク） |
 
 ## 検証工程（ガイド §11）
@@ -69,6 +75,13 @@ Tube calculus も固有現象とは判定されていないが、**棄却では�
 **競合理論族6族＋解析的kill gate**（`context-pack.md` §6）— 予算を数値凍結済み。
 標準監査 `m3-6, d1-3, k1-3, D1-4, μ1-2, P≤128` ／ 拡張 `m7-8, d4, k4, D5-6, μ3, P≤256`。
 
+**文献監査56件完了**（2026-07-25、`docs/literature-audit-report.md` + `-addendum.md`、`references/`）
+競合族A〜G＋H（compatibility）＋L（sample-complexity下界）に対応づけ済み。**prior-art killはないが、P0両方とも再定式化が必要:**
+- **P0-1** — 「共通dilationが存在しない」は無制限なら常に構成可能。C-JOINT/I-JOINT/P-PROG/D-SHARED/R-BOUND のどれを問うか凍結が必要。前2者は既知のchannel/instrument compatibilityへ還元される公算大
+- **P0-2** — 「低depth一致・高depth分裂」だけでは不十分（Huang 2016）。cancellation-protected例外集合＋凍結資源内の下界として定式化する
+- **§6.5に記録した「depth-3へ移行すれば逃げられる」は誤り**。Duncan–Kileel 2025 の higher-order group synchronization が塞いでいる（訂正済み）
+- 競合予算を5点修正（C族にhyperedge order `h=3,4` 追加ほか）— `context-pack.md` §6.2.1
+
 **記号衝突13件**（ガイド §5.3）— `Ω` `K` `Q` `Ξ` `ν` `C` `M` `P` `A` `G` `S` `z` `q` が理論間で別物。
 特に `D` は理論では damping operator だが競合予算では hidden dimension。`D_damp`/`D_hidden` と書き分ける。
 
@@ -80,7 +93,7 @@ GKSL simulationは custom Liouville 実装、symbolic は SymPy で代替。
 ## 未決事項
 
 1. ~~ガイド §1.2 代替投稿先~~ — **2026-07-25完了**（PRX → PRX Quantum → PRL → PRA/PRB、降格条件6件つき）
-2. **ガイド §7** — 競合論文表（ChatGPT文献調査で埋める）
+2. **ガイド §7** — 競合論文表。文献56件は `docs/literature-master-table.csv` に索引済み。ガイド§7への転記は候補確定後（現時点はfamily-levelのため）
 3. **`context-pack.md` §2・§3** — ガイド §4.1・§4.2 からの転記（機械的作業、Claude側で実行可）
 4. **RISEI の正式名称** — 凍結文書内に展開がなく未確認
 5. **紛失資料3件** — `risei_uniqueness_competitor_audit/REPORT.md` 他。ゴミ箱から復旧予定
@@ -88,10 +101,22 @@ GKSL simulationは custom Liouville 実装、symbolic は SymPy で代替。
 
 ## 次のアクション
 
-**Stage 0 の準備は実質完了。** P0の2件はどちらも着手可能。
+**Stage 0 の準備は完了。ただし文献監査により、P0の2件はどちらも素朴な表現では新規性を主張できない。**
+生成に入る前に、命題の形を先に凍結すること。
 
-- **Resource-bounded mechanism separation** — §6.3の最短起点・Priority 1 production・競合予算の凍結値すべてに直結。**最初の1本はこちらを推奨**
-- **Interface realizability** — `Blueprints-of-theories/PRX_New_Theory_Blueprint_DCIT_2026-07-25.md` の dilation frustration と重なるため既存草稿を再利用できる可能性
+**P0-2 Resource-bounded mechanism separation（推奨）**
+- 「低depth一致・高depth分裂」では不十分。**cancellation-protected / rank-deficient 例外集合における凍結資源内のlower bound**として定式化する
+- 目標下界を `rank>6` / `χ>36` / 必要hyperedge order `>4` のいずれかに固定する
+- **例外集合はmeasure zeroなので、対称性か物理機構による保護を示さないとfine-tuning批判を受ける**（RISEI §9 puncture set・Corollary 9.4 が道具）
+
+**P0-1 Interface realizability**
+- **まず C-JOINT / I-JOINT / P-PROG / D-SHARED / R-BOUND のどれを問うのか凍結する**（`context-pack.md` §6.2.2）
+- C-JOINT/I-JOINT は既知の channel/instrument compatibility へ還元される公算が高い
+- counterfactualが排他的に選択されるなら P-PROG が近い。`dim(program)`, `dim(E)`, 誤差, 許可readout の凍結が必要
+
+**共通の作業**（`literature-audit-report.md` §6）: 候補を固定する前に neutral notation で
+calibration/held-out tensor を定義し、generalized Hankel matrix と temporal operator-Schmidt matrix を
+exact arithmetic で構成する。
 
 ---
 
