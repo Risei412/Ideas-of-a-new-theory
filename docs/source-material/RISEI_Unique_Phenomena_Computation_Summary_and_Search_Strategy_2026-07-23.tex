@@ -1,0 +1,882 @@
+\documentclass[11pt,a4paper,uplatex,dvipdfmx]{bxjsarticle}
+
+\geometry{margin=24mm}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  citecolor=blue!55!black,
+  urlcolor=blue!55!black,
+  pdftitle={RISEI固有現象探索：数値計算総括と今後の研究方針},
+  pdfauthor={}
+}
+
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+\renewcommand{\arraystretch}{1.18}
+
+\newtheorem{definition}{定義}[section]
+\newtheorem{principle}[definition]{原則}
+\newtheorem{criterion}[definition]{判定規約}
+\newtheorem{proposal}[definition]{探索仮説}
+\theoremstyle{remark}
+\newtheorem{remark}[definition]{注記}
+
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\spec}{spec}
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\RMSE}{RMSE}
+\newcommand{\cL}{\mathcal L}
+\newcommand{\cR}{\mathcal R}
+\newcommand{\cC}{\mathcal C}
+\newcommand{\cP}{\mathcal P}
+\newcommand{\cG}{\mathcal G}
+\newcommand{\cU}{\mathcal U}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\cM}{\mathcal M}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\id}{\mathbb I}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\CC}{\mathbb C}
+
+\newtcolorbox{resultbox}[1][]{
+  colback=blue!3,
+  colframe=blue!55!black,
+  fonttitle=\bfseries,
+  title={#1},
+  boxrule=0.7pt,
+  arc=1.5mm
+}
+\newtcolorbox{warningbox}[1][]{
+  colback=orange!4,
+  colframe=orange!65!black,
+  fonttitle=\bfseries,
+  title={#1},
+  boxrule=0.7pt,
+  arc=1.5mm
+}
+\newtcolorbox{decisionbox}[1][]{
+  colback=green!3,
+  colframe=green!45!black,
+  fonttitle=\bfseries,
+  title={#1},
+  boxrule=0.8pt,
+  arc=1.5mm
+}
+
+\title{\textbf{RISEI理論固有現象探索}\
+\Large 数値計算総括・非還元監査・今後の研究方針}
+\author{}
+\date{2026年7月23日}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+本稿は、RISEI理論に固有な現象を探索するために2026年7月23日に実施した一連の数値計算を統合し、各候補がどの段階で成立し、どの既存枠組みに還元されたかを整理する。検証対象は、response--mechanism contextuality、平均に盲目で揺らぎにのみ現れるprotocol-order効果、matched operational equivalence、intervention-relative gauge splitting、有限resource certificate、held-out predictor、continuous quantum gauge、global cycle-consistent quotient atlasである。複数の候補は操作的現象、解析的witness、予測圧縮、predict-or-abstain certificateとして成立した。しかし最終的な競合理論監査により、relative-gauge／cycle-atlas枝はcompact-group synchronizationまたはstructured state-space identificationと同一の統計模型・最適化問題へ還元されることが確認された。したがって、現在の候補はRISEI固有現象ではない。本稿ではこの否定結果を探索失敗ではなく、候補空間を狭める非還元監査の成果として扱う。今後は、信号を先に探すのではなく、競合理論が必ず満たす恒等式または有限資源限界を先に抽出し、それを破るRISEI witnessをmatched-pairで構成する方針へ移行する。Tube calculusは完成済みの計算基盤・実験予言系として凍結し、固有現象探索とは分離して保持する。
+\end{abstract}
+
+\tableofcontents
+
+\section{目的と結論}
+
+本研究系列の目的は、単に珍しい応答を生成することではない。目標は、RISEIの原始概念
+\begin{equation}
+\text{intervention}
++\text{sector}
++\text{response functional}
++\text{finite resource}
++\text{operational equivalence}
+\end{equation}
+が、現象の定義、発生条件、有限判定法、blind predictionのいずれかに不可欠となる構造を見つけることである。
+
+最終結論は次の通りである。
+
+\begin{resultbox}[最終判定]
+\begin{equation}
+\boxed{\text{今回までに調べた候補は、RISEI固有現象としては成立しない。}}
+\end{equation}
+ただし、複数の候補について、操作的効果、exact witness、最小分離資源、有限予測atlas、abstention certificateは成立した。棄却されたのは現象の存在ではなく、\emph{RISEIだけに由来するという固有性主張}である。
+\end{resultbox}
+
+この結論はRISEI理論全体の否定ではない。現在安全に維持できる位置づけは、
+\begin{equation}
+\boxed{
+\text{RISEI}
+=
+\text{開放系の介入・sector・応答・有限資源を統一する計算framework}
+}
+\end{equation}
+である。固有現象の探索は、この計算frameworkが既存理論より余分な予測情報を返す領域を探す独立枝として継続する。
+
+\section{Tube calculusとの役割分離}
+
+Tube calculusは、stationary strong-dissipation領域において、Riesz cluster、Schur縮約、slow-loss gate、局所幾何、有限$\Gamma$応答、実験パラメータへのpullbackを一つの計算鎖へ接続した。数値証明書、branch判定、forward calculation、inverse designを含む計算体系として閉じている。これはRISEI研究の重要な成果である。
+
+一方、regular tube geometryとその主要な発生機構は、Riesz理論、Schur complement、Zeno型縮約、制御・realization理論の組合せから再構成できる。そのため、Tubeは現時点でRISEI固有現象とは判定されない。
+
+\begin{principle}[主線と探索線の分離]
+今後は次の二線を混同しない。
+\begin{align}
+\text{主線} &: \text{凍結したTube計算体系と実験予言},\\
+\text{探索線} &: \text{RISEI固有のpredictive surplusを持つ現象候補}.
+\end{align}
+新候補がTubeより強い非還元性、定理性、予測性を通過するまで、完成済み理論の中心を移動しない。
+\end{principle}
+
+この分離により、固有現象探索が失敗しても、Tube calculusの完成度と実験的価値は失われない。逆に、探索候補を守るために既存の完成体系を過剰拡張する必要もない。
+
+\section{固有性の判定規約}
+
+\subsection{絶対的な「記述不能」を目標にしない}
+
+有限次元の量子過程は、十分一般的なprocess tensorや高次元hidden-state modelによって表現できる。したがって、
+\begin{equation}
+\text{「他のいかなる理論でも記述できない」}
+\end{equation}
+を実用的な目標にすると、検証不能な主張になる。
+
+本研究で採用する固有性は、比較対象、事前情報、観測アクセス、資源budgetを固定した上での\textbf{predictive surplus}である。
+
+\begin{definition}[RISEI固有現象候補]
+固定した競合理論族$\mathfrak B$と同一の入力、prior、calibration budgetを与えたとき、RISEIが
+\begin{enumerate}
+  \item 競合理論では導出できないwitness、
+  \item より少ない資源でのheld-out prediction、
+  \item 最小分離資源$\left(d_{\min},k_{\min},N_{\eps}\right)$、
+  \item 予測不能時のfailure certificate
+\end{enumerate}
+の少なくとも一つを、事前固定した条件の下で返すなら、その構造をRISEI固有現象候補と呼ぶ。
+\end{definition}
+
+\subsection{三段階の判定}
+
+各候補は次の三段階に分けて評価する。
+
+\begin{enumerate}[label=\textbf{U\arabic*.}]
+  \item \textbf{Operational phenomenon gate.} 数値的に再現可能な応答差、相転移、分離、幾何が有限領域で成立する。
+  \item \textbf{Internal RISEI gate.} RISEIのwitness、有限resource certificate、定理候補、blind predictionが成立する。
+  \item \textbf{External uniqueness gate.} 同一条件の競合理論監査を通過し、predictive surplusが残る。
+\end{enumerate}
+
+今回の候補の多くはU1とU2を通過したが、U3で棄却された。
+
+\section{数値計算キャンペーンの全体像}
+
+\begin{longtable}{p{0.35cm}p{3.35cm}p{3.85cm}p{2.15cm}p{2.35cm}}
+\toprule
+ & 候補 & 成立した結果 & 内部判定 & 固有性判定 \\
+\midrule
+\endfirsthead
+\toprule
+ & 候補 & 成立した結果 & 内部判定 & 固有性判定 \\
+\midrule
+\endhead
+1 & Response--Mechanism Contextuality & 局所fit成立、大域additive fit破綻、Möbius witness非零 & raw obstruction PASS & shared ancillaへ完全還元、FAIL \\
+2 & Protocol-order $\times$ fluctuation & 平均同値のまま二次累積量のみ分裂 & phenomenon PASS & tilted GKSL/FCSへ還元、FAIL \\
+3 & Matched operational equivalence & $d_{\min}=2$, $k_{\min}=2$の最小資源certificate & PASS & 未決着 \\
+4 & Relative-gauge exact witness & $\Delta K_2=2\ell_Y(G-I)r_X$のexact式 & theorem-candidate PASS & 未決着 \\
+5 & Held-out quotient predictor & 20 calibrationから30未使用protocolをexact prediction & PASS & 未決着 \\
+6 & Continuous-gauge scaling & $SU(d)$、nonunitalへ現象拡張 & phenomenon PASS & tree atlas production FAIL \\
+7 & Global cycle quotient atlas & 有限領域でpredict-or-abstain atlas成立 & internal certificate PASS & 未決着 \\
+8 & Competitor audit & 中立group modelと目的関数・予測・棄却が完全一致 & audit PASS & RISEI固有性 FAIL \\
+\bottomrule
+\end{longtable}
+
+\section{候補1：Response--Mechanism Contextuality}
+
+\subsection{問い}
+
+三つの重なり合う介入contextが、それぞれ局所的にはreduced single-qubit GKSL responseで説明できる一方、一つのcontext-independent additive sector assignmentでは大域的に貼り合わないかを調べた。
+
+\subsection{結果}
+
+局所fitは
+\begin{equation}
+\max_C \RMSE_C^{\mathrm{local}}
+=1.853589\times10^{-3}
+<3.0\times10^{-3}
+\end{equation}
+でPASSした。一方、大域additive fitは
+\begin{equation}
+\RMSE^{\mathrm{global}}
+=1.375087\times10^{-2}
+>1.0\times10^{-2}
+\end{equation}
+で破綻した。explicit witnessは
+\begin{align}
+W_{ST}&=-2.637274\times10^{-2},\\
+W_{TU}&=-2.533001\times10^{-2},\\
+W_{US}&=+1.794918\times10^{-2},\\
+\|W_{\mathrm{cycle}}\|_2&=4.073456\times10^{-2}
+\end{align}
+となった。独立bath negative control、synthetic recoverability、multi-start stabilityはすべてPASSした。
+
+\subsection{固有性監査}
+
+データは、systemと共有ancillaを含む一つのcontext-independent additive GKSL模型から生成されている。したがって、観測された貼り合わせ不能は、共有自由度をreduced modelから消去したことに由来する。
+
+\begin{warningbox}[判定]
+この候補はreduced Boolean sector ontologyの不足を検出するが、新しい非還元物理を証明しない。shared-ancilla enlargementで完全に説明できるため、productionへ進めず早期killとした。
+\end{warningbox}
+
+\section{候補2：平均に盲目なprotocol-order揺らぎ}
+
+\subsection{問いと模型}
+
+二つの介入$S,T$について、
+\begin{equation}
+S\to T,
+\qquad
+T\to S
+\end{equation}
+の全時刻一時刻状態、平均検出率、総平均countを一致させたまま、二次累積量だけを分裂させられるかを検証した。
+
+4状態Markov過程を4準位GKSLへ厳密埋め込み、共通定常状態と平均検出率を固定した。結果は
+\begin{equation}
+\langle N\rangle_{ST}
+=
+\langle N\rangle_{TS}
+=1.375
+\end{equation}
+であり、varianceは
+\begin{align}
+K_{2,ST}&=1.670036201660304,\\
+K_{2,TS}&=1.346992550822373
+\end{align}
+となった。したがって、
+\begin{equation}
+\boxed{\Delta K_2=0.323043650837931}
+\end{equation}
+であり、相対分裂は$21.4147\%$である。
+
+10\% rate perturbation 500例では符号保持率100\%、duration scan 100点でも符号保持率100\%だった。commuting negative controlでは分裂は$4.44\times10^{-16}$以下へ消失した。
+
+\subsection{固有性監査}
+
+この効果はstandard tilted generatorによるfull counting statisticsで最大誤差$1.84\times10^{-8}$以内に再現され、full GKSL embeddingでも$2.00\times10^{-15}$以内で一致した。
+
+\begin{warningbox}[判定]
+平均に盲目で揺らぎだけが順序を記憶する現象は頑健に成立した。しかし、FCSおよび通常のmulti-time process記述の範囲内であるため、RISEI固有現象ではない。
+\end{warningbox}
+
+\section{候補3：Matched operational equivalenceと最小分離資源}
+
+二系$A,B$を、各介入単独ではgenerator spectrum、stationary state、full count distribution、1次から4次のcumulantが一致するように構成した。
+
+\begin{equation}
+D_{\mathrm{TV}}^{(d=1)}
+\le1.40\times10^{-16}.
+\end{equation}
+
+深さ2のordered protocolでは平均が一致したまま、`TS' protocolのvarianceが
+\begin{align}
+K_2^A&=1.34699255,\\
+K_2^B&=1.91313880
+\end{align}
+へ分裂し、
+\begin{equation}
+\boxed{\Delta K_2=0.56614625}
+\end{equation}
+を得た。
+
+最小分離資源は
+\begin{equation}
+\boxed{(d_{\min},k_{\min})=(2,2)}
+\end{equation}
+であり、Chernoff informationに基づく保守的な5\%誤識別十分試行数は
+\begin{equation}
+\boxed{N_{5\%}\le137}
+\end{equation}
+だった。
+
+各介入には個別のstate permutation gaugeが存在する一方、両介入を同時に整合させる共通gaugeは存在しなかった。この結果から、候補は単なる信号ではなく、
+\begin{equation}
+\text{local equivalence}
+\to
+\text{relative-gauge obstruction}
+\to
+\text{minimal resource certificate}
+\end{equation}
+という構造へ昇格した。
+
+\section{候補4：Exact second-cumulant witness}
+
+二段protocol $X\to Y$について、二系のvariance差がexactに
+\begin{equation}
+\boxed{
+\Delta K_2^{X\to Y}
+=2\langle\!\langle1|A_Y(R_Y^{-1}R_X-I)A_Xp_*\rangle\!\rangle
+}
+\end{equation}
+と書けることを確認した。centered fingerprintを用いると、
+\begin{equation}
+\boxed{
+\Delta K_2^{X\to Y}
+=2\ell_Y(G-I)r_X,
+\qquad G=R_Y^{-1}R_X
+}
+\end{equation}
+となる。
+
+この式は、
+\begin{enumerate}
+  \item 前半介入が履歴を符号化するwrite fingerprint $r_X$、
+  \item 二つの介入chartのrelative defect $G-I$、
+  \item 後半介入がdefectを読むread fingerprint $\ell_Y$
+\end{enumerate}
+の三要素へ現象を分解する。
+
+4状態の全24 permutationと両順序48例では最大残差$1.64\times10^{-15}$、次元3から8のランダムMarkov 1500模型では最大残差$3.99\times10^{-13}$、非零率99.4\%だった。量子GKSL 300模型では最大残差$8.07\times10^{-16}$、非零率100\%だった。
+
+明示的消失条件は
+\begin{equation}
+G=I,
+\qquad
+r_X=0,
+\qquad
+\ell_Y=0,
+\qquad
+\ell_Y(G-I)r_X=0
+\end{equation}
+である。
+
+この段階でexact witnessと最小資源定理候補は成立した。しかし、式そのものはswitched GKSLとFCSの代数からも導出可能であり、固有性は未達だった。
+
+\section{候補5：Held-out quotient predictor}
+
+6介入について、depth-1 fingerprintとcalibration spanning tree上の20測定だけを用い、未使用の全30 ordered protocolを予測した。
+
+\begin{equation}
+\boxed{
+20\ \text{calibration measurements}
+\Longrightarrow
+30\ \text{held-out predictions}
+}
+\end{equation}
+
+最大予測誤差は数値精度内で0だった。重要なのは、relative gauge自体が一意でない辺が存在しても、残った2候補が与える全held-out予測の差が
+\begin{equation}
+5.55\times10^{-17}
+\end{equation}
+以下だったことである。
+
+したがって、復元対象は裸のgauge $P_i$ではなく、observational stabilizer $H_i$で割った
+\begin{equation}
+\boxed{[P_i]=P_iH_i}
+\end{equation}
+というquotient classである。
+
+次元3、4、5のランダム36模型では、point gauge完全回収は35/36だった一方、held-out predictionは36/36で成功した。これにより、
+\begin{equation}
+\text{内部chartの非一意性}
+\not\Rightarrow
+\text{予測の非一意性}
+\end{equation}
+が数値的に確認された。
+
+\section{候補6：Continuous quantum gaugeとscaling production}
+
+permutation gaugeを一般の$SU(d)$ unitary gaugeへ拡張し、介入数$m$、gauge次元$q$、noise、calibration数を同時に走査した。
+
+relative-gauge witnessは$SU(2),SU(3),SU(4)$、nonunital block-$SU(2)$で成立し、直接GKSL計算との最大残差は$1.09\times10^{-15}$以下だった。したがって、現象は古典的ラベル交換には限定されない。
+
+しかし、tree calibrationを用いた無条件の予測圧縮則は破綻した。代表結果を\cref{tab:tree-scaling}に示す。
+
+\begin{table}[htbp]
+\centering
+\caption{Tree calibrationによるheld-out predictionの代表結果。}
+\label{tab:tree-scaling}
+\begin{tabular}{lrrrrl}
+\toprule
+模型 & $m$ & $q$ & calibration & held-out & 判定 \\
+\midrule
+unital $SU(2)$ & 4 & 3 & 21 & 12 & PASS \\
+unital $SU(2)$ & 8 & 3 & 49 & 56 & PASS \\
+unital $SU(2)$ & 16 & 3 & 105 & 240 & FAIL \\
+unital $SU(2)$ & 32 & 3 & 217 & 992 & FAIL \\
+unital $SU(3)$ & 4 & 8 & 54 & 12 & FAIL \\
+unital $SU(3)$ & 16 & 8 & 270 & 240 & FAIL \\
+nonunital block-$SU(2)$ & 8 & 3 & 49 & 56 & PASS \\
+nonunital block-$SU(2)$ & 16 & 3 & 105 & 240 & FAIL \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+$K<q$ではJacobian rankが不足し必ず破綻した。一方、$K\ge q$としてcalibration数を増やしても誤差は単調に減少しなかった。したがって、
+\begin{equation}
+\boxed{K\ge q\ \text{は必要条件だが十分条件ではない}}
+\end{equation}
+ことが分かった。
+
+破綻要因は、local rank不足だけではなく、非線形signatureの複数branch、tree伝播誤差、global chart inconsistency、observability marginの低下、quotient uncertaintyのpoint estimate化にある。
+
+\section{候補7：Global cycle-consistent quotient atlas}
+
+Tree方式を、冗長calibration graph、group synchronization型初期化、global cycle-consistent fit、prediction interval、abstention certificateへ置き換えた。
+
+固定したunital $SU(2)$、$m=16$模型では、cycle冗長度に明確なpredictability boundaryが現れた。
+
+\begin{table}[htbp]
+\centering
+\caption{Cycle冗長度と予測可能性。}
+\label{tab:cycle-threshold}
+\begin{tabular}{rrrrrl}
+\toprule
+冗長度 & calibration & held-out & 圧縮比 & 最大誤差 & 判定 \\
+\midrule
+1.00 & 105 & 225 & 2.143 & $1.72\times10^{-3}$ & ABSTAIN \\
+1.25 & 133 & 221 & 1.662 & $1.02\times10^{-2}$ & ABSTAIN \\
+1.50 & 161 & 217 & 1.348 & $5.81\times10^{-16}$ & EXACT \\
+2.00 & 210 & 210 & 1.000 & $8.41\times10^{-16}$ & EXACT \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+冗長度1.5では、tree estimatorの最大誤差$8.40\times10^{-3}$がglobal estimatorにより$5.81\times10^{-16}$まで回復した。
+
+\begin{equation}
+\boxed{
+161\ \text{calibration measurements}
+\Longrightarrow
+217\ \text{held-out predictions}
+}
+\end{equation}
+
+unital $SU(2)$では$m=8,16$でEXACT、$m=32$でABSTAINとなった。nonunital block-$SU(2)$では$m=8$でEXACT、$m=16$でABSTAINとなった。continuous $SU(3)$、$m=4$ではgauge RMSが0.15以下でEXACT、0.20でABSTAINとなった。
+
+1\%と3\% noiseの限定検証では、予測を返した集合のcoverageは100\%、false-certificate rateは0\%だった。ただし各noise level 1 seedであり、統計的保証ではない。
+
+この結果から候補は
+\begin{equation}
+\boxed{
+\begin{gathered}
+\text{local operational equivalence}
+\to
+\text{cycle-dependent global chart closure}\\
+\to
+\text{finite prediction or certified abstention}
+\end{gathered}}
+\end{equation}
+へ再定義された。
+
+\section{最終競合理論監査}
+
+\subsection{中立モデル}
+
+介入chartを$X_i\in SU(d)$、calibration観測を
+\begin{equation}
+y_{ij,a}=h_{ij,a}(X_jX_i^{-1})+\epsilon_{ij,a}
+\end{equation}
+と置き、
+\begin{equation}
+J(X_1,\ldots,X_m)
+=
+\sum_{(i,j),a}
+\left|
+ y_{ij,a}-h_{ij,a}(X_jX_i^{-1})
+\right|^2
+\label{eq:neutral-objective}
+\end{equation}
+を最小化するcompact-group latent-frame estimatorを構成した。この定式化は、intervention、sector、Riesz projectorなどのRISEI固有語彙を必要としない。
+
+\subsection{目的関数の同一性}
+
+4ケースについて各50個のランダムchartで、RISEI実装と中立実装の残差ベクトルを比較した。
+
+\begin{equation}
+\boxed{
+\max
+\|J_{\mathrm{RISEI}}-J_{\mathrm{neutral}}\|
+=0
+}
+\end{equation}
+
+これは二手法が似ているという結果ではない。統計模型と最適化問題が同一である。
+
+\subsection{予測と棄却の一致}
+
+\begin{table}[htbp]
+\centering
+\caption{競合理論監査の凍結4ケース。}
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\textwidth}{Xrrrrll}
+\toprule
+ケース & calibration & held-out & RISEI誤差 & 中立誤差 & RISEI & 中立 \\
+\midrule
+nonunital $m=8$ exact & 98 & 42 & $4.402\times10^{-17}$ & $4.402\times10^{-17}$ & PREDICT & PREDICT \\
+$SU(2)$ $m=16$ compressed & 161 & 217 & $5.187\times10^{-16}$ & $5.187\times10^{-16}$ & PREDICT & PREDICT \\
+$SU(3)$ $m=4$ boundary & 162 & 3 & $2.941\times10^{-4}$ & $2.941\times10^{-4}$ & ABSTAIN & ABSTAIN \\
+$SU(3)$ $m=4$ exact & 162 & 3 & $2.645\times10^{-17}$ & $2.645\times10^{-17}$ & PREDICT & PREDICT \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+予測値の差、fit residual、abstention判断はすべて完全一致した。したがって、
+\begin{equation}
+\boxed{
+\begin{gathered}
+\text{current candidate}\\
+\subset\ \text{compact-group synchronization}\\
+/\ \text{structured system identification}
+\end{gathered}}
+\end{equation}
+である。
+
+\begin{warningbox}[固有性の決着]
+Relative gauge splitting、quotient atlas、cycle-threshold transition、predict-or-abstain certificateは、RISEIの語彙で物理的に解釈できる。しかし、同一のpriorと観測から同一の一般潜在group模型が同じ出力を返すため、これらをRISEI固有現象として主張することはできない。
+\end{warningbox}
+
+\section{棄却後にも残る成果}
+
+固有性FAILは、計算系列の全成果を無効にしない。少なくとも次の資産が残る。
+
+\subsection{Exact witness}
+
+\begin{equation}
+\Delta K_2=2\ell_Y(G-I)r_X
+\end{equation}
+は、protocol-order分裂をwrite、relative defect、readの三因子へ分解するexactな式である。RISEI固有ではないが、物理的解釈と実験設計に利用できる。
+
+\subsection{最小分離資源}
+
+\begin{equation}
+(d_{\min},k_{\min},N_{\eps})
+\end{equation}
+を、現象の有無とは別に出力する計算protocolが成立した。特に、単独介入のfull distributionが一致しても、深さ2、二次functionalで初めて等価類が分裂する例を構成した。
+
+\subsection{Quotient-aware prediction}
+
+内部gaugeが一意でなくても、observational stabilizerで割った同値類がheld-out予測を一意にする場合がある。これは「内部模型の完全同定」と「将来予測」を分離する重要な方法論である。
+
+\subsection{Predict-or-abstain certificate}
+
+予測不能領域で点推定を強制せず、cycle defect、fit residual、prediction intervalに基づきABSTAINを返す計算体系を構築した。これは実験protocolへ翻訳可能な安全機構である。
+
+\subsection{失敗地図}
+
+今回の系列により、以下はRISEI固有現象の中心候補から外すべきだと判明した。
+
+\begin{enumerate}
+  \item shared ancillaを消去したreduced-sector gluing obstruction、
+  \item mean-blind fluctuation-visible order effectそのもの、
+  \item pairwise relative gauge splitting、
+  \item compact-group chart closure、
+  \item quotient atlasによる予測圧縮、
+  \item cycle thresholdとabstention transition。
+\end{enumerate}
+
+これらを再び大規模化しても、既存理論の精密な適用例を増やす可能性が高い。
+
+\section{今後の固有現象探索方針}
+
+\subsection{探索原理の変更}
+
+これまでは、現象候補を構成し、その後に還元監査を行った。この順序では、興味深い信号が得られても、最後に一般理論へ吸収される。
+
+今後は順序を反転する。
+
+\begin{decisionbox}[新しい探索順序]
+\begin{enumerate}
+  \item 競合理論族を先に固定する。
+  \item 競合理論が必ず満たす恒等式、rank制約、resource lower boundを抽出する。
+  \item その制約を破るRISEI witnessを定義する。
+  \item witnessを非零にする最小GKSL matched pairを逆設計する。
+  \item 小規模smokeの時点で競合理論へadversarial fitを行う。
+  \item 非還元候補だけをproductionへ進める。
+\end{enumerate}
+\end{decisionbox}
+
+つまり、次に必要なのは「新しい波形のアイデア」より、\textbf{競合理論のnull identityを破るアイデア}である。
+
+\subsection{Priority 0：競合理論と公平条件の事前凍結}
+
+各候補について、計算前に以下を固定する。
+
+\begin{itemize}
+  \item enlarged GKSL with hidden ancilla、
+  \item tilted-GKSL / full counting statistics、
+  \item compact-group synchronization、
+  \item controlled HMM / structured state-space identification、
+  \item bounded-memory process-tensor model、
+  \item active experimental design baseline。
+\end{itemize}
+
+full process tensorは有限過程の普遍表現に近いため、「表現不能」を要求しない。代わりに、memory dimension、protocol depth、測定次数、parameter budgetを固定した\emph{bounded competitor class}とのpredictive surplusを問う。
+
+公平比較では、RISEIと競合理論へ同じ
+\begin{equation}
+\text{prior},\quad
+\text{calibration graph},\quad
+\text{shots},\quad
+\text{noise},\quad
+\text{held-out protocols}
+\end{equation}
+を与える。RISEIだけに正しいsector分解を与えた比較は、理論の優位ではなく事前知識の差である。
+
+\subsection{Priority 1：Competitor-null invariant discovery}
+
+最優先計算は、候補模型の大規模走査ではなく、競合理論族が満たす関係式の発見である。
+
+\begin{proposal}[高次connected-response恒等式の探索]
+Protocol depth 1から4、functional order 1から4までのconnected response tensor
+\begin{equation}
+\cC^{(k)}_{i_1\cdots i_d}
+\end{equation}
+を生成し、pairwise latent-group、有限hidden-state、bounded-memory process模型から大量sampleを作る。これらのfeature matrixのnull space、低rank関係、polynomial identityをSVD、symbolic elimination、semidefinite relaxationで抽出する。
+\end{proposal}
+
+探索する対象は、例えば
+\begin{equation}
+F\bigl(\cC^{(1)},\cC^{(2)},\cC^{(3)}\bigr)=0
+\quad\text{for all }\mathfrak B
+\end{equation}
+だが、RISEI admissible modelで
+\begin{equation}
+F\neq0
+\end{equation}
+となるwitnessである。
+
+特に、これまでの失敗がpairwise relative-chart因子化
+\begin{equation}
+G_{ij}=X_jX_i^{-1}
+\end{equation}
+へ還元されたことから、次は全pairwise dataを一致させたまま、depth-3以上のconnected tensorだけがpairwise factorization identityを破る候補を優先する。
+
+ただし、非零のtriangle holonomyだけでは不十分である。一般group synchronizationも不整合cycleを扱えるからだ。必要なのは、group enlargementやhidden-state enlargementを許した後にも、事前固定したresource classの恒等式を破ることである。
+
+\subsection{Priority 2：Adversarial matched-pair inverse design}
+
+Priority 1で候補witness $F$を得た後、二つの物理模型$A,B$を次のbilevel最適化で構成する。
+
+\begin{align}
+\min_{A,B}\quad
+& D_{\mathrm{baseline}}(A,B),\\
+\max_{A,B}\quad
+& |F(A)-F(B)|,
+\end{align}
+
+ここで$D_{\mathrm{baseline}}$は、競合理論が利用できる全データの差である。
+
+凍結条件は、
+\begin{equation}
+D_{\mathrm{baseline}}\le\eps,
+\qquad
+|F(A)-F(B)|\ge\delta
+\end{equation}
+とする。候補生成後にbaselineを狭めてはならない。
+
+\subsection{Priority 3：Hidden-dimension escalation audit}
+
+見かけの非還元性は、hidden ancillaやmemory dimension不足で生じることが多い。したがってsmoke段階から、
+\begin{equation}
+D_{\mathrm{hidden}}=1,2,3,\ldots,D_{\max}
+\end{equation}
+と競合模型の内部次元を上げ、fit誤差が消えるかを調べる。
+
+\begin{criterion}[早期kill]
+次のいずれかが成立した候補はproductionへ進めない。
+\begin{enumerate}
+  \item hidden dimensionを一段増やすだけでwitnessが消える。
+  \item tilted-GKSL/FCSが同じ観測をexactに返す。
+  \item group-latent objectiveへ変数変換できる。
+  \item bounded-memory process modelが同じbudgetでheld-out predictionを返す。
+  \item mismatchがoptimizer failureまたはmodel underparameterizationで説明される。
+\end{enumerate}
+\end{criterion}
+
+\subsection{Priority 4：定理・頑健性・failure boundary}
+
+候補が外部監査を生き残った後にのみ、次を行う。
+
+\begin{enumerate}
+  \item witnessのexactまたはcontrolled asymptotic formula、
+  \item 発生条件と消失条件、
+  \item noise、drift、model mismatchへのstability bound、
+  \item minimal protocol depth、functional order、sample complexity、
+  \item predict-or-abstain failure boundary。
+\end{enumerate}
+
+現象が一点で成立するだけでは不十分である。有限領域、複数seed、複数architectureで符号とscalingが保持されなければならない。
+
+\subsection{Priority 5：Cross-architecture blind validation}
+
+最小模型、別のcoupled GKSL architecture、held-out random family、物理platform模型の少なくとも四層で検証する。
+
+学習・調整に使わないarchitectureについて、事前に
+\begin{equation}
+\text{witness sign},\quad
+\text{発生域},\quad
+\text{消失域},\quad
+\text{最小資源},\quad
+\text{必要shots}
+\end{equation}
+を固定し、blind predictionを行う。
+
+同じ形の波形を再現する必要はない。共通の機構則とfailure lawが移植されることが重要である。
+
+\subsection{Priority 6：物理platformへの翻訳}
+
+固有性監査を通過した候補だけを、NV、SnV、Eu$^{3+}$:Y$_2$SiO$_5$、Pr$^{3+}$:Y$_2$SiO$_5$などへ翻訳する。実験模型には、collection efficiency、dark count、dead time、pulse timing error、pure dephasing、leakage、calibration driftを含める。
+
+RISEIの実験的価値は、現象を事後説明することではなく、
+\begin{equation}
+\boxed{
+\text{どのplatform・protocol・functional・資源で初めて分離するか}
+}
+\end{equation}
+を測定前に返すことにある。
+
+\section{次の最優先数値計算}
+
+ここまでの結果から、次の計算を最優先とする。
+
+\begin{decisionbox}[Priority 1 production：競合理論null identity探索]
+\textbf{目的：} pairwise latent-group、有限hidden-state、bounded-memory process模型が満たすresponse-tensor恒等式を数値的・代数的に抽出し、RISEI admissible GKSL模型でのみ破れる候補witnessを探す。
+
+\textbf{入力：}
+\begin{itemize}
+  \item intervention数$m=3$から8、
+  \item protocol depth$d=1$から4、
+  \item cumulant/functional order$k=1$から4、
+  \item hidden dimension$D=1$から6、
+  \item memory depth$\mu=1$から3。
+\end{itemize}
+
+\textbf{計算：}
+\begin{enumerate}
+  \item 各競合familyからresponse feature tensorを生成する。
+  \item SVDで近似null spaceを抽出する。
+  \item exact arithmeticまたはsymbolic regressionで候補identityを精密化する。
+  \item RISEI模型をwitness最大化方向へ逆設計する。
+  \item 同時に全競合familyへadversarial fitを行う。
+\end{enumerate}
+
+\textbf{production移行条件：}
+\begin{equation}
+\boxed{
+\begin{aligned}
+&\text{competitor identity residual}\le\eps,\\
+&\text{RISEI witness}\ge\delta,\\
+&\text{hidden-dimension escalationで非零維持},\\
+&\text{複数seed・有限領域で符号保持}.
+\end{aligned}}
+\end{equation}
+\end{decisionbox}
+
+この計算で候補identityが見つからなければ、ランダムな新現象探索へ戻るのではなく、競合classの設定またはRISEI原始概念の選び方を再検討する。
+
+\section{PRX投稿戦略への反映}
+
+\subsection{現時点の安全な構成}
+
+PRXを目指す場合、現状の安全な二層構成は次である。
+
+\begin{align}
+\text{確定資産} &: \text{branch-complete Tube calculusと実験予言},\\
+\text{高リスク探索} &: \text{非還元witnessを持つ新しいRISEI固有現象}.
+\end{align}
+
+固有現象が見つからない段階で、Tubeを固有現象として再包装してはならない。一方、固有現象探索が長期化しても、Tube計算体系と実験予言は独立に論文化可能な資産として保持する。
+
+\subsection{固有現象を中心へ昇格する条件}
+
+\begin{criterion}[PRX旗艦現象への昇格]
+次のすべてを満たす場合にのみ、候補をRISEI論文の中心へ昇格する。
+\begin{enumerate}
+  \item 操作的定義が明確である。
+  \item matched pairで標準的不変量を一致させている。
+  \item 事前固定した競合理論監査を通過する。
+  \item 発生・消失条件の定理またはcontrolled asymptotic lawがある。
+  \item finite resource certificateを返す。
+  \item cross-architecture blind predictionに成功する。
+  \item 物理platformで反証可能な予言へ翻訳できる。
+\end{enumerate}
+\end{criterion}
+
+この条件を満たさない候補は、興味深い現象、計算例、方法論的部品として保存するが、RISEI固有現象とは呼ばない。
+
+\section{最終整理}
+
+今回の計算系列は、複数の有望な構造を発見し、そのほぼすべてを厳密な競合監査へ通した。最終候補が既存のcompact-group synchronizationへ還元されたことは、見かけ上は否定的な結果である。しかし、探索の観点では次の情報が得られた。
+
+\begin{enumerate}
+  \item どの種類の珍しい応答が固有性に結びつかないかが分かった。
+  \item hidden ancilla、FCS、latent group、state-space identificationを初期kill gateへ組み込めるようになった。
+  \item 信号探索より先にcompetitor-null identityを探す必要が明確になった。
+  \item RISEI固有性は、表現可能性ではなく有限資源下のpredictive surplusとして定義すべきだと確定した。
+  \item Tube calculusを凍結した主線と、固有現象探索線を安全に分離できた。
+\end{enumerate}
+
+\begin{resultbox}[研究方針の一文要約]
+\begin{equation}
+\boxed{
+\begin{gathered}
+\text{Tube計算体系は完成済みの予測基盤として保持し、}\\
+\text{次の固有現象は競合理論のnull identityを先に導出してから、}\\
+\text{そのidentityを破るmatched-pair witnessとして逆設計する。}
+\end{gathered}}
+\end{equation}
+\end{resultbox}
+
+候補を守るためにbaselineを狭めるのではなく、候補を早く棄却できるbaselineを先に用意する。この方が、最終的に残った現象の価値は高くなる。感情的には厳しい手順に見えるかもしれない。しかし、固有性を主張するなら、その代償は必要だ。
+
+\appendix
+
+\section{内部計算資料}
+
+本稿は以下の内部計算レポートと戦略文書を基礎としている。
+
+\begin{enumerate}[label={R\arabic*.}]
+  \item \texttt{risei\_response\_mechanism\_contextuality\_smoke/REPORT.md}
+  \item \texttt{risei\_protocol\_order\_fluctuation\_smoke/REPORT.md}
+  \item \texttt{risei\_matched\_operational\_equivalence\_smoke/REPORT.md}
+  \item \texttt{risei\_relative\_gauge\_witness\_theorem\_smoke/REPORT.md}
+  \item \texttt{risei\_heldout\_relative\_gauge\_predictor\_smoke/REPORT.md}
+  \item \texttt{risei\_integrated\_scaling\_continuous\_gauge\_production/REPORT.md}
+  \item \texttt{risei\_global\_cycle\_quotient\_atlas\_production/REPORT.md}
+  \item \texttt{risei\_uniqueness\_competitor\_audit/REPORT.md}
+  \item \texttt{RISEI\_Unique\_Phenomena\_Search\_Strategy\_2026-07-23(1).md}
+  \item \texttt{RISEI\_Response\_Mechanism\_Contextuality\_Alternative\_Idea\_2026-07-23(1).md}
+  \item \texttt{RISEI\_Branch\_Complete\_Tube\_Calculus\_PRX\_Roadmap\_2026-07-22.md}
+  \item \texttt{RISEI\_実験プラットフォーム\_投稿戦略\_理論凍結方針\_2026-07-23.md}
+\end{enumerate}
+
+\section{判定用チェックリスト}
+
+新候補を計算する前に、次を確認する。
+
+\begin{longtable}{p{0.45cm}p{10.2cm}p{1.55cm}}
+\toprule
+ & 質問 & 状態 \\
+\midrule
+\endfirsthead
+\toprule
+ & 質問 & 状態 \\
+\midrule
+\endhead
+1 & 現象は操作、protocol、functional、観測窓で有限に定義されているか。 & 未確認 \\
+2 & competitor familyとpriorを計算前に凍結したか。 & 未確認 \\
+3 & shared ancilla enlargementを試したか。 & 未確認 \\
+4 & tilted-GKSL/FCSでexactに再現されないか。 & 未確認 \\
+5 & latent-groupまたはstate-space objectiveへ変換できないか。 & 未確認 \\
+6 & hidden dimensionを増やしてもwitnessが残るか。 & 未確認 \\
+7 & matched pairでbaseline observableを一致させたか。 & 未確認 \\
+8 & optimizer failure、underparameterization、calibration不足を排除したか。 & 未確認 \\
+9 & 有限領域と複数seedで頑健か。 & 未確認 \\
+10 & blind held-out predictionまたはfailure certificateを返すか。 & 未確認 \\
+11 & cross-architectureで同じ発生・消失則が成立するか。 & 未確認 \\
+12 & 物理platformで反証可能な予言へ翻訳できるか。 & 未確認 \\
+\bottomrule
+\end{longtable}
+
+\end{document}
