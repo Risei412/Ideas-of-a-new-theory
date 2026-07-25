@@ -466,6 +466,12 @@ Supplemental Materialは補助的導出、追加図、パラメータ表、再�
 > （一般位置の有限HMMは有限長word確率からminimal realizationを復元できる：Huang et al. 2016）。
 > **cancellation-protected / rank-deficient な例外集合における、凍結資源内のlower bound** として定式化する必要がある。
 >
+> **【2026-07-25 確定】P0 の証明書仕様は `docs/p0-certificate-spec.md` に分離した。**
+> P0 は単一の数値目標ではなく、**族ごとの証明書のベクトル値判定**である
+> （族D: Hankel rank `>6` ／ 族A: `dim K > (d·D_hidden)²` ／ 族E: OSR `>36` ／ QHMM: 定義依存 ／ 同期: order `>4`）。
+> 各証明書は**入れ子**でなければならない — calibration側で競合の**存在**を示し、full側で容量超過を示す。
+> **`P0-D の達成 ≠ P0 の達成`。** 実行順序も同ファイル §3。
+>
 > **維持できない表現**（`literature-audit-report.md` §4.1）:
 > 「multi-time responseはsingle-time responseから分からない」／「pairwise dataが一致してもtriple dataが異なる」／
 > 「hidden ancillaを入れれば説明できるが大きい（最小次元の証明なし）」／「process tensorなら表現できるが非効率（下界なし）」／

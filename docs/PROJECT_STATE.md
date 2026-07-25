@@ -25,6 +25,7 @@
 | `docs/literature-audit-specification.md` | 監査の基準 |
 | `docs/literature-master-table.csv` | 全56件の索引（threat level・decisive difference つき） |
 | `docs/reduction-targets.md` | 族ごとの target object / kill test / survival certificate |
+| `docs/p0-certificate-spec.md` | **P0の証明書仕様と実行順序**（ベクトル値判定・入れ子条件・7ステップ） |
 | `references/` | `references.bib` + `manifest.csv`（PDFは未取得、URL索引のみ） |
 | `docs/source-material/` | 内部資料4件（RISEI改訂版PDF・競合監査tex・Tubeロードマップ・SMRTスモーク） |
 
@@ -101,18 +102,25 @@ GKSL simulationは custom Liouville 実装、symbolic は SymPy で代替。
 
 ## 次のアクション
 
-**Stage 0 の準備は完了。ただし文献監査により、P0の2件はどちらも素朴な表現では新規性を主張できない。**
-生成に入る前に、命題の形を先に凍結すること。
+**P0の証明書仕様と実行順序を確定した → `docs/p0-certificate-spec.md`。**
 
-**P0-2 Resource-bounded mechanism separation（推奨）**
-- 「低depth一致・高depth分裂」では不十分。**cancellation-protected / rank-deficient 例外集合における凍結資源内のlower bound**として定式化する
-- 目標下界を `rank>6` / `χ>36` / 必要hyperedge order `>4` のいずれかに固定する
-- **例外集合はmeasure zeroなので、対称性か物理機構による保護を示さないとfine-tuning批判を受ける**（RISEI §9 puncture set・Corollary 9.4 が道具）
+**P0 は単一の数値目標ではなくベクトル値判定。** 族ごとに固有の単位で証明書を立て、
+各証明書は**入れ子**（calibration側で競合の存在を示し、full側で容量超過を示す）でなければならない。
+**`P0-D の達成 ≠ P0 の達成`。**
 
-**P0-1 Interface realizability**
-- **まず C-JOINT / I-JOINT / P-PROG / D-SHARED / R-BOUND のどれを問うのか凍結する**（`context-pack.md` §6.2.2）
-- C-JOINT/I-JOINT は既知の channel/instrument compatibility へ還元される公算が高い
-- counterfactualが排他的に選択されるなら P-PROG が近い。`dim(program)`, `dim(E)`, 誤差, 許可readout の凍結が必要
+**実行順序:**
+1. **shot予算とprotocol数の整合性を修正** ← 現在ここ。不整合を検出済み（下記）
+2. 理想データで到達可能な `σ₇` をスモーク
+3. P0-D用の6状態以下HMMをcalibration側に明示構成
+4. full側のrank-7 minorをexact arithmeticで認証
+5. 統計模型から `τ_H(α)` を導出
+6. P0-D成立後、P0-A・P0-Eの明示構成へ（**SDPを使わず明示構成** — CVXPY不在のため）
+7. P0-D単独なら**PRL型**、複数族を排除できたら**PRX型**へ戻す
+
+**ステップ1で検出した不整合:**
+- calibration は収まる（m=8 で54 protocol・108,000 shots、上限120,000）
+- **held-out の shot 予算が存在しない** — depth-4 の64 protocol だけで128,000 shots となり calibration 上限を単独で超過。m=8 の全held-out は約820,000 shots
+- 「両順序測定」が 1 edge あたり2 protocol か複数測定設定か未確定（後者なら calibration 単独で82%超過）
 
 **共通の作業**（`literature-audit-report.md` §6）: 候補を固定する前に neutral notation で
 calibration/held-out tensor を定義し、generalized Hankel matrix と temporal operator-Schmidt matrix を
