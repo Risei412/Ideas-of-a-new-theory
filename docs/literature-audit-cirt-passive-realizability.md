@@ -22,6 +22,13 @@
 加えて、CIRT が知らなかった**2つの新規脅威**が見つかった（§4）。うち一方（vacuousness）は
 理論に内容があるかどうかそのものを問うものであり、文献照合とは独立に決着させる必要がある。
 
+> **[更新 2026-07-26]** 両方に決着をつけた。arXiv:2604.17058 はユーザーがPDFを供給したため
+> **全文を通読**し、脅威度を `kill（要通読）` から **`strong`**（NEAR MISS、CIRTのniche無傷）に
+> 確定した。vacuousness 反論には `docs/cirt-vacuousness-response.md` で回答した——
+> 反論の半分（bath由来データではC2は恒等的に成立）は全面的に認めるが、致命的ではなく、
+> 理論の正体を「因果性のプローブ」から「透明媒質中の隠れた利得を検出する多ポート検出器」へ
+> 変える。詳細は §4.1・§7 を参照。
+
 ---
 
 ## 1. 監査の限界（先に読むこと）
@@ -42,6 +49,9 @@ policy denial を記録。`https://doi.org/10.1016/0016-0032(67)90582-0` への�
 - 下の表の DOI は「検索結果中に当該識別子を含む出版社URLが出現した」ことのみを意味する。
   §5 に検証状態を1本ずつ明記した。
 - **egress が通る環境で DOI 解決を再実行することが、本監査の必須の残作業である。**
+- **例外: N15（arXiv:2604.17058）のみこの限界を解消した。** ユーザーが PDF を直接供給したため
+  egress 遮断を回避して全文を通読した（§4.1）。他の23件（N01–N14, N16–N24）は依然として
+  DOI 未解決のままである。
 
 ただし、この限界は結論を変えない。決定的な文献の abstract 本文（Youla–Saito の
 "minimum number of reactances"、Fei–Yeh–Zgid–Gull の "solutions exist if and only if the Pick
@@ -138,25 +148,67 @@ CIRT が中心的構造洞察として提示する Loewner ↔ Pick ↔ 正実 �
 
 ## 4. CIRT が知らなかった新規脅威
 
-### 4.1 arXiv:2604.17058（Liu, 2026年4月投稿）— **未読・最優先で読むこと**
+### 4.1 arXiv:2604.17058（Liu, 2026） — **通読完了。NEAR MISS、CIRTを殺さない**
 
-"Kramers-Kronig Relations and Causality in Non-Markovian Open Quantum Dynamics: Kernel, State,
-and Effective Kernel"（改題版: "Causality from Projection and Hardy-Space Analyticity of
-Non-Markovian Memory Kernels"）。検索結果によれば、Nakajima–Zwanzig記憶核が
-ベクトル値Hardy空間 $H^p_+(\mathcal B)$ に属することを証明し、
+> **[2026-07-26 更新]** ユーザーが PDF を供給したため egress 遮断を回避し、**全22ページを通読した**
+> （改訂版日付 2026-07-13）。以下は検索経由の再構成ではなく実読の結果である。
 
-- **CP-Hardy obstruction theorem**: 近似核の上半平面極は非CPTPな簡約ダイナミクスを含意
-- **passivity-analyticity theorem**: 散逸核を **Herglotz–Nevanlinna 類**に結びつける
-- moment-based Carleman diagnostic
+**書誌:** Kejun Liu（蘇州大学）, "Kramers-Kronig Relations and Causality in Non-Markovian Open
+Quantum Dynamics: Kernel, State, and Effective Kernel", arXiv:2604.17058。定理10本＋系・注13本。
 
-を示す。**開放量子系において「解析的クラスへの所属を、完全正値性を超える物理性の障害として使う」
-という CIRT とまったく同じ修辞的・構造的な動きを、3か月前に行っている。**
+**内容。** 対象は NZ記憶核 $\tilde K(z)$、簡約状態Laplace変換 $\tilde\sigma(z)$、
+force-fit実効核 $\tilde K_{\rm eff}(z)$ の3つ。主結果:
 
-現時点で分かる範囲では、記憶核の解析性・極を扱っており、**有限個のBohr周波数データからの
-Pick行列判定問題は立てていない**ように見える。しかし egress 遮断のため**全文を読めていない**。
+- **Thm 1（Causality Transfer）**: 因子化初期状態 ⟹ $\mathrm{supp}\,K\subseteq[0,\infty)$。
+  「因果性は射影によって製造される」
+- **Thm 2（Hardy Placement）**: $\tilde K(z)=\int w(\lambda)/(z-\lambda)\,d\lambda$ ⟹
+  $\tilde K\in H^p_+(\mathcal B)$、KK関係
+- **Thm 5/Cor 6（CPTP–Hardy consistency）**: 上半平面の極 ⟹ 非CPTP
+- **Thm 7（Passivity-Analyticity）**: 作用素散逸条件 $\mathrm{Im}\langle\xi,\tilde K(z)\xi\rangle\le0$
+  ＋ $w(\lambda)\ge0$ ⟹ $-\tilde K$ は作用素値 Herglotz–Nevanlinna
+- Thm 8（Carlemanモーメント診断）、Thm 9（任意初期状態での状態解析性）、
+  Prop 10（$\tilde\sigma_0$ の上半平面ゼロ配置）
+- §VII: Jaynes–Cummings の 4×4 核で作用素値KK関係を数値検証、sub-Ohmic bath、相関初期状態の反例
 
-> **この論文を通読するまで CIRT の新規性主張を書いてはならない。**
-> Pick/補間の判定基準が含まれていれば CIRT は死ぬ。
+**重なる部分。** Liu の Nevanlinna 積分表示 (4)
+$f(z)=\alpha z+\beta+\int[\frac{1}{\lambda-z}-\frac{\lambda}{1+\lambda^2}]d\mu(\lambda)$、$\alpha\ge0$ は
+CIRT の (3.1) と逐語同一。**CIRT の C1 は、開放量子系の論文として3か月前に公表済みである**
+（ただし C1 はそもそも Breuer–Petruccione の教科書事項——§3の判定と整合）。
+
+**重ならない部分（CIRT の生存線） — 本文全文検索で確認:**
+
+| CIRT の中核語 | Liu 論文中の出現数 |
+|---|---|
+| Pick（行列） | 0（"Pick" 2件はいずれも "picks up the residue"、無関係） |
+| Nevanlinna–Pick 補間 | 0（"interpolation" 1件は $L^p$ 補間＝Riesz–Thorin、無関係） |
+| Loewner 行列 | 0 |
+| transparency / window（透明窓） | 0 |
+| operator monotone（作用素単調） | 0 |
+| minimal realization / bath mode count | 0 |
+| Lamb shift / Kossakowski / secular / GKSL / Lindblad | すべて 0 |
+
+Liu の受動性判定は実軸上の**各点符号チェック**である
+（"The passivity criterion can be checked from a measured $\tilde K(\omega)$ on the real axis"）。
+これは CIRT が「不十分だ」と主張している当の**周波数ごとの条件**そのものである。
+**周波数をまたぐ有限データ補間実行可能性という CIRT の niche は無傷で残る。**
+
+→ **脅威度を `kill（要通読）` から `strong`（NEAR MISS・要引用・殺さない）へ確定変更。**
+
+**ただし2つの警告を記録する。**
+
+1. **Remark 10 が、独立に導かれた機構表（`docs/cirt-vacuousness-response.md` §6）を裏書きする。**
+   Liu は受動性条件が破れるのは (i) bath が非平衡（駆動・スクイーズド）で利得を与える場合、
+   (ii) 実効Hamiltonianが非Hermite（利得媒質・PT対称系）、(iii) 非物理な増幅を含む現象論的ansatz、
+   と明記する。CIRT側で独立に導いた「必然的にC2を破るのは負のスペクトル重み（利得・反転・
+   パラメトリック増幅）のみ」と完全に一致する。**独立な確証。**
+2. **その regime を Liu 自身が追っている。** Remark 10 は「これらの regime への定理の拡張は
+   ongoing work」と述べ、§IX は companion analysis [34] で「reconstruction artifact と
+   genuine gain physics を分離する THz プロトコル」を予告している。CIRT が到達した正体
+   （透明媒質中の隠れた利得を検出する多ポート検出器）は、Liu の宣言済み進行中作業と重なる。
+   Liu はスカラーの force-fit 再構成、CIRT は行列/多ポートの補間判定という差はあるが、
+   **隙間は狭く、閉じつつある。**
+
+詳細は `docs/cirt-vacuousness-response.md` §1・§6.1・§6.2 を参照。
 
 ### 4.2 vacuousness 反論 — 文献ではなく理論の内部整合性の問題
 
@@ -183,6 +235,18 @@ $$\boxed{\text{当てはめた開放系模型が、定常受動bathから生成�
 CIRT §11「PRX投稿の物語」Act III が「有限幅で存在する」と書く生成子族は、この観点では
 「bathから導出していない模型を書けば当然そうなる」という同語反復に近づく。
 **この反論に答えられない限り、C3 は空虚である。**
+
+> **[2026-07-26 回答完了]** `docs/cirt-vacuousness-response.md` で全面的に回答した。要旨:
+> 反論の核（bath由来データではC2が恒等的に成立する）は**全面的に認める**。ただし透明窓上では
+> $S|_W$ は窓外のスペクトル重みで決まり窓内データからは決まらないため、退化しない補間問題として
+> 生き残る（守るべきは「不決定性」ではなく「到達可能性」——同文書の命題(N)）。副産物として
+> $b$ 項（多項式シフト）が自由なままだと $n=2$ に補間論的内容が無いという新たな穴を発見し、
+> 有限スペクトル重みから $b=0$ を導いて修理した（同文書§4、C6の復活を伴う）。
+> 検定力を閉形式で解くと、発火には利得重みが吸収重みを上回る必要があり、そこでは非受動性は
+> 既に露骨——**vacuousnessより鋭い実務上の反論**（同文書§7）。最重要の未解決点は、CG2が要求する
+> 縮退保護対称性をbathも共有すればsurplusが恒等的にゼロになるという二重拘束（同文書§5、Edge iii）
+> で、これは未解決のまま次作業に持ち越す。**生き残るスコープは「因果性のプローブ」ではなく
+> 「透明媒質中の隠れた利得を検出する多ポート検出器」に確定した**（同文書§8）。
 
 ---
 
@@ -249,14 +313,21 @@ $$\boxed{\text{既知の2定理を、誰も入力していなかった物理対�
 1. **CIRT の PRX 候補としての位置づけを撤回する。** §14 の
    「C3＋C4＋C9＋CG6 が揃えば PRX 候補」という条件は、C4 が 1970年代回路理論の系であり
    C3 の数学が古典多ポート受動性である以上、成立しない。
-2. **arXiv:2604.17058 を通読する。** これが済むまで新規性主張を書かない（§4.1）。
-3. **vacuousness 反論に答える**（§4.2）。答えられなければ理論は終わる。文献照合では決着しない、
-   理論内部の問題である。
+2. ~~arXiv:2604.17058 を通読する。~~ **完了（2026-07-26、§4.1）。** NEAR MISS と確定、
+   CIRT のniche（周波数をまたぐ有限データ補間実行可能性）は無傷。ただし Liu の ongoing work
+   との重なりを本文に明記して引用すること。
+3. ~~vacuousness 反論に答える。~~ **完了（2026-07-26、§4.2、`docs/cirt-vacuousness-response.md`）。**
+   反論の核は認めたが理論は終わらず、正体が「透明媒質中の隠れた利得を検出する多ポート検出器」へ
+   変わった。$b=0$ の修理でC6が復活する一方、対称性の二重拘束（Edge iii）が未解決の最重要問題として残る。
 4. **CG1・CG3 に着手しない。** CG3（C4のancilla閉性）は既知定理の系であることが判明したため、
    「理論の決定点」ではなくなった。CG1 は CG2 監査により最小模型の差し替えが必要な状態にある。
+   **次の最優先作業は Edge (iii)**（`docs/cirt-vacuousness-response.md` §5）——
+   `scripts/cirt_gauge_audit.py` の T5 機構で安価に検証できる。
 5. egress が通る環境で **DOI 解決を再実行**し、`references/references.bib` を更新する（§1）。
-6. 生き残らせる場合は、**方法論論文として**、N03・N04・N08・N09・N10 を正面から引用し、
-   「開放量子系コミュニティがこの層を輸入していない」という位置づけで書く。
+   N15（arXiv:2604.17058）のみ例外的に解消済み。
+6. 生き残らせる場合は、**計測機器（多ポート較正診断）として**、N03・N04・N08・N09・N10・N15 を
+   正面から引用し、「開放量子系コミュニティがこの層を輸入していない」という位置づけで書く。
+   §11 の PRX 物語は撤回する（`docs/cirt-vacuousness-response.md` §8–9）。
 
 ---
 
@@ -265,5 +336,7 @@ $$\boxed{\text{既知の2定理を、誰も入力していなかった物理対�
 - `docs/literature-audit-specification.md` §4.2（実在確認）、§6.1（判定規則）、§6.2（kill条件）、§9（停止条件）
 - `docs/literature-master-table.csv` — 族 N の行を追加（本監査）
 - `docs/cirt-cg2-covariance-audit.md` — CG2 監査（Λ系の失格、§4.3 errata）
+- `docs/cirt-vacuousness-response.md` — vacuousness 反論への回答、arXiv:2604.17058 通読の詳細、
+  $b=0$ 修理、Edge (iii) 対称性二重拘束、検定力の閉形式
 - `Blueprints-of-theories/19_causal_interface_realizability_theory_proposal.md` §6.1、§8.1、§10、§13、§14
 - `EIT_Minimal_Testbed_for_Global_Bath_Realizability_2026-07-25.md` §5 危険1（「既存理論そのものだった」— 的中）
