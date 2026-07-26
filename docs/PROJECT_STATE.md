@@ -63,6 +63,21 @@ functional では、受動性は片側正値性として語領域に降りない
 `scripts/wpot_null_smoke.py`（負制御4モード）。
 **CIRT C4（周波数領域の ancilla 閉性）とは矛盾しない** — 死んだのは周波数領域→語領域の写像。
 
+**提案25（FHOT）撤回【2026-07-26、作成同日】** — Stage 0 内部監査で中心命題が VACUOUS と判定。
+`scripts/fhot_smoke.py`（F0–F8）、`docs/fhot-stage0-internal-audit.md`。
+最小模型で閉形式 `F_Q=4|χ|²/Σ_A`、`χ=D_A·g(Δ)` が残差0で成立し、`δχ_S≡0` は population差
+`D_A` の不変性に、`δF_S≠0` は population和 `Σ_A` の変化に完全帰着、かつ `Σ_A=tr(ρΠ_A)` は
+**線形汎関数**である。死因は「有限次元でトモグラフィが可能な設定では状態の任意の汎関数が
+線形汎関数全体から決まるため、線形汎関数に盲目・非線形汎関数に可視という枠組み自体が
+原理的に空」という構造的性質（先行研究照合ではなく自己内部監査で確定）。
+分類予想（`r_nc>0` が必要条件）も `r_nc=0` かつ `δF_S≠0` の明示的反例で反証。
+**番号25は欠番。** 残す資産は機構的必要条件（population正値性から
+`ν(F_Q)<ν(χ) ⟺ ν(g)<ν(Σ_A)−ν(D_A)≤0`——QFI保護には probe coherence の減衰が消えることが
+必要で population 再配分だけでは不可能）と検定器 `scripts/fhot_smoke.py`
+（`scripts/` 初のGKSL superoperator層・SLD/QFIの2独立実装、提案24の次工程で再利用可）。
+**ガイド §6.1 の空白地帯「P1 Nonlinear functional hierarchy」は再挑戦時、資源制限（P0-2）か
+無限次元のどちらかを同時導入しない限り不可能という制約が判明した。**
+
 **却下済み6候補**（2026-07-23 競合監査完了、再提案禁止 → ガイド §6.4）
 shared ancilla / tilted-GKSL・FCS / compact-group synchronization / 構造化系同定 へ還元。
 うち4件は**最終監査まで生き延びた「惜しかった」候補**で、死因はすべて
@@ -321,37 +336,9 @@ egressが通る環境でDOI解決を再実行することが必須の残作業�
 4準位 GKSL `D=diag(0,0,1/2)` と EIT §9.2 の Λ系）、(3) 赤チーム Stage 1–2。
 **`scripts/` に GKSL/Liouvillian 実装は存在せず、superoperator 層は新規に書く必要がある。**
 
-**提案25（FHOT・機能階層障害理論）— Stage 0 内部監査完了・⚠️判断待ち【2026-07-26】**
-`Blueprints-of-theories/25_functional_hierarchy_obstruction_theory_proposal.md`。
-ガイド §6.1 **P1「Nonlinear functional hierarchy」**（壊す仮定: linear response functional）を
-占有する初の草案。固有現象は**Φ階層排他ゼロ**——線形応答差分 `δχ_S` が exact zero の sector で
-QFI 応答差分 `δF_S` が非零、という現象。
-
-**Stage 0 内部監査（`scripts/fhot_smoke.py` F0–F8、判定に浮動小数点不使用、
-証明書 `certificates/fhot_smoke_2026-07-26.txt`、評価 `docs/fhot-stage0-internal-audit.md`、
-seed 20260728）の結果は両面である。**
-
-- **🆙 得たもの:** 4準位・厳密有理数レートの最小模型で **(i) `δχ_S(Δ)≡0` の全周波数 exact zero と
-  (iii) `δF_S≠0` の同時成立を厳密に構成できた**（`χ_full=χ_cut=−i/(26iΔ+195)`、
-  `δF_S=−1216/(52260Δ²+2939625)`）。QFIは固有分解公式とSLD Lyapunov解の**2独立実装が厳密一致**。
-  副産物として **`scripts/` に初めて GKSL superoperator 層・SLD/QFI 実装が入った**
-  （提案24の次工程「GKSL 物理実現の系統探索」で再利用可）。
-- **⚠️ 失ったもの: 中心命題の書き方が VACUOUS。** 閉形式 `F_Q = 4|χ|²/Σ_A`、`χ = D_A·g(Δ)` が
-  残差0で成立し、`δχ_S≡0` は population 差 `D_A` の不変性に、`δF_S≠0` は population 和 `Σ_A` の
-  変化に**完全に**帰着する。そして **`Σ_A = tr(ρΠ_A)` は線形汎関数**である。
-  一般に**有限次元でトモグラフィ可能な設定では任意の状態汎関数が線形汎関数全体から決まるため、
-  「線形汎関数に盲目・非線形汎関数に可視」という枠組み自体が原理的に空。** stop condition 2 発火。
-- **⚠️ 分類予想も反証。** 「`r_nc=rank[L_SLD,P_S]>0` が `δF_S≠0` の必要条件」に対し、
-  本模型は **`r_nc=0` かつ `δF_S≠0` の明示的反例**である。
-- **✅ 生き残った結果（模型非依存）:** population の正値性 `|D_A|≤Σ_A` より、任意の scaling path で
-  `ν(F_Q)<ν(χ) ⟺ ν(g) < ν(Σ_A)−ν(D_A) ≤ 0`。**QFI が線形応答を漸近的に追い越すには
-  probe optical coherence の減衰 `Γ_coh` 自体が消えること（保護された coherence）が必要で、
-  population 再配分だけでは決して達成できない。** 保護の源泉は非線形性ではなく線形理論側の
-  kernel 構造だという否定的だが明確な指針（凍結理論の `ker D ≠ 0` へ差し戻し）。
-
-**→ 推奨は (a) 撤回**（§6.4 へ記録し番号25 を欠番化）。代替は (b) F8 の必要条件を重心とする
-縮小継続（ただし凍結理論の再言明に近くL1相当の懸念）、(c) 資源制限版へ移行（P0-2 と重複）。
-**最終判断は所有者が行う**（ガイド §11.4）。文献監査は未実施（egress必要）。
+**提案25（FHOT）— 撤回済み【2026-07-26、作成同日】。詳細は「決定済み事項」の該当項目を参照。**
+文書は `Blueprints-of-theories/25_functional_hierarchy_obstruction_theory_proposal.md` に
+撤回の監査結果つきで残す（欠番、削除しない）。残す資産と一般教訓は上記「決定済み事項」参照。
 
 > **番号規約の訂正（2026-07-26）：** RRTは当初「提案21」を名乗っていたが、
 > 番号21は`21_resource_bounded_mechanism_separation_proposal.md`（FRRG）が先に占有しており、
