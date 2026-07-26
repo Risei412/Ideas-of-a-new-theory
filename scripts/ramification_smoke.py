@@ -1,5 +1,5 @@
 """
-提案21（RRT: Ramification Response Theory）の予備スモーク。
+提案22（RRT: Ramification Response Theory）の予備スモーク。
 
 目的: 非半単純な protected kernel（D の零固有値に Jordan block）を持つ
       pencil A_Gamma(z) = Gamma*D + B + z*I について、

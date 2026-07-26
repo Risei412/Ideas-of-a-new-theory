@@ -1,5 +1,5 @@
 """
-提案22（DIBT: Dark-Interface Blindness Theory）の予備スモーク。
+提案23（DIBT: Dark-Interface Blindness Theory）の予備スモーク。
 
 目的: 暗セクター支持の介入対 (M_1, M_1 + Delta_S) について、
   (1) 深さ < beta_esc の全 protocol でトランスクリプトが「厳密に」一致すること

@@ -1,4 +1,4 @@
-# 計画22: 暗界面盲点理論（Dark-Interface Blindness Theory / DIBT）
+# 計画23: 暗界面盲点理論（Dark-Interface Blindness Theory / DIBT）
 
 ## 一行サマリ
 
@@ -25,7 +25,7 @@ rank 制約つきの因子化則に従う。これにより「資源制限観測
   full 側で容量超過を示す」入れ子構造のうち、**calibration 側の存在を偶然や最適化ではなく
   構造的に保証する機構**を本理論が与える（§2.4 B1）。容量側（Hankel rank ≥ 7 等）は
   P0 仕様をそのまま使う。
-- **計画21（RRT）** — 独立。21 は保護核の Jordan 構造（P2）、本提案は観測者の資源制限（P0-2）。
+- **計画22（RRT）** — 独立。22 は保護核の Jordan 構造（P2）、本提案は観測者の資源制限（P0-2）。
 - **DCIT／計画19（CIRT）** — 対象が異なる。あちらは dilation の共存可能性、
   こちらは統計的分離可能性。共通 dilation の存在／非存在は本提案では一切問わない。
 - **却下済み「Matched operational equivalence」「resource-separation matched pair」（§6.4/§6.5）**
@@ -455,7 +455,7 @@ control field を入れた多 pulse protocol（= 脱出 protocol）で初めて�
   B3 の実現可能性ギャップが空だった場合、PRX の物語は成立しない。
 
 - **stop condition:**
-  1. A1 で B3 相当が既知と判明 → **§6.4 却下表へ**（番号22は欠番として残す）
+  1. A1 で B3 相当が既知と判明 → **§6.4 却下表へ**（番号23は欠番として残す）
   2. A2 で量子構成が不可能 → **撤回**（古典のみでは対象範囲外）
   3. A3 でギャップが空 → 中心を no-go（B4）＋因子化則（B2）に縮小し **PRL 型へ降格**
   4. B3' で競合族が held-out を予測 → no-go 撤回、**却下記録**
