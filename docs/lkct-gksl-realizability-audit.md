@@ -140,12 +140,15 @@ c_P = 0,  c_F = iΩ_p/2  ≠ 0        p_P = 0,  p_F = 1 ≠ 0
 
 正直に列挙する。
 
-1. **完全 Liouvillian との突合を行っていない。** 本監査は応答ペンシル
-   `Γ(D₀+εD_L)+B(z)` のブロック構造レベルで閉じている。`prop:phase-h` が行ったような
-   `d²×d²` 完全 Liouvillian との数値照合（4.5e-16）は未実施。
-   **したがって「この構造を持つ具体的な4準位 GKSL を書き下した」とは言えない。**
-   `k≥2` の witness は**構造的に可能**であることを示すが、**具体的な準位系・jump リスト・
-   レートへの pullback は次工程**である。
+1. ~~**完全 Liouvillian との突合を行っていない。**~~ — **✅ 解消済み（2026-07-26、同日）。**
+   `docs/lkct-gksl-pullback-audit.md`、`scripts/lkct_gksl_pullback.py`（seed 20260731、
+   V0–V9 全 PASS）、`certificates/lkct_gksl_pullback_2026-07-26.txt`。
+   tripod 型5準位 GKSL で `k=2` を実現し、縮約4×4ペンシルが完全 25×25 Liouvillian と
+   **厳密な恒等式として一致**、独立 float 実装との差は `7.24×10⁻¹⁷`
+   （`prop:phase-h` の `4.5×10⁻¹⁶` より小さい）。**両汎関数で符号条件が成立し、
+   分散稜線 `Γ²ε = 18.162` と吸収稜線 `Γ²ε = 1.639` が 11.08 倍離れて実在する。**
+   ただし**物質系パラメータへの当てはめは未実施**であり、§1.2 降格条件
+   「experimental pullback ができず抽象 parameter のまま」は完全には解消されていない。
 2. **`k ≥ 3` は未検査。** `k=2` のみ。
 3. **非 Davies（path-coherent）jump は範囲外。** 低速な path-coherent jump は `B_PF` に実部を
    与えうるので CPTP 内で L2 を回避する経路になりうるが、本監査では列挙していない。
