@@ -27,6 +27,7 @@
 | `docs/reduction-targets.md` | 族ごとの target object / kill test / survival certificate |
 | `docs/p0-certificate-spec.md` | **P0の証明書仕様と実行順序**（ベクトル値判定・入れ子条件・7ステップ） |
 | `docs/claims/` | Stage 1 の主張リスト（赤チーム投入用・中立記法） |
+| `certificates/` | P0-D の exact 証明書（有理数データ＋C1–C5 判定） |
 | `references/` | `references.bib` + `manifest.csv`（PDFは未取得、URL索引のみ） |
 | `docs/source-material/` | 内部資料4件（RISEI改訂版PDF・競合監査tex・Tubeロードマップ・SMRTスモーク） |
 
@@ -113,8 +114,9 @@ GKSL simulationは custom Liouville 実装、symbolic は SymPy で代替。
 1. ~~shot予算とprotocol数の整合性を修正~~ — **完了（凍結、下記）**
 2. ~~理想データで到達可能な `σ₇` をスモーク~~ — **完了・判定 GO**
 2bis. ~~認証対象を凍結予算で測れる部分行列へ移す~~ — **完了（2026-07-26、下記）**
-3. P0-D用の6状態以下HMMをcalibration側に明示構成 ← **現在ここ**
-4. full側のrank-7 minorをexact arithmeticで認証
+3. ~~P0-D用の6状態以下HMMをcalibration側に明示構成~~ — **完了（2026-07-26）**
+4. ~~full側のrank-7 minorをexact arithmeticで認証~~ — **完了（2026-07-26）**
+4bis. **有限shot余裕 (iii) が未達 → 判定方式の再設計** ← **現在ここ**
 5. 統計模型から `τ_H(α)` を導出
 6. P0-D成立後、P0-A・P0-Eの明示構成へ（**SDPを使わず明示構成** — CVXPY不在のため）
 7. P0-D単独なら**PRL型**、複数族を排除できたら**PRX型**へ戻す
@@ -152,8 +154,31 @@ GKSL simulationは custom Liouville 実装、symbolic は SymPy で代替。
   settings=2 も可だが held-out が 1000 shots/setting となり余裕 1.08×。**標準は settings=1**
 - 副次効果: 認証対象が exact minor 認証の対象と一致し、Hankel 成分間の相関問題も消えた
 
+**ステップ3–4の結果（`p0-certificate-spec.md` §4quinquies）— exact 部分は成立、有限shotは未達:**
+- **構成の骨格が改善した。** 全体を7状態 controlled sub-Markov 過程に取り、`p_7 = 0` かつ `f_u·b_0 = 0`
+  とすると calibration 一致が**恒等式として**成立し、`rank(H_cal) ≤ 6` も自動。根探索が不要になった。
+  非負の世界では `f_u·b_0 = 0` は台の disjoint 性と同値。`R(w) ∈ [0,1]` が全語で保証される
+- **exact 認証 C1–C5 すべて PASS**（`certificates/p0d_certificate_2026-07-26.txt`）。
+  真の6状態 sub-Markov 競合の存在・calibration 恒等式（43語）・`det(H_cal)=0`・非零 7×7 minor・確率性。
+  **⇒ 中心命題の (i)(ii) は Conditional から Exact へ昇格**
+- **⚠️ (iii) 有限shot余裕は未達。独立な2つの問題:**
+  - **閾値の正規化が誤っていた（2倍緩い）。** `σ_entry ≤ 1/(2√n)` は `[0,1]` の割合の上界だが、
+    採用した opnorm 正規化はレンジ幅2。正しくは `σ₇/レンジ幅 ≥ 2√N/√n`。
+    **訂正するとステップ2は 1.04×（辛うじて）、ステップ2bis は 0.76× で FAIL**
+  - **物理性（非負 substochastic）を課すとさらに落ちる。** 10⁴反復・8リスタート・台分割掃引で
+    最良 0.0666（要求 0.1265 の **0.53倍**）、有理化後 0.0536（0.42倍）
+- **構造的な理由:** 入れ子条件 `f_u·b_0 = 0` が隠れ状態の1段励起を禁じるため、第7方向は
+  2段の substochastic 減衰を受け、他の6方向より構造的に小さい。
+  **入れ子条件と有限shot余裕は反発する**（最適化の失敗ではない）
+- **選択肢:** (a) shot を 3.6倍（7,215/setting）／(b) 安全係数を2→1（余裕ゼロ）／
+  **(c) 判定を作用素ノルム＋Weyl から統計的検定へ置換（本命）**／(d) (iii) を落とす（新規性が消える）
+- stop condition (1) は発火したが、失敗しているのは**判定方式**であって現象ではないため、
+  撤回ではなく縮小・再設計とする。(c) を試してなお届かなければ撤回
+
 **提案21（Stage 0/1 完了）:** `Blueprints-of-theories/21_resource_bounded_mechanism_separation_proposal.md`、
-主張リストは `docs/claims/21_claims.md`（5主張・計13チャット）。**次は Stage 2（赤チーム還元試行）**。
+主張リストは `docs/claims/21_claims.md`（5主張・計13チャット）。
+**主張1（入れ子構成の存在）は構成的に証明済み** — Stage 2 では真偽ではなく
+「既知の構成に還元されるか」を問うことになる。**次は Stage 2（赤チーム還元試行）と判定方式の再設計。**
 
 **共通の作業**（`literature-audit-report.md` §6）: 候補を固定する前に neutral notation で
 calibration/held-out tensor を定義し、generalized Hankel matrix と temporal operator-Schmidt matrix を
