@@ -54,6 +54,34 @@ Frozen policy (this file is the record; do not edit criteria after running):
              bug, since it is a textbook fact).
        ABSTAIN iff p > 2 (not attempted; symbolic system too large).
 
+  T6 (Edge (iii)) -- Lamb-shift-induced degeneracy lifting vs quantum surplus.
+     Decisive for CIRT per docs/cirt-vacuousness-response.md sec.5 / sec.9.
+     Lemma 0 (verified by NC0): the p x p matrix structure of S is visible ONLY
+     on the degenerate multiplet, at the NEGATIVE Bohr frequency, where
+     H_LS|doublet is exactly S(omega) in the port basis; the lowering branch
+     collapses to the scalar tr S. Hence the splitting it induces is the full
+     eigenvalue spread delta = sqrt((S11-S22)^2 + 4 S12^2), not 2|S12|.
+
+       DEAD  iff for EVERY grid point satisfying (i) the absorption part of mu
+             is PSD, (ii) supp mu disjoint from W, (iii) delta_bar <= Gamma
+             (quasi-degeneracy guard), M_eff is PSD or has a non-positive
+             diagonal entry -- for ALL THREE kernels. Quantum surplus is then
+             unreachable in the ONLY structure T5 admits: CIRT sec.9.1 stop
+             condition (G4, measure zero / fine-tuning) fires. CIRT dies as a
+             physics claim.
+       ALIVE iff a single exact rational witness point exists with
+             lambda_min(M_eff) < 0, diag(M_eff) > 0, delta_bar <= Gamma,
+             surviving ALL THREE kernels AND the traceless sensitivity variant
+             AND a +/-1% exact rational perturbation of EVERY parameter.
+             Edge (iii) closes in CIRT's favour, at the cost of a NEW necessary
+             experimental condition Gamma_residual >~ s, sourced from a decay
+             channel outside W.
+       ABSTAIN iff a witness exists for some kernels but not all (the verdict
+             would be an artifact of the scheme-dependent partial-secular
+             ansatz), OR a witness survives all kernels but not the sensitivity
+             variant and the +/-1% perturbation (fine-tuning; report as
+             G4-adjacent, not survival).
+
 Global CG2 verdict (frozen): PASS requires T5 PASS and T1 PASS and T3 PASS.
 T5 FAIL or T3 FAIL -> CIRT demoted per sec.9.1. T2/T4 outcomes are recorded as
 errata against sec.4.3 regardless of the global verdict.
@@ -756,6 +784,416 @@ def run_T5():
 
 
 # ----------------------------------------------------------------------
+# T6 -- Edge (iii): Lamb-shift-induced degeneracy lifting vs quantum surplus
+# ----------------------------------------------------------------------
+
+# Frozen Edge(iii) geometry. Window W = (-1, 1); sample points strictly inside;
+# all measure support strictly outside. Chosen before running; do not retune.
+E3_W = (Rational(-1), Rational(1))
+E3_W1 = Rational(-1, 2)
+E3_W2 = Rational(1, 2)
+E3_T_ABS = Rational(5)          # isotropic absorption poles at -/+ T_ABS
+# Weierstrass u = tan(theta/2). u=1 is theta=90deg where c*s=0, i.e. NO off-diagonal
+# at all -- a degenerate point that silently defeats the whole test. u=2/5 gives
+# theta ~ 43.6deg with c*s = 0.4994 (max possible is 1/2 at exactly 45deg).
+E3_U45 = Rational(2, 5)
+
+
+def _rot_rational(u):
+    """Weierstrass-parametrized (c, s) = (cos theta, sin theta), exact rational.
+    Same device as su2_rational in run_T3."""
+    c = (1 - u ** 2) / (1 + u ** 2)
+    s = 2 * u / (1 + u ** 2)
+    return c, s
+
+
+def _P_theta(u):
+    """Rank-1 projector P_theta = [[c^2, cs], [cs, s^2]], exact rational."""
+    c, s = _rot_rational(u)
+    return Matrix([[c ** 2, c * s], [c * s, s ** 2]])
+
+
+def _e3_measure(alpha, alphap, beta, u, t_g):
+    """Frozen spectral measure as a list of (pole_position, weight_matrix).
+
+    Isotropic ABSORPTION (PSD): +alpha*I at -T_ABS, +alpha'*I at +T_ABS.
+    Anisotropic GAIN branch (rank-1, NEGATIVE weight): -beta*P_theta at t_g.
+
+    The gain branch is the only source of negativity (see the mechanism table in
+    docs/cirt-vacuousness-response.md sec.6: a PSD anisotropic bath can never
+    violate, because at each pole |off-diag| <= (1/2) tr(diag)).
+    """
+    return [
+        (-E3_T_ABS, alpha * eye(2)),
+        (E3_T_ABS, alphap * eye(2)),
+        (t_g, -beta * _P_theta(u)),
+    ]
+
+
+def _S_of(measure, w):
+    """S(omega) = sum_k mu_k / (omega - t_k).
+
+    Derived in-code from h(z) = int dmu(t)/(t - z) and h = -S + (i/2) gamma
+    (CIRT sec.3.2), i.e. on the window S(w) = -h(w) = -sum mu_k/(t_k - w).
+    NOT hardcoded: this sign was wrong once (docs/cirt-vacuousness-response.md sec.1).
+    """
+    out = zeros(2, 2)
+    for t_k, mu_k in measure:
+        out += -mu_k / (t_k - w)
+    return sp.simplify(out)
+
+
+def _M_of(measure, w1, w2):
+    """M = -(S(w1) - S(w2))/(w1 - w2), assembled from S (not from a closed form)."""
+    S1 = _S_of(measure, w1)
+    S2 = _S_of(measure, w2)
+    return sp.simplify(-(S1 - S2) / (w1 - w2))
+
+
+def _spread(S):
+    """Eigenvalue spread of a real-symmetric 2x2 = sqrt((S11-S22)^2 + 4 S12^2).
+
+    This is the degeneracy splitting delta induced by H_LS on the doublet
+    (Lemma 0). NOTE it is NOT 2*|S12|: a purely diagonal anisotropy already
+    lifts the degeneracy while contributing zero off-diagonal surplus.
+    """
+    return sp.sqrt((S[0, 0] - S[1, 1]) ** 2 + 4 * S[0, 1] ** 2)
+
+
+def _psd2(M):
+    """Exact PSD test for a real-symmetric 2x2 via trace/determinant signs.
+    Never numpy.eigvals (frozen policy)."""
+    tr = sp.simplify(sp.trace(M))
+    det = sp.simplify(M.det())
+    return (sp.simplify(tr) >= 0) == True and (sp.simplify(det) >= 0) == True
+
+
+def _kernels():
+    """Three frozen partial-secular suppression kernels K(x), x = delta/Gamma.
+
+    The filter shape is scheme-dependent (Nakajima-Zwanzig resolvent -> Lorentzian,
+    coarse-graining -> sinc^2, naive secular -> hard cutoff). Any verdict that
+    depends on the shape is an ARTIFACT -> ABSTAIN. Hence three kernels and a
+    required agreement.
+    """
+    return {
+        "lorentzian": lambda x: 1 / (1 + x ** 2),
+        "root":       lambda x: 1 / sp.sqrt(1 + x ** 2),
+        "hard":       lambda x: sp.Integer(1) if (sp.simplify(x - 1) <= 0) == True else sp.Integer(0),
+    }
+
+
+def _M_eff(M, K, variant):
+    """Apply the partial-secular suppression K to M.
+
+    variant 'offdiag'  : suppress the off-diagonal only.
+    variant 'traceless': suppress the whole traceless deviation (sensitivity check).
+    The verdict must be stable across both.
+    """
+    if variant == 'offdiag':
+        out = Matrix([[M[0, 0], K * M[0, 1]], [K * M[1, 0], M[1, 1]]])
+    elif variant == 'traceless':
+        tr = sp.trace(M)
+        iso = (tr / 2) * eye(2)
+        out = iso + K * (M - iso)
+    else:
+        raise ValueError(variant)
+    return sp.simplify(out)
+
+
+def _e3_point(alpha, alphap, beta, u, t_g, Gamma, kernel_fn, variant):
+    """Evaluate one exact rational parameter point. Returns a dict of exact facts."""
+    meas = _e3_measure(alpha, alphap, beta, u, t_g)
+    S1 = _S_of(meas, E3_W1)
+    S2 = _S_of(meas, E3_W2)
+    d1, d2 = _spread(S1), _spread(S2)
+    dbar = sp.simplify(sp.Max(d1, d2))
+    M = _M_of(meas, E3_W1, E3_W2)
+    x = sp.simplify(dbar / Gamma)
+    K = kernel_fn(x)
+    Meff = _M_eff(M, K, variant)
+    comm = sp.simplify(S1 * S2 - S2 * S1)
+    return {
+        "S1": S1, "S2": S2, "dbar": dbar, "M": M, "K": K, "Meff": Meff,
+        "commutator_norm": sp.simplify(sp.sqrt(sum(e ** 2 for e in comm))),
+        "quasi_degenerate": (sp.simplify(dbar - Gamma) <= 0) == True,
+        "diag_pos": (sp.simplify(Meff[0, 0]) > 0) == True and (sp.simplify(Meff[1, 1]) > 0) == True,
+        "det": sp.simplify(Meff.det()),
+        "tr": sp.simplify(sp.trace(Meff)),
+    }
+
+
+def _is_witness(p):
+    """A witness needs: quasi-degeneracy guard, positive diagonal, and lambda_min < 0.
+    For a real-symmetric 2x2 with positive trace, lambda_min < 0 <=> det < 0."""
+    if not p["quasi_degenerate"] or not p["diag_pos"]:
+        return False
+    return (sp.simplify(p["det"]) < 0) == True
+
+
+def run_T6():
+    """Edge (iii): does the Lamb-shift-induced splitting self-cancel the surplus?"""
+    out = {}
+    kernels = _kernels()
+
+    # --- exact rational grid, frozen before running -------------------------
+    alphas = [Rational(1)]
+    alphaps = [Rational(1)]
+    betas = [Rational(k, 4) for k in range(1, 25)]        # 0.25 .. 6.0
+    us = [E3_U45, Rational(1, 2), Rational(1, 5), Rational(3, 5), Rational(1)]
+    t_gs = [Rational(2), Rational(3), Rational(4)]
+    Gammas = [Rational(k, 20) for k in range(1, 41)]      # 0.05 .. 2.0
+
+    witnesses = {kn: [] for kn in kernels}
+    scanned = 0
+    for alpha in alphas:
+        for alphap in alphaps:
+            for beta in betas:
+                for u in us:
+                    for t_g in t_gs:
+                        for Gamma in Gammas:
+                            scanned += 1
+                            for kn, kf in kernels.items():
+                                p = _e3_point(alpha, alphap, beta, u, t_g, Gamma,
+                                              kf, 'offdiag')
+                                if _is_witness(p):
+                                    witnesses[kn].append(
+                                        (alpha, alphap, beta, u, t_g, Gamma))
+
+    out['grid'] = {
+        "points_scanned": scanned,
+        "witness_counts": {kn: len(v) for kn, v in witnesses.items()},
+    }
+
+    # --- a witness must survive ALL THREE kernels ---------------------------
+    common = set(witnesses['lorentzian']) & set(witnesses['root']) & set(witnesses['hard'])
+    any_kernel = set().union(*[set(v) for v in witnesses.values()])
+    kernel_dependent = bool(any_kernel) and not bool(common)
+
+    out['kernel_agreement'] = {
+        "witness_in_all_three_kernels": len(common),
+        "witness_in_at_least_one": len(any_kernel),
+        "kernel_dependent": kernel_dependent,
+    }
+
+    # --- sensitivity variant + perturbation robustness on a common witness ---
+    robust_witness = None
+    for cand in sorted(common, key=lambda t: (t[2], t[5])):
+        alpha, alphap, beta, u, t_g, Gamma = cand
+        ok = True
+        # (a) sensitivity variant: suppress the whole traceless deviation
+        for kn, kf in kernels.items():
+            p = _e3_point(alpha, alphap, beta, u, t_g, Gamma, kf, 'traceless')
+            if not _is_witness(p):
+                ok = False
+        # (b) +/- 1% exact rational perturbation of EVERY parameter, one at a time
+        if ok:
+            for idx in range(6):
+                for fac in (Rational(101, 100), Rational(99, 100)):
+                    pars = list(cand)
+                    pars[idx] = pars[idx] * fac
+                    for kn, kf in kernels.items():
+                        p = _e3_point(*pars, kf, 'offdiag')
+                        if not _is_witness(p):
+                            ok = False
+        if ok:
+            robust_witness = cand
+            break
+
+    out['robust_witness'] = None if robust_witness is None else {
+        "alpha": str(robust_witness[0]), "alpha_prime": str(robust_witness[1]),
+        "beta": str(robust_witness[2]), "u_weierstrass": str(robust_witness[3]),
+        "t_gain_pole": str(robust_witness[4]), "Gamma_residual": str(robust_witness[5]),
+    }
+
+    if robust_witness is not None:
+        alpha, alphap, beta, u, t_g, Gamma = robust_witness
+        p = _e3_point(alpha, alphap, beta, u, t_g, Gamma, kernels['lorentzian'], 'offdiag')
+        c, s = _rot_rational(u)
+        out['witness_detail'] = {
+            "S_w1": str(p["S1"].tolist()), "S_w2": str(p["S2"].tolist()),
+            "delta_bar": str(sp.nsimplify(p["dbar"])),
+            "M_bare": str(p["M"].tolist()),
+            "M_eff_lorentzian": str(p["Meff"].tolist()),
+            "det_M_eff": str(sp.nsimplify(p["det"])),
+            "commutator_norm_S1_S2": str(sp.nsimplify(p["commutator_norm"])),
+            "theta_deg_approx": str(sp.N(sp.atan2(s, c) * 180 / sp.pi, 6)),
+            "beta_over_alpha": str(sp.nsimplify(beta / alpha)),
+            "Gamma_over_Mdiag": str(sp.nsimplify(Gamma / p["M"][0, 0])),
+        }
+
+    # --- verdict (frozen rule, see module docstring) ------------------------
+    if robust_witness is not None:
+        status = "ALIVE"
+        reason = ("A robust exact-rational witness survives all three kernels, the "
+                  "traceless sensitivity variant, and +/-1% perturbation of every "
+                  "parameter. Edge (iii) closes in CIRT's favour, at the cost of a "
+                  "new necessary experimental condition Gamma_residual >~ s.")
+    elif kernel_dependent:
+        status = "ABSTAIN"
+        reason = ("Witnesses exist for some kernels but not all three. The verdict "
+                  "would be an artifact of the scheme-dependent partial-secular "
+                  "ansatz, not a physical result.")
+    elif common:
+        status = "ABSTAIN"
+        reason = ("Witnesses survive all three kernels but none survives the "
+                  "sensitivity variant and +/-1% perturbation of every parameter: "
+                  "fine-tuning. Report as G4-adjacent, not survival.")
+    else:
+        status = "DEAD"
+        reason = ("No parameter point in the frozen grid yields lambda_min(M_eff) < 0 "
+                  "with positive diagonal under the quasi-degeneracy guard, for any "
+                  "kernel. Quantum surplus is unreachable in the ONLY structure T5 "
+                  "admits: CIRT sec.9.1 stop condition (G4, measure zero / "
+                  "fine-tuning) fires. CIRT dies as a physics claim.")
+
+    return {"status": status, "certificate": {"verdict_reason": reason, **out}, "witness": {}}
+
+
+def run_edge3_controls():
+    """NC0-NC7: Edge(iii)-specific negative controls. All must PASS or the run is void."""
+    checks = {}
+
+    # --- NC0 / Lemma 0: where does the matrix structure of S actually live? ---
+    # H_LS = sum_omega sum_ij S_ij(omega) A_i^dagger(omega) A_j(omega).
+    # A_i is HERMITIAN; its eigenoperator decomposition has BOTH branches:
+    #   A_i(+w0) = |g,i><e|  (lowering)  -> A_i^dag A_j = delta_ij |e><e|  (SCALAR)
+    #   A_i(-w0) = |e><g,i|  (raising)   -> A_i^dag A_j = |g,i><g,j|       (FULL MATRIX)
+    # So the p x p structure of S is visible ONLY on the degenerate multiplet, via the
+    # NEGATIVE Bohr frequency. run_T5 used the lowering convention only; its Gram-rank
+    # test says "independent" (G = I, rank 2) for BOTH branches and therefore CANNOT
+    # distinguish them. This control is what catches that.
+    Eg, Ee = symbols('Eg Ee', real=True, positive=True)
+    H_deg = sp.diag(Eg, Eg, Ee)
+    A1 = Matrix([[0, 0, 1], [0, 0, 0], [0, 0, 0]]) + Matrix([[0, 0, 0], [0, 0, 0], [1, 0, 0]])
+    A2 = Matrix([[0, 0, 0], [0, 0, 1], [0, 0, 0]]) + Matrix([[0, 0, 0], [0, 0, 0], [0, 1, 0]])
+    w0 = sp.simplify(Ee - Eg)
+    s11, s12, s22 = symbols('s11 s12 s22', real=True)
+    Smat = Matrix([[s11, s12], [s12, s22]])
+
+    def _HLS_block(target_w):
+        ops = [eigenoperator(A, H_deg, target_w)[0] for A in (A1, A2)]
+        H = zeros(3, 3)
+        for i in range(2):
+            for j in range(2):
+                H += Smat[i, j] * (ops[i].T * ops[j])
+        return sp.simplify(H)
+
+    H_pos = _HLS_block(w0)     # lowering branch  -> expect (tr S) |e><e|
+    H_neg = _HLS_block(-w0)    # raising branch   -> expect S on the doublet
+    expect_pos = sp.simplify((s11 + s22) * Matrix([[0, 0, 0], [0, 0, 0], [0, 0, 1]]))
+    expect_neg = sp.simplify(Matrix([[s11, s12, 0], [s12, s22, 0], [0, 0, 0]]))
+    nc0_pos = sp.simplify(H_pos - expect_pos) == zeros(3, 3)
+    nc0_neg = sp.simplify(H_neg - expect_neg) == zeros(3, 3)
+    # and the Gram rank cannot tell them apart:
+    G_low, _ = gram([Matrix([[0, 0, 1], [0, 0, 0], [0, 0, 0]]),
+                     Matrix([[0, 0, 0], [0, 0, 1], [0, 0, 0]])], w0, H_deg)
+    checks['NC0_lemma0_matrix_structure_only_on_multiplet'] = {
+        "status": "PASS" if (nc0_pos and nc0_neg) else "FAIL",
+        "lowering_branch_is_scalar_trS": bool(nc0_pos),
+        "raising_branch_is_full_S_on_doublet": bool(nc0_neg),
+        "gram_rank_lowering": G_low.rank(),
+        "note": ("Gram rank is 2 for BOTH conventions, so T5's rank test is necessary "
+                 "but NOT sufficient for observability of S_12. The matrix structure "
+                 "lives at the negative Bohr frequency, on the degenerate multiplet."),
+    }
+
+    # --- NC1: passive (PSD) measure never violates -- computational Edge (i) ---
+    meas_psd = [(-E3_T_ABS, Rational(1) * eye(2)),
+                (E3_T_ABS, Rational(1) * eye(2)),
+                (Rational(3), Rational(1) * _P_theta(Rational(1)))]  # POSITIVE weight
+    M_psd = _M_of(meas_psd, E3_W1, E3_W2)
+    checks['NC1_psd_measure_never_violates'] = {
+        "status": "PASS" if _psd2(M_psd) else "FAIL",
+        "M": str(M_psd.tolist()),
+    }
+
+    # --- NC2: isotropic gain -> M diagonal, delta = 0, [S1,S2] = 0 ---
+    meas_iso = [(-E3_T_ABS, eye(2)), (E3_T_ABS, eye(2)), (Rational(3), -Rational(1) * eye(2))]
+    S1i, S2i = _S_of(meas_iso, E3_W1), _S_of(meas_iso, E3_W2)
+    M_iso = _M_of(meas_iso, E3_W1, E3_W2)
+    comm_iso = sp.simplify(S1i * S2i - S2i * S1i)
+    nc2 = (sp.simplify(M_iso[0, 1]) == 0 and sp.simplify(_spread(S1i)) == 0
+           and comm_iso == zeros(2, 2))
+    checks['NC2_isotropic_gain_gives_no_surplus'] = {
+        "status": "PASS" if nc2 else "FAIL",
+        "M_offdiag": str(sp.simplify(M_iso[0, 1])),
+        "delta": str(sp.simplify(_spread(S1i))),
+    }
+
+    # --- NC3: p=1 scalar case -- surplus undefined / never negative ---
+    s1 = sum(-(mu[0, 0]) / (t - E3_W1) for t, mu in meas_psd)
+    s2 = sum(-(mu[0, 0]) / (t - E3_W2) for t, mu in meas_psd)
+    m1 = sp.simplify(-(s1 - s2) / (E3_W1 - E3_W2))
+    checks['NC3_scalar_case_never_violates'] = {
+        "status": "PASS" if (sp.simplify(m1) >= 0) == True else "FAIL",
+        "m": str(sp.nsimplify(m1)),
+    }
+
+    # --- NC4: Gamma -> 0 with delta > 0 kills the off-diagonal (sharp form of the tension) ---
+    kern = _kernels()
+    nc4_ok = True
+    meas_g = _e3_measure(Rational(1), Rational(1), Rational(3, 2), E3_U45, Rational(3))
+    dbar_g = sp.simplify(sp.Max(_spread(_S_of(meas_g, E3_W1)), _spread(_S_of(meas_g, E3_W2))))
+    for Gam in [Rational(1, 100), Rational(1, 1000), Rational(1, 10000)]:
+        for kn, kf in kern.items():
+            Kv = kf(sp.simplify(dbar_g / Gam))
+            if not ((sp.simplify(Kv) >= 0) == True and (sp.simplify(Kv - Rational(1, 10)) < 0) == True):
+                nc4_ok = False
+    checks['NC4_gamma_to_zero_kills_offdiag'] = {
+        "status": "PASS" if nc4_ok else "FAIL",
+        "delta_bar": str(sp.nsimplify(dbar_g)),
+        "note": "As Gamma -> 0 every kernel suppresses the cross term: no window, no surplus.",
+    }
+
+    # --- NC5: K == 1 must be a strict superset of every real kernel's feasible set ---
+    probe = (Rational(1), Rational(1), Rational(3, 2), E3_U45, Rational(3), Rational(1, 2))
+    p_unsup = _e3_point(*probe, lambda x: sp.Integer(1), 'offdiag')
+    nc5_ok = True
+    for kn, kf in kern.items():
+        p = _e3_point(*probe, kf, 'offdiag')
+        # suppressed |off-diag| must never exceed the unsuppressed one
+        if not (sp.simplify(sp.Abs(p["Meff"][0, 1]) - sp.Abs(p_unsup["Meff"][0, 1])) <= 0) == True:
+            nc5_ok = False
+    checks['NC5_kernel_monotonicity'] = {"status": "PASS" if nc5_ok else "FAIL"}
+
+    # --- NC6: no Float in the decision path ---
+    nc6_ok = True
+    try:
+        _no_float(M_psd[0, 0]); _no_float(M_iso[0, 1]); _no_float(dbar_g)
+    except AssertionError:
+        nc6_ok = False
+    checks['NC6_no_float_in_decisions'] = {"status": "PASS" if nc6_ok else "FAIL"}
+
+    # --- NC7: analytic bound max_beta |K * M_12| attained at delta_bar = Gamma ---
+    # For the Lorentzian kernel the suppressed off-diagonal is (u*Gamma/2d)/(1+u^2)
+    # with u = delta/Gamma, maximized at u = 1. Check numerically-exactly that the
+    # maximum over a beta sweep sits at the point where delta_bar == Gamma.
+    Gam_fix = Rational(1, 2)
+    best_beta, best_val = None, None
+    for k in range(1, 61):
+        b = Rational(k, 10)
+        p = _e3_point(Rational(1), Rational(1), b, E3_U45, Rational(3), Gam_fix,
+                      kern['lorentzian'], 'offdiag')
+        val = sp.simplify(sp.Abs(p["Meff"][0, 1]))
+        if best_val is None or (sp.simplify(val - best_val) > 0) == True:
+            best_val, best_beta = val, b
+    p_best = _e3_point(Rational(1), Rational(1), best_beta, E3_U45, Rational(3), Gam_fix,
+                       kern['lorentzian'], 'offdiag')
+    ratio_at_max = sp.simplify(p_best["dbar"] / Gam_fix)
+    nc7_ok = (sp.simplify(sp.Abs(ratio_at_max - 1) - Rational(1, 5)) < 0) == True
+    checks['NC7_analytic_bound_at_delta_eq_gamma'] = {
+        "status": "PASS" if nc7_ok else "FAIL",
+        "argmax_beta": str(best_beta),
+        "delta_bar_over_Gamma_at_max": str(sp.nsimplify(ratio_at_max)),
+        "note": "Lorentzian suppression peaks at delta_bar/Gamma = 1 (analytic prediction).",
+    }
+
+    allpass = all(v["status"] == "PASS" for v in checks.values())
+    return {"status": "PASS" if allpass else "FAIL", "checks": checks}
+
+
+# ----------------------------------------------------------------------
 # Negative controls / anti-self-fooling
 # ----------------------------------------------------------------------
 
@@ -887,7 +1325,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                   formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--tests', default='T5,T1,T3,T2,T4',
-                     help='comma-separated subset of T1,T2,T3,T4,T5')
+                     help='comma-separated subset of T1,T2,T3,T4,T5,T6')
     ap.add_argument('--p', type=int, default=2, help='port count (only p=2 implemented)')
     ap.add_argument('--tclass', default='all', choices=['all', 'general', 'unitary', 'diag'])
     ap.add_argument('--seed', type=int, default=SEED)
@@ -923,6 +1361,23 @@ def main():
         results['T4'] = run_T4()
         if args.verbose:
             print(f"T4: {results['T4']['status']}")
+    if 'T6' in tests:
+        results['edge3_controls'] = run_edge3_controls()
+        if args.verbose:
+            print(f"Edge(iii) controls NC0-NC7: {results['edge3_controls']['status']}")
+        if results['edge3_controls']['status'] != "PASS":
+            # Frozen rule: a failed control voids the run. Do not emit a verdict.
+            results['T6'] = {
+                "status": "VOID",
+                "certificate": {"verdict_reason":
+                                "Edge(iii) negative controls NC0-NC7 did not all pass; "
+                                "the run is void and no verdict may be read off it."},
+                "witness": {},
+            }
+        else:
+            results['T6'] = run_T6()
+        if args.verbose:
+            print(f"T6 (Edge iii): {results['T6']['status']}")
 
     neg = run_negative_controls()
     results['negative_controls'] = neg
@@ -947,6 +1402,12 @@ def main():
 
     results['CG2_verdict'] = {"status": cg2, "reason": reason}
 
+    if 'T6' in results:
+        results['EDGE3_verdict'] = {
+            "status": results['T6']['status'],
+            "reason": results['T6']['certificate'].get('verdict_reason', ''),
+        }
+
     elapsed = time.time() - t0
     results['_meta'] = {"elapsed_seconds": elapsed, "seed": args.seed, "tests_run": tests}
 
@@ -955,6 +1416,9 @@ def main():
         json.dump(results, f, indent=2, ensure_ascii=False, default=str)
 
     print(f"CG2 verdict: {cg2} -- {reason}")
+    if 'EDGE3_verdict' in results:
+        print(f"EDGE3 verdict: {results['EDGE3_verdict']['status']} -- "
+              f"{results['EDGE3_verdict']['reason']}")
     print(f"Negative controls: {neg['status']}")
     print(f"Wrote {out_path} ({elapsed:.1f}s)")
 
