@@ -520,6 +520,7 @@ Supplemental Materialは補助的導出、追加図、パラメータ表、再�
 | Continuous quantum gauge / tree calibration atlas（\(SU(d)\) scaling production） | （非還元性未確立）tree calibrationでの予測圧縮則が破綻 | production FAIL | **`K≥q` は必要条件だが十分条件でない**という否定的知見。破綻要因の分類（local rank不足・非線形branch・tree伝播誤差・global chart inconsistency） | 2026-07-23 |
 | Held-out quotient predictor（observational stabilizerによる quotient class） | compact-group latent-frame estimatorと目的関数が完全一致（残差0） | **最終監査** | **quotient class** `[P_i]=P_iH_i`。「内部chartの非一意性 ⇏ 予測の非一意性」という方法論 | 2026-07-23 |
 | Global cycle-consistent quotient atlas（cycle threshold / predict-or-abstain） | compact-group synchronization / 構造化系同定と予測・棄却判定が完全一致 | **最終監査** | **predict-or-abstain certificate**（点推定を強制せずABSTAINを返す安全機構）。cycle冗長度1.5での予測可能性境界 | 2026-07-23 |
+| **語領域受動性障害（WPOT／提案23、次元自由受動排除 DFPE）** | **還元ではなく反証。** 受動実現自身が主張を破る（400/400試行） | **早期kill**（Stage A、作成同日） | **機構的必要条件:** `source ρ₀` と `readout E` を独立に選べる functional では、受動性は片側正値性として語領域に降りない（`R=Σc_k e^{θλ_k}` の `λ_k≤0` は熱性から従うが `c_k≥0` は従わない）。**次に受動性witnessを設計するなら両側挟み込み（`E`と`ρ₀`をKMS内積で結ぶ）が必須。** 検定器 `scripts/wpot_null_smoke.py` は再利用可 | 2026-07-26 |
 
 > **Tube calculus（regular branch）についての注記：** 上表とは別に、Tube calculus自体も現時点ではRISEI固有現象とは判定されていない。
 > regular tube geometryとその主要な発生機構は、Riesz理論・Schur complement・Zeno型縮約・制御/realization理論の組合せで再構成できるためである。
