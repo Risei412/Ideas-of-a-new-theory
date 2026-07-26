@@ -319,6 +319,17 @@ egressが通る環境でDOI解決を再実行することが必須の残作業�
   切片の閉形式盲予測）。**RISEI はステータス表 L.1616 で `Positive κ_eff, α_eff` を
   適用条件として宣言しており、本提案はその除外レジームを占有する位置づけ。**
 
+**Step 1–2（GKSL 物理実現）の実行計画を分離【2026-07-26】** — `docs/dark-ridge-calculation-plan.md`。
+三準位 Λ 系の weak-probe 感受率について `F_disp = Re(χ−χ_∞)=0` と `F_abs = Im(χ−χ_∞)=0` の
+存否を判定する工程表（Stage 0–9・生死判定表・停止条件7件）。**新規提案番号は消費しない
+（提案24 の Step 1–2 そのものであるため）。** 事前の手計算予想は §24.1：凍結EIT §9.6 の閉形式では
+**吸収側に解なし・分散側のみ正の解（クラス D only、`Δ_split` は定義されない）**。
+ただし §9.6 は `ρ⁰=|g₁⟩⟨g₁|` 前提であり、optical pumping による population inversion が
+正値性を破りうるため、**真の定常状態を含む完全な Liouvillian 解で判定するまで結論としない。**
+判定は `docs/dark-ridge-novelty-verdict.md`。
+**先行研究リスクは白紙ではなく未監査** — `docs/literature-master-table.csv` 全76件に
+EIT・transparency・Λ系の行が1件も存在しない（族O の新設が GO 時に必要）。
+
 **次工程:** (1) 符号付き／実トロピカル幾何の文献監査（**未実施・egress 必要**）、
 (2) **GKSL 物理実現の系統探索**（現在の新規性の重心。出発点は SMRT `prop:phase-h` の
 4準位 GKSL `D=diag(0,0,1/2)` と EIT §9.2 の Λ系）、(3) 赤チーム Stage 1–2。
