@@ -189,6 +189,7 @@ genuinely non-Markovian memory kernel・colored noise・初期system–environme
 | **「サンプル点の正値性≠受動性」（CIRT C3の枠組み）** | passivity enforcement（Grivet-Talocia 2004 ほか） | 分野の存在理由そのもの。違反は点でなく**帯**構造 | 2026-07-26 |
 | **ancilla閉性（CIRT C4）** | 正実類のSchur補元・受動的相互接続での閉性（Anderson & Vongpanitlerd 1973） | $h=-\Sigma$ の符号で4行。CIRT §4.5 の符号は逆 | 2026-07-26 |
 | **自己エネルギー↔インピーダンスの辞書そのもの** | **Solgun–DiVincenzo 2015**（Multiport impedance quantization） | Brune合成→量子ハミルトニアン＋最小bathモード。circuit QEDの実用手法 | 2026-07-26 |
+| **語領域受動性条件 WP1（提案23／WPOT）— 「受動実現の存在 ⇒ 語領域Loewner行列 `Π_n ⪰ 0`」** | **還元ではなく反証。先行研究は不要** | 受動（KMS）実現自身が 400/400 試行で `Π_n` の両符号半正定値性を破る。語なし 1×1 スカラーで既に破れる。`R=Σ_k c_k e^{θλ_k}` で `λ_k≤0` は熱性から従うが、`c_k=⟨E,v_k⟩⟨w_k,ρ₀⟩` の正値性は従わない（source と readout が独立に選べる） | 2026-07-26 |
 
 > **⚠️ 「quantum surplus」は量子効果ではない。** 成分ごとのKramers–Kronigが行列受動性を
 > 含意しないのは古典多ポート受動性の定義そのもの（$Z+Z^*\succeq0$ であって成分ごとではない）。
