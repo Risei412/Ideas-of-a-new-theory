@@ -15,7 +15,7 @@
 |---|---|
 | `THEORY_PROPOSAL_GUIDE.md` | **作業基準の本体**（約900行）。提案前に必読 |
 | `Frozen-Theories/` | 確定理論3件（RISEI・SMRT・EIT）。書き換えない |
-| `Blueprints-of-theories/` | 草案5件（DCIT・トロピカル付値異常・因果インターフェース・実現可能性錐・保護の熱力学） |
+| `Blueprints-of-theories/` | 草案6件（DCIT・トロピカル付値異常・因果インターフェース・実現可能性錐・保護の熱力学・**凍結資源実現ギャップ(21)**） |
 | `docs/context-pack.md` | **ChatGPTにアップロードする資料層**（命令は書かない） |
 | `docs/redteam-instructions.md` | ChatGPTのカスタム指示欄に貼る（還元／文献／校正の3種） |
 | `docs/claim-template.md` | 各チャットに貼る主張の雛形 |
@@ -29,6 +29,8 @@
 | `scripts/cirt_gauge_audit.py` | CIRT検証の実装（T1–T8、負制御NC0–NC10、判定基準は実行前凍結） |
 | `docs/reduction-targets.md` | 族ごとの target object / kill test / survival certificate |
 | `docs/p0-certificate-spec.md` | **P0の証明書仕様と実行順序**（ベクトル値判定・入れ子条件・7ステップ） |
+| `docs/claims/` | Stage 1 の主張リスト（赤チーム投入用・中立記法） |
+| `certificates/` | P0-D の exact 証明書（有理数データ＋C1–C5 判定） |
 | `references/` | `references.bib` + `manifest.csv`（PDFは未取得、URL索引のみ） |
 | `docs/source-material/` | 内部資料4件（RISEI改訂版PDF・競合監査tex・Tubeロードマップ・SMRTスモーク） |
 
@@ -143,7 +145,8 @@ egressが通る環境でDOI解決を再実行することが必須の残作業�
 
 1. ~~ガイド §1.2 代替投稿先~~ — **2026-07-25完了**（PRX → PRX Quantum → PRL → PRA/PRB、降格条件6件つき）
 2. **ガイド §7** — 競合論文表。文献56件は `docs/literature-master-table.csv` に索引済み。ガイド§7への転記は候補確定後（現時点はfamily-levelのため）
-3. **`context-pack.md` §2・§3** — ガイド §4.1・§4.2 からの転記（機械的作業、Claude側で実行可）
+3. ~~**`context-pack.md` §2・§3** — ガイド §4.1・§4.2 からの転記~~ — **2026-07-26 完了。
+   `context-pack.md` は全節記入済みで ChatGPT プロジェクトへアップロード可能**
 4. **RISEI の正式名称** — 凍結文書内に展開がなく未確認
 5. **紛失資料3件** — `risei_uniqueness_competitor_audit/REPORT.md` 他。ゴミ箱から復旧予定
    （統合texに主要結果は保存済み。seed・optimizer設定・失敗ログは復元不可）
@@ -159,8 +162,10 @@ egressが通る環境でDOI解決を再実行することが必須の残作業�
 **実行順序:**
 1. ~~shot予算とprotocol数の整合性を修正~~ — **完了（凍結、下記）**
 2. ~~理想データで到達可能な `σ₇` をスモーク~~ — **完了・判定 GO**
-3. P0-D用の6状態以下HMMをcalibration側に明示構成 ← **現在ここ**
-4. full側のrank-7 minorをexact arithmeticで認証
+2bis. ~~認証対象を凍結予算で測れる部分行列へ移す~~ — **完了（2026-07-26、下記）**
+3. ~~P0-D用の6状態以下HMMをcalibration側に明示構成~~ — **完了（2026-07-26）**
+4. ~~full側のrank-7 minorをexact arithmeticで認証~~ — **完了（2026-07-26）**
+4bis. **有限shot余裕 (iii) が未達 → 判定方式の再設計** ← **現在ここ**
 5. 統計模型から `τ_H(α)` を導出
 6. P0-D成立後、P0-A・P0-Eの明示構成へ（**SDPを使わず明示構成** — CVXPY不在のため）
 7. P0-D単独なら**PRL型**、複数族を排除できたら**PRX型**へ戻す
@@ -183,6 +188,53 @@ egressが通る環境でDOI解決を再実行することが必須の残作業�
 - **ランダム構成では届かない** — 合格率は1 settingで6.8%、2 settingで1.7%
 - **最適化すればクリア** — 射影付き山登り120反復で 0.402 → **0.609**（settings≤4まで許容）
 - → **ステップ3–4の構成は最適化して作ること。ランダム試行では失敗する**
+
+**ステップ2bis の結果（`p0-certificate-spec.md` §4quater）— 認証対象を差し替え:**
+- **43×43 Hankel は凍結予算で測れない。** 全成分に深さ4語 1296 個が要り、held-out 凍結値
+  （深さ4を64 protocol）の **20.25倍**。§1 の prefix–suffix 閉包の警告の具体例
+- **calibration の protocol 設計も Hankel の語構造と不一致だった**（深さ2を16/36しか測らず、
+  Hankel が使わない深さ3に24 protocol を割いていた）
+- → **認証対象を「行・列語がすべて長さ2の 8×8 部分行列 `H_wit` の `σ₇`」へ変更。**
+  深さ4語がちょうど64個で凍結 held-out 予算と一致し、**予算変更は不要**
+- → **calibration を「長さ2以下の全語＝43 protocol」へ引き直し**（深さ3を除外）。prefix–suffix 閉包が成立
+- 実測（`scripts/minor7_smoke.py`）: `σ₇(H_wit) = 0.1934`（要求 `2τ_H(8) = 0.1265`、余裕 **1.53×**）。
+  **交錯不等式により部分行列版は構成側に不利**（同点で `σ₇(H_full)=0.66–0.75`）、ランダム合格率は **0%**
+- **確定予算（m=6）:** calibration 43 + held-out 64 = **107 protocol、214,000 shots**（1 setting）。
+  settings=2 も可だが held-out が 1000 shots/setting となり余裕 1.08×。**標準は settings=1**
+- 副次効果: 認証対象が exact minor 認証の対象と一致し、Hankel 成分間の相関問題も消えた
+
+**ステップ3–4の結果（`p0-certificate-spec.md` §4quinquies）— exact 部分は成立、有限shotは未達:**
+- **構成の骨格が改善した。** 全体を7状態 controlled sub-Markov 過程に取り、`p_7 = 0` かつ `f_u·b_0 = 0`
+  とすると calibration 一致が**恒等式として**成立し、`rank(H_cal) ≤ 6` も自動。根探索が不要になった。
+  非負の世界では `f_u·b_0 = 0` は台の disjoint 性と同値。`R(w) ∈ [0,1]` が全語で保証される
+- **exact 認証 C1–C5 すべて PASS**（`certificates/p0d_certificate_2026-07-26.txt`）。
+  真の6状態 sub-Markov 競合の存在・calibration 恒等式（43語）・`det(H_cal)=0`・非零 7×7 minor・確率性。
+  **⇒ 中心命題の (i)(ii) は Conditional から Exact へ昇格**
+- **⚠️ (iii) 有限shot余裕は未達。独立な2つの問題:**
+  - **閾値の正規化が誤っていた（2倍緩い）。** `σ_entry ≤ 1/(2√n)` は `[0,1]` の割合の上界だが、
+    採用した opnorm 正規化はレンジ幅2。正しくは `σ₇/レンジ幅 ≥ 2√N/√n`。
+    **訂正するとステップ2は 1.04×（辛うじて）、ステップ2bis は 0.76× で FAIL**
+  - **物理性（非負 substochastic）を課すとさらに落ちる。** 10⁴反復・8リスタート・台分割掃引で
+    最良 0.0666（要求 0.1265 の **0.53倍**）、有理化後 0.0536（0.42倍）
+- **構造的な理由:** 入れ子条件 `f_u·b_0 = 0` が隠れ状態の1段励起を禁じるため、第7方向は
+  2段の substochastic 減衰を受け、他の6方向より構造的に小さい。
+  **入れ子条件と有限shot余裕は反発する**（最適化の失敗ではない）
+- **選択肢:** (a) shot を 3.6倍（7,215/setting）／(b) 安全係数を2→1（余裕ゼロ）／
+  **(c) 判定を作用素ノルム＋Weyl から統計的検定へ置換（本命）**／(d) (iii) を落とす（新規性が消える）
+- stop condition (1) は発火したが、失敗しているのは**判定方式**であって現象ではないため、
+  撤回ではなく縮小・再設計とする。(c) を試してなお届かなければ撤回
+
+**提案21（Stage 0/1 完了）:** `Blueprints-of-theories/21_resource_bounded_mechanism_separation_proposal.md`、
+主張リストは `docs/claims/21_claims.md`（5主張・計13チャット）。
+**主張1（入れ子構成の存在）は構成的に証明済み** — Stage 2 では真偽ではなく
+「既知の構成に還元されるか」を問う。主張1のブロックは証明済みの内容（全体が7状態確率モデル）へ差し替えた。
+**主張4 は否定的決着によりキューから除外**（判定方式の再設計後に立て直す）。
+
+**Stage 2 は投入可能な状態になった**（`docs/claims/21_claims.md` §0.5 に実行手順）。
+命令は `redteam-instructions.md` §A をカスタム指示欄へ、資料は `context-pack.md` をアップロード、
+検証対象は §2 の枠内のみを各チャットに貼る。**主張3 → 1 → 2 → 5 の順に各3チャット、計12チャット。**
+
+> **Stage 2 は Claude では代行できない**（ガイド §11.0 の役割非対称性）。別モデル・別セッションで実行する。
 
 **共通の作業**（`literature-audit-report.md` §6）: 候補を固定する前に neutral notation で
 calibration/held-out tensor を定義し、generalized Hankel matrix と temporal operator-Schmidt matrix を
