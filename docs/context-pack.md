@@ -9,9 +9,9 @@
 
 ---
 
-> **記入状況（2026-07-25）:** §1 記号表・§5 却下リスト・§6 競合予算・§7 未解決項目は記入済み。
-> **§2 適用範囲・§3 抵触禁止制約のみガイド §4.1／§4.2 からの転記待ち。**
-> この2節が埋まればアップロード可能な状態になる。
+> **記入状況（2026-07-26）:** **全節記入済み。アップロード可能。**
+> §2 適用範囲・§3 抵触禁止制約をガイド §4.1／§4.2 から転記した（2026-07-26）。
+> §6.4 に提案21の実測設計を追記した（2026-07-26）。
 
 ---
 
@@ -109,9 +109,20 @@
 
 | 理論 | 主結果 | 凍結された適用範囲（この外では保証されない） |
 |---|---|---|
-| RISEI | *TODO* | *TODO* |
-| SMRT | *TODO* | *TODO* |
-| EIT | *TODO* | *TODO* |
+| **RISEI**（Generalized RISEI, End-to-End Certified） | 物理的介入protocol、full-minus-protocol応答、subset-Möbius不可約成分、操作順序、response functional、protected Riesz cluster、source/readout選択幾何、有限資源、極限順序を統合。再利用可：Möbius分解の一意性、Riesz cluster invariance、Schur–Zeno展開、response-relevant strong dissipatorが可逆な場合のresolvent抑制、選択集合の局所codimension = 実Jacobian rank、stationary linear responseへの埋め込み | 有限次元・time-local GKSL。介入後も瞬間generatorがGKSL admissible。比較間で初期状態・probe・readout・観測窓・測定規約・正規化を固定。Schur–Zeno結果にはsemisimpleなresponse-relevant protected clusterとbounded fast resolventが必要。**Pattern (b) の任意GKSL普遍性は再利用不可** |
+| **SMRT**（Sector-Mediated Response Theory） | sectorを切ったcounterfactualとfull responseの差である master sector-resolved response を exact zero・algebraic suppression・protected survival へ分類。二尺度・scaling-path依存のpolyhedral拡張を含む。再利用可：full-minus-cut差分のdoubling realization、有限個のKrylov/Cayley–Hamilton momentsによるexact-zero certificate、dissipative moment hierarchyと抑制次数、`ν∈{∞, 正の有限値, 0}` の排他的三分類、有限停止decision algorithm、exact arithmeticによる認証方針 | 有限次元・Markovian・weak-probe/linear response。応答が有限次元のrational transferとして表され、source/readoutと比較規約が固定されること。強散逸族 `A_Γ(z)=ΓD+B(z)` ではどのrateをscaleするかを物理入力として固定する。protected theoremにはsemisimple kernelとprotected blockの可逆性が必要。polyhedral結果は明記されたscaling pathと正則性条件の範囲のみ |
+| **EIT no-go/go**（v6.2） | 任意材料の特定configurationについて dark-state rank、Lindblad stationary dark state、Schur-complement susceptibility、sector-resolved EIT no-go/go を判定。再利用可：`dim ker Ω = N_g − rank Ω`、pure stationary Lindblad stateの必要十分条件、exact Schur-complement response、`δχ_S = χ_full − χ_cut^(S)`、regular scalar caseの `δχ_S=0 ⇔ K_12K_21=0`、Krylov exact-zero定理、first nonzero momentによる抑制次数、singular dampingのprotected channel、symmetry audit | 有限次元、time-independent Markovian GKSL、stationary rotating frame、weak probe、unique steady stateまたはtrace-zero部分空間上でwell-definedなgroup inverse。分類対象は材料名ではなくconfiguration（準位・偏光・場・温度・observable・target sector）。**非Markov浴、strong-probe saturation、伝搬支配のcollective effectは範囲外** |
+
+**再利用時の規則（ガイド §4.1）**
+
+1. **定理名だけを再利用しない。** 仮定・比較規約・source/readout・functional・観測窓・limit protocol を一緒に移植する
+2. 既存の数値結果を使う場合、元のparameter file・単位・rate convention・precision・fit window・乱数seed・commit hash を記録する
+3. **Frozen theory の結論を新理論の新規性として数えない。** 新理論は、凍結結果から何を追加で予測・禁止・分類するかを示す
+4. `Exact / Conditional / Conjecture / Numerical phenomenon / Model-specific observation` の status を維持する。昇格には新しい証明または認証が要る
+
+**凍結の外側（ガイド §4.3、確定済み理論が一般定理として保証していない領域）**
+
+genuinely non-Markovian memory kernel・colored noise・初期system–environment相関／無限次元Hilbert–Liouville空間・essential spectrum・連続体bath／generic many-body・熱力学極限scaling・相転移／strong-probe・非線形応答・saturation・多光子非摂動領域／gain medium・unstable generator・物理周波数窓内のpole crossing／nonsemisimple zero eigenvalue・Jordan block・Puiseux/fractional scaling／scaling対象が途中で変わる多parameter path・ランダムpath・adaptive path／ideal algebraic cutの実験実装可能性／ensemble propagation・optical depth・disorder averaging・detector noise／finite-grid近似kernelからcontinuum spectrumへの外挿／ergotropy・Fisher information・entropy production等の非線形functional／unrestricted process tensor・quantum comb・causal modelへの埋め込み。
 
 ---
 
@@ -119,7 +130,20 @@
 
 命題がこれらのいずれかを破る場合、**どの仮定を外したかが明示されていない限り、その命題は誤りである**。
 
-- *TODO*（CPTP性、熱力学第二法則、既存no-go定理など）
+1. **GKSL/CPTP physicality** — 物理的介入は原則としてgenerator全体をGKSL admissibleに保つ変更である。任意の行列要素の削除を実験的介入と同一視しない
+2. **Fixed comparison class** — full／cut／intervened protocol を比較するとき、初期状態・probe・readout・観測窓・operator ordering・measurement scheme・normalization を固定する。変更するならそれ自体をprotocol dataとして明示する
+3. **no-go対象の取り違え禁止** — EIT/SMRT の no-go 対象は全応答の零点ではなく、指定sectorによる差分 `δχ_S` または master response である。`χ_full=0` は理想EITのgo signatureになりうるのでno-go判定に使わない
+4. **有限点のnumerical zeroはexact zeroではない** — exact all-frequency zero は symbolic identity・有限Krylov moment certificate・adjugate identity・対称性の完全監査で証明する。浮動小数点samplingだけで「証明済み」と書かない
+5. **full-rank strong damping no-go** — response-relevant部分空間上で scaled dissipator `D` が可逆かつ逆行列が一様有界なら、固定周波数窓のbounded responseは少なくとも `O(Γ^{-1})` に抑制される。追加のsingular scalingなしに `O(1)` protected response を主張しない
+6. **protected responseの必要条件** — `ker D ≠ {0}` だけでは不十分。semisimpleなresponse-relevant protected Riesz subspace、非零のprojected source/readout、可逆なprotected block、非零のprotected transfer が要る。endpoint overlapだけで保護を判定しない
+7. **fixed kernel lifting no-go** — 固定した `ε>0` でresponse-relevant kernelが持ち上がり `D_ε` が可逆かつbounded inverseを持つなら、`Γ→∞` でexact-kernel型のprotected asymptotic機構は消える。finite-window crossover を asymptotic phase と呼ばない
+8. **Pattern (b) の任意GKSL普遍性は禁止** — Pattern (b) は response-relevant protected kernel、Schur–Zeno coupling、selection geometry、非零residue、許容摂動、固定されたlimit protocol を要する条件付き現象である
+9. **universal codimension-one は禁止** — observable-selection setの局所codimensionは active real constraint map のJacobian rankで決まる。complex scalar constraint は一般に real codimension two になりうる
+10. **極限交換禁止** — `Γ→∞`、kernel lifting `ε→0`、grid/domain size、continuum、thermodynamic limit の順序を黙って交換しない。異なるlimit protocolの結果を同一視しない
+11. **symmetry zeroの完全監査** — symmetry-protected zero を主張するときは、Hamiltonian・全jump operator・steady state・source・readout・control polarization を同じprojectorがreduceすることを確認する。一項でも破ればexact zeroではなくperturbative suppressionとして扱う
+12. **rate convention・次元整合性** — population relaxation rate と optical-coherence damping rate を混同しない（例：対称orbital hoppingでは `Γ_XY=2k` に対し各optical coherenceのdampingは `k/2=Γ_XY/4`）。すべての無次元化と単位変換をテストする
+13. **EITとAutler–Townes splittingの混同禁止** — transparency dipだけではEITを同定できない。ground-coherence依存・control-power scaling・pole/residue・two-photon linewidth・full-minus-cut差分を確認する
+14. **熱力学への拡張時の制約** — GKSL形式だけから熱力学第二法則を自動的に結論しない。bath・Hamiltonian・温度・detailed balance または採用するresource-theoretic assumptions を明示し、entropy production・passivity・energy bookkeeping を独立に検証する
 
 ---
 
@@ -266,6 +290,19 @@ symmetry・selection-rule reduction。文書表記は「**競合モデル6族＋
   `2000` shots は **1 protocol あたりではなく 1 measurement setting あたりの上限**（protocol と setting は分離計上）。
   標準探索は `m=6`、`m=8` は予算拡張を要する stress test。詳細は `docs/p0-certificate-spec.md` §4.5。通常productionは相対calibration noise 1%、stress testは3%。control-amplitude drift標準偏差1%、timing jitterはpulse長の0.5%
 - **held-out**: depth2の未使用edge、depth3の未使用protocol、depth4から事前固定した64protocol（sampling seed: 20260723）。候補生成・hyperparameter調整・停止判定には一切使用しない。active design baselineもheld-outへ問い合わせない
+
+**【2026-07-26 追記】提案21（凍結資源実現ギャップ）の実測設計** — 上の一般設計とは別に、
+generalized Hankel の prefix–suffix 閉包を満たすよう次のとおり凍結した（`docs/p0-certificate-spec.md` §4quater）。
+
+| 項目 | 値 |
+|---|---|
+| calibration | **長さ ≤2 の全語 43 protocol**（深さ3は含まない）。1 setting・2000 shots で 86,000 |
+| witness（held-out） | **深さ4の 64 語**（行・列語が長さ2の 8×8 部分行列 `H_wit` を張る）。2000 shots で 128,000 |
+| held-out seed | **20260725**（提案21用に引き直し。seed 20260723 の集合は過去候補で使用済みのため blind でない） |
+| settings/protocol | ≤2、標準は 1 |
+| 合計 | 107 protocol / 214,000 shots |
+
+**43×43 の Hankel 全体は測定しない** — 深さ4語 1296 個が必要で凍結予算の 20.25 倍になるため。
 
 ---
 

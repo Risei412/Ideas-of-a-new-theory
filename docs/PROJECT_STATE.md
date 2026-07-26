@@ -97,7 +97,8 @@ GKSL simulationは custom Liouville 実装、symbolic は SymPy で代替。
 
 1. ~~ガイド §1.2 代替投稿先~~ — **2026-07-25完了**（PRX → PRX Quantum → PRL → PRA/PRB、降格条件6件つき）
 2. **ガイド §7** — 競合論文表。文献56件は `docs/literature-master-table.csv` に索引済み。ガイド§7への転記は候補確定後（現時点はfamily-levelのため）
-3. **`context-pack.md` §2・§3** — ガイド §4.1・§4.2 からの転記（機械的作業、Claude側で実行可）
+3. ~~**`context-pack.md` §2・§3** — ガイド §4.1・§4.2 からの転記~~ — **2026-07-26 完了。
+   `context-pack.md` は全節記入済みで ChatGPT プロジェクトへアップロード可能**
 4. **RISEI の正式名称** — 凍結文書内に展開がなく未確認
 5. **紛失資料3件** — `risei_uniqueness_competitor_audit/REPORT.md` 他。ゴミ箱から復旧予定
    （統合texに主要結果は保存済み。seed・optimizer設定・失敗ログは復元不可）
@@ -178,7 +179,14 @@ GKSL simulationは custom Liouville 実装、symbolic は SymPy で代替。
 **提案21（Stage 0/1 完了）:** `Blueprints-of-theories/21_resource_bounded_mechanism_separation_proposal.md`、
 主張リストは `docs/claims/21_claims.md`（5主張・計13チャット）。
 **主張1（入れ子構成の存在）は構成的に証明済み** — Stage 2 では真偽ではなく
-「既知の構成に還元されるか」を問うことになる。**次は Stage 2（赤チーム還元試行）と判定方式の再設計。**
+「既知の構成に還元されるか」を問う。主張1のブロックは証明済みの内容（全体が7状態確率モデル）へ差し替えた。
+**主張4 は否定的決着によりキューから除外**（判定方式の再設計後に立て直す）。
+
+**Stage 2 は投入可能な状態になった**（`docs/claims/21_claims.md` §0.5 に実行手順）。
+命令は `redteam-instructions.md` §A をカスタム指示欄へ、資料は `context-pack.md` をアップロード、
+検証対象は §2 の枠内のみを各チャットに貼る。**主張3 → 1 → 2 → 5 の順に各3チャット、計12チャット。**
+
+> **Stage 2 は Claude では代行できない**（ガイド §11.0 の役割非対称性）。別モデル・別セッションで実行する。
 
 **共通の作業**（`literature-audit-report.md` §6）: 候補を固定する前に neutral notation で
 calibration/held-out tensor を定義し、generalized Hankel matrix と temporal operator-Schmidt matrix を
