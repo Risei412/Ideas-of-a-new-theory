@@ -1,7 +1,33 @@
-# 計画19: CIRT — 因果的インターフェース実現可能性理論（PRX投稿を見据えた新理論提案）
+# 計画19: CIRT — 因果的インターフェース実現可能性理論
 
-**作成日:** 2026-07-24
-**位置づけ:** 実行構成でも数値計画でもない。RISEI/RISERの既存定理・数値証拠・**失敗監査**を踏まえ、
+**作成日:** 2026-07-24 ／ **最終監査:** 2026-07-26
+**現在の判定:** 🔻 **降格確定** — 新理論としては成立しない。多ポート量子デバイスの
+**較正診断ツール**として PRApplied / PRA 水準。投稿先の詳細は §14 の最終監査ブロック。
+
+> ## ⚠️ この文書を読む前に
+>
+> **本文は2026-07-24時点の当初提案であり、その新規性主張は監査により否定されている。**
+> 本文中の「PRX」「新理論」「quantum surplus」といった表現は当時のものであり、
+> 訂正ブロック（§4.3・§4.4・§4.5・§9.1・§10・§14）を必ず併読すること。
+>
+> **監査の結論（6件、すべて `docs/` に一次資料あり）:**
+>
+> | 監査 | 判定 | 文書 |
+> |---|---|---|
+> | CG2 gauge監査 | PASS（§4.3 に errata） | `cirt-cg2-covariance-audit.md` |
+> | **Pass 3 先行研究監査** | **🔻 降格** — C1・C2・C5・C6・C7 と §6.1 は**すべて先行研究** | `literature-audit-cirt-passive-realizability.md` |
+> | vacuousness 反論 | 半分は認容。scope 確定 | `cirt-vacuousness-response.md` |
+> | Edge (iii) 対称性二重拘束 | ALIVE（可行幅 36.6%） | `cirt-edge3-symmetry-audit.md` |
+> | window honesty | ALIVE（有効幅4桁） | `cirt-window-honesty-audit.md` |
+> | CG3 / C4 ancilla閉性 | PASS（ただし既知。§4.5 に符号の誤り） | `cirt-cg3-ancilla-closure.md` |
+>
+> **§9.1 の6つの停止条件のうち、発火したのは「先行研究」の1つだけである。**
+> 理論は数学的・構造的には健全で、**失ったのは新規性だけ**である。
+>
+> 検証はすべて `scripts/cirt_gauge_audit.py`（T1–T8、負制御 NC0–NC10、
+> 判定基準は実行前に凍結）で再現できる。
+
+**位置づけ（当初）:** 実行構成でも数値計画でもない。RISEI/RISERの既存定理・数値証拠・**失敗監査**を踏まえ、
 これまでの候補現象がすべて還元死してきた原因を構造的に回避する新理論を提案する検討書である。
 実行を強制するものではなく、理論構築・証明・査読前検証のための設計図として次の判断材料に供する。
 
@@ -323,6 +349,25 @@ $$\Sigma_S(z)=V\big(z-H_A-\Sigma_A(z)\big)^{-1}V^\dagger$$
 
 は、$\Sigma_A$ がHerglotz類なら再びHerglotz類に属する（自己共役作用素の
 resolvent が Herglotz であることと、Herglotz摂動での閉性）。
+
+> **[CG3監査による訂正 2026-07-26、`docs/cirt-cg3-ancilla-closure.md`]**
+> **上の符号は逆である。** 自己共役作用素の resolvent $(z-H)^{-1}$ は上半平面で
+> $\mathrm{Im}\preceq0$、すなわち**反Herglotz**であって Herglotz ではない。
+> §3.2 の規約 $h=-S+\tfrac i2\gamma$ と遅延自己エネルギー $\Sigma=S-\tfrac i2\gamma$ から
+> $h=-\Sigma$ であり、正しくは「**$\Sigma$ が反Herglotz $\iff$ $h$ が Herglotz**」。
+> これが減衰の物理的に正しい符号である。
+>
+> 訂正後、C4 は4行で証明できる: $D(z):=z-H_A+h_A(z)$ は $\mathrm{Im}\,D\succeq(\mathrm{Im}\,z)\mathbb 1\succ0$
+> ゆえ可逆、恒等式 $\mathrm{Im}(D^{-1})=-D^{-1}(\mathrm{Im}\,D)(D^{-1})^\dagger\preceq0$ より
+> $\mathrm{Im}\,\Sigma_S\preceq0$、すなわち $h_S=-\Sigma_S$ は再び Herglotz。∎
+>
+> **さらに重要な点:** 7連敗をもたらした「手書きLindblad付きancilla」逃避は、
+> **それ自体が Herglotz 合法**である（広帯域平坦 $\gamma$、$S=0$ は Herglotz 境界値で
+> 透明窓上 $M=0\succeq0$）。すなわち逃避は「禁じられている」のではなく、
+> 合法な部品しか使っていないため**閉性により発火し得ない**。これが C4 の実質的な内容である。
+>
+> **ただし新規性はない。** 正実類が Schur 補元と受動的相互接続で閉じることは
+> Anderson & Vongpanitlerd 1973 で標準である（Pass 3 監査 §2）。
 したがって、**C2に違反するデータは、最終的に真の定常bathで終端するいかなる
 有限ancilla鎖・いかなる受動的相互接続によっても実現できない。**
 
@@ -540,7 +585,7 @@ CIRTは制約を CP から **CP＋因果性** に強めることでこの分類�
 | 0 | **定義凍結** | 結果を見る前に固定 | architecture $\mathfrak A$、ポート基底、窓定義、比較class、競合baseline、一意性判定基準 |
 | 1 | **CG1 exact seed** | C3を成立させる | C2の記号的証明＋C2違反する**具体的有限次元GKSL族**（qutritまたはΛ系、2ポート以上）。**違反領域が有限幅**であること（G4の轍を踏まない）が必須。**[2026-07-25更新]** CG2監査（下記）によりΛ系は非対角 $M$ を持てないことが判明（`docs/cirt-cg2-covariance-audit.md` §2）。CG1の具体構成は**縮退多重項構造**（縮退基底/励起2重項→単一準位、ポート=偏光チャンネル、つまみ=等方的光シフト）に差し替える必要がある。qutritまたはΛ系のままでは未着手のまま留める |
 | 2 | **CG2 gauge監査** | 最大の想定反論を潰す | $S\to S+K$、jump frame unitary混合、$H_{\rm LS}$/bare $H$ 再分割、ポート基底再定義、secular近似の緩和——すべてで障害が残存すること。**判定: PASS（2026-07-25、`docs/cirt-cg2-covariance-audit.md`）。** congruence方向・$b$項・$\omega$依存gaugeいずれでも witness は保存される。ただし副産物として secular構造からΛ系がquantum surplusを持てないことが判明し、CG1の実装対象を変更する必要がある（§4.3に errata 追記済み。secular緩和の限界は未決） |
-| 3 | **CG3 ancilla閉性** | **理論の決定点** | C4の証明、および $N=1,\dots,N_{\max}$ の受動dilationによる敵対的実現探索が全滅すること |
+| 3 | **CG3 ancilla閉性** | ~~理論の決定点~~ | C4の証明、および $N=1,\dots,N_{\max}$ の受動dilationによる敵対的実現探索が全滅すること。**判定: PASS（2026-07-26、`docs/cirt-cg3-ancilla-closure.md`）。** ただし §4.5 の符号は逆であり、訂正後は4行で証明できる。**「理論の決定点」という位置づけは誤り**——C4 は安価かつ既知（Anderson & Vongpanitlerd 1973）であり、理論の生死は §10 で決まっていた |
 | 4 | CG4 quantum surplus | 古典還元を破る | 対角データは具体的スカラーbathで実現、行列データは実現不能、という明示的分離 |
 | 5 | CG5 頑健性 | 実験可能性 | 残留吸収 $\gamma\le\varepsilon$ と測定CIを入れてもマージン $>0$。C10の定量Loewnerを証明 |
 | 6 | CG6 競合blind監査 | Stop D | process tensor／channel compatibility／PSD completion／スカラーKK／pseudomode fit のいずれも違反を検出せず、CIRTだけがより少ない情報から検出 |
@@ -768,6 +813,38 @@ $$\boxed{
 が一つの体系として成立したときであり、それ以前ではない。
 とりわけ **C4 が理論の生死を決める**。C4が偽なら、CIRTもまた
 「補助系を足せば消える障害」の8番目になる。
+
+> **[最終監査 2026-07-26 — 上の評価はすべて更新された]**
+>
+> **1. 「C4 が理論の生死を決める」は誤りだった**（`docs/cirt-cg3-ancilla-closure.md`）。
+> C4 は §4.5 の符号を直せば**4行で証明でき**（T8 = PASS）、しかも
+> **Anderson & Vongpanitlerd 1973 の系として既知**である。安価かつ既知の命題が
+> 理論の生死を決めることはない。
+>
+> **2. 生死は §10（先行研究監査）で決まっていた**
+> （`docs/literature-audit-cirt-passive-realizability.md`）。C1・C2・C5・C6・C7 および
+> §6.1 の判定体系はすべて先行研究である（Löwner 1934／Youla–Saito 1967／
+> Mayo–Antoulas 2007／Fei–Yeh–Zgid–Gull 2021 ほか）。
+> **§9.1 の6つの停止条件のうち、発火したのはこの1つだけである。**
+> 残り5つ（測度ゼロ・C4偽・quantum surplus消滅・透明窓理想化・ポート基底再定義）は
+> T3/T5/T6/T7/T8 で検証し、**いずれも発火しなかった**。
+>
+> $$\boxed{\text{理論は数学的・構造的には健全であり、失ったのは新規性だけである}}$$
+>
+> **3. PRX候補としての条件式は撤回する。** C3 の「quantum surplus」は量子効果ではなく
+> 古典多ポート受動性であり（Pass 3）、C4 は既知、C6 は Youla–Saito 1967 と
+> Mayo–Antoulas 2007 に二重に被弾している。上の4項の連言が成立しても PRX にはならない。
+>
+> **4. 確定スコープ**（`docs/cirt-vacuousness-response.md` §8）:
+> 複合仮説 {定常・受動・弱結合・secular・因子化初期状態・凍結ポート基底・共通環境} に対する
+> 有限・gauge不変な**反証試験**。価値は物理ではなく**計測機器**として——
+> 準位シフトデータのみから、process tomography を要さずに、隠れた利得・パラメトリック漏れ・
+> 未モデル化の共有リザーバを検出する。**投稿先は PRApplied / PRA。§11 の PRX 物語は撤回する。**
+>
+> **5. 上方修正が1点ある。** 発火に必要なのは「正味非受動な媒質」ではなく、
+> **正味吸収性の媒質に、窓の近くにある適度な偏光利得特徴**である
+> （`docs/cirt-edge3-symmetry-audit.md` §3.2）。当初の悲観的評価より現実的な実験条件であり、
+> 計測機器としての価値はこの分だけ上がる。
 
 ---
 

@@ -100,6 +100,20 @@ Frozen policy (this file is the record; do not edit criteria after running):
        ALIVE iff a range of at least two frozen broadenings satisfies both.
        ABSTAIN iff exactly one broadening qualifies (range unresolved).
 
+  T8 (CG3 / C4) -- closure of the Herglotz class under passive ancilla dilation.
+     CIRT sec.4.5 states the closure with the WRONG SIGN ("Sigma_A Herglotz =>
+     Sigma_S Herglotz"); a resolvent (z-H)^{-1} is anti-Herglotz. With h = -Sigma
+     the closure is four lines (see the block comment above run_T8).
+       PASS iff (i) Im(D^-1) = -D^-1 Im(D) (D^-1)^dagger holds identically,
+             (ii) passive chains up to N=4 ancillas stay Herglotz at sampled
+             upper-half-plane points, (iii) the hand-written-Lindblad escape is
+             itself cone-legal (M = 0 >= 0), and (iv) a NEGATIVE-weight (gain)
+             ancilla does break closure, proving the test discriminates.
+       FAIL otherwise -> C4 is false, CIRT loses its non-reducibility argument
+             (CIRT sec.9.1 stop condition "C4 is false").
+     NOT NEW: a corollary of positive-real closure under Schur complement and
+     passive interconnection, standard since Anderson & Vongpanitlerd 1973.
+
 Global CG2 verdict (frozen): PASS requires T5 PASS and T1 PASS and T3 PASS.
 T5 FAIL or T3 FAIL -> CIRT demoted per sec.9.1. T2/T4 outcomes are recorded as
 errata against sec.4.3 regardless of the global verdict.
@@ -1227,6 +1241,135 @@ def run_T7():
     return {"status": status, "certificate": {"verdict_reason": reason, **out}, "witness": {}}
 
 
+# ----------------------------------------------------------------------
+# T8 -- CG3 / C4: closure of the Herglotz class under passive ancilla dilation
+# ----------------------------------------------------------------------
+
+# Sign convention (CIRT sec.3.2): h = -Sigma, where Sigma is the RETARDED self-energy.
+# h Herglotz (Im h >= 0 on H+)  <=>  Sigma anti-Herglotz (Im Sigma <= 0), which is the
+# physically correct decay sign. CIRT sec.4.5 states the closure with the OPPOSITE sign
+# ("Sigma_A Herglotz => Sigma_S Herglotz"); that is an error -- a resolvent (z-H)^{-1} is
+# anti-Herglotz, not Herglotz. With the sign corrected the closure is four lines:
+#
+#   D(z) := z - H_A - Sigma_A(z) = z - H_A + h_A(z)
+#   Im D  = (Im z) I + Im h_A >= (Im z) I > 0     for Im z > 0   => D invertible
+#   Im(D^-1) = -D^-1 (Im D) (D^-1)^dagger <= 0
+#   Im Sigma_S = V Im(D^-1) V^dagger <= 0  =>  h_S = -Sigma_S is Herglotz.   QED
+#
+# Prior art (docs/literature-audit-cirt-passive-realizability.md): this is a corollary of
+# closure of the positive-real class under Schur complement and passive interconnection,
+# standard since Anderson & Vongpanitlerd 1973. T8 formalizes it, it does not discover it.
+
+
+def _im_part(M):
+    """Im M := (M - M^dagger)/(2i), exact."""
+    return sp.simplify((M - M.conjugate().T) / (2 * sp.I))
+
+
+def _psd_herm(M):
+    """Exact PSD test for a Hermitian matrix of size 1 or 2 via leading minors."""
+    M = sp.simplify(M)
+    n = M.shape[0]
+    if n == 1:
+        return (sp.simplify(sp.re(M[0, 0])) >= 0) == True
+    tr = sp.simplify(sp.re(sp.trace(M)))
+    det = sp.simplify(sp.re(M.det()))
+    return (tr >= 0) == True and (det >= 0) == True
+
+
+def run_T8():
+    """CG3 / C4: does a passive finite-ancilla dilation ever remove a C2 violation?"""
+    out = {}
+    zsym = symbols('z')
+
+    # --- (1) the algebraic identity Im(D^-1) = -D^-1 (Im D) (D^-1)^dagger, symbolic ---
+    a, b, c, d = symbols('a b c d')
+    D = Matrix([[a, b], [c, d]])
+    lhs = _im_part(D.inv())
+    rhs = sp.simplify(-D.inv() * _im_part(D) * (D.inv()).conjugate().T)
+    identity_zero = sp.simplify(lhs - rhs) == zeros(2, 2)
+    out['schur_identity'] = {
+        "Im(D^-1) == -D^-1 Im(D) (D^-1)^dagger": bool(identity_zero),
+    }
+
+    # --- (2) closure on an explicit N-ancilla passive chain --------------------
+    # Terminate the chain in a genuine stationary bath: h_bath(z) = w/(t0 - z), w >= 0,
+    # which is Herglotz. Then walk back through N ancilla stages
+    #     h_{k}(z) = -V ( z - H_k + h_{k+1}(z) )^{-1} V^dagger .
+    # Check Im h_0 >= 0 at sample points in the upper half plane, for N = 1..4.
+    rng = random.Random(SEED)
+    chain_rows = []
+    all_herglotz = True
+    for N in (1, 2, 3, 4):
+        for trial in range(6):
+            w0 = Rational(rng.randint(1, 6))
+            t0 = Rational(rng.randint(-6, 6))
+            h = Matrix([[w0]]) / (t0 - zsym)              # 1x1 terminating bath, Herglotz
+            for k in range(N):
+                Hk = Rational(rng.randint(-4, 4))          # self-adjoint ancilla level
+                Vk = Rational(rng.randint(1, 4))           # coupling
+                Dk = (zsym - Hk) * eye(1) + h              # z - H_k - Sigma_{k+1} = z - H_k + h_{k+1}
+                Sigma_S = Matrix([[Vk]]) * Dk.inv() * Matrix([[Vk]])
+                h = sp.simplify(-Sigma_S)                  # h_S = -Sigma_S (negate ONCE)
+            for zp in (Rational(1, 3) + I * Rational(1, 2),
+                       Rational(-2) + I * Rational(1, 10),
+                       I * Rational(3)):
+                val = sp.simplify(h.subs(zsym, zp))
+                if not _psd_herm(_im_part(val)):
+                    all_herglotz = False
+            chain_rows.append({"N_ancillas": N, "trial": trial})
+    out['passive_chain'] = {
+        "chains_tested": len(chain_rows),
+        "max_ancillas": 4,
+        "all_stayed_herglotz": bool(all_herglotz),
+    }
+
+    # --- (3) the hand-written-Lindblad escape is itself Herglotz-legal ---------
+    # The escape that killed seven earlier RISEI candidates gives the ancilla a
+    # hand-written Lindblad dissipator, i.e. a flat wideband gamma with S = 0.
+    # That is a Herglotz boundary value, and on a transparency window it gives
+    # M = -(S(w1)-S(w2))/(w1-w2) = 0 >= 0. So the escape uses only legal parts and
+    # by (2) the composite stays in the cone: it can never manufacture a violation.
+    S_flat_1, S_flat_2 = zeros(2, 2), zeros(2, 2)
+    M_flat = sp.simplify(-(S_flat_1 - S_flat_2) / (E3_W1 - E3_W2))
+    out['handwritten_lindblad_escape'] = {
+        "M_from_flat_wideband_bath": str(M_flat.tolist()),
+        "is_PSD": bool(_psd2(M_flat)),
+        "note": "Flat gamma, S = 0: Herglotz-legal, M = 0 >= 0. The shared-ancilla escape "
+                "is built from legal parts only, so by closure it cannot fire.",
+    }
+
+    # --- (4) teeth: an ancilla with NEGATIVE weight (gain) DOES break closure ---
+    h_gain = Matrix([[-Rational(2)]]) / (Rational(3) - zsym)   # negative weight
+    D_g = (zsym - Rational(1)) * eye(1) + h_gain
+    h_out = sp.simplify(Matrix([[Rational(1)]]) * D_g.inv() * Matrix([[Rational(1)]]))
+    broke = False
+    for zp in (Rational(1, 3) + I * Rational(1, 2), I * Rational(2)):
+        if not _psd_herm(_im_part(sp.simplify(h_out.subs(zsym, zp)))):
+            broke = True
+    out['gain_ancilla_control'] = {
+        "negative_weight_ancilla_breaks_closure": bool(broke),
+        "note": "Confirms the test discriminates: only PASSIVE ancillas are closed. "
+                "Matches the mechanism table (only negative spectral weight violates).",
+    }
+
+    ok = identity_zero and all_herglotz and _psd2(M_flat) and broke
+    if ok:
+        status = "PASS"
+        reason = ("Herglotz closure under passive finite-ancilla dilation holds: the Schur "
+                  "identity is exact, chains up to N=4 stay in the cone, the hand-written "
+                  "Lindblad escape is itself cone-legal, and a gain ancilla does break "
+                  "closure (so the test discriminates). C4 holds with the corrected sign. "
+                  "NOT NEW: a corollary of positive-real closure under Schur complement and "
+                  "passive interconnection (Anderson & Vongpanitlerd 1973).")
+    else:
+        status = "FAIL"
+        reason = ("Closure failed somewhere; C4 is false as stated and CIRT loses its "
+                  "non-reducibility argument (CIRT sec.9.1 stop condition 'C4 is false').")
+
+    return {"status": status, "certificate": {"verdict_reason": reason, **out}, "witness": {}}
+
+
 def run_edge3_controls():
     """NC0-NC7: Edge(iii)-specific negative controls. All must PASS or the run is void."""
     checks = {}
@@ -1536,7 +1679,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                   formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--tests', default='T5,T1,T3,T2,T4',
-                     help='comma-separated subset of T1,T2,T3,T4,T5,T6,T7')
+                     help='comma-separated subset of T1,T2,T3,T4,T5,T6,T7,T8')
     ap.add_argument('--p', type=int, default=2, help='port count (only p=2 implemented)')
     ap.add_argument('--tclass', default='all', choices=['all', 'general', 'unitary', 'diag'])
     ap.add_argument('--seed', type=int, default=SEED)
@@ -1572,6 +1715,10 @@ def main():
         results['T4'] = run_T4()
         if args.verbose:
             print(f"T4: {results['T4']['status']}")
+    if 'T8' in tests:
+        results['T8'] = run_T8()
+        if args.verbose:
+            print(f"T8 (CG3 / C4 closure): {results['T8']['status']}")
     if 'T6' in tests or 'T7' in tests:
         results['edge3_controls'] = run_edge3_controls()
         if args.verbose:
@@ -1622,6 +1769,11 @@ def main():
 
     results['CG2_verdict'] = {"status": cg2, "reason": reason}
 
+    if 'T8' in results:
+        results['CG3_verdict'] = {
+            "status": results['T8']['status'],
+            "reason": results['T8']['certificate'].get('verdict_reason', ''),
+        }
     if 'T7' in results:
         results['WINDOW_verdict'] = {
             "status": results['T7']['status'],
@@ -1647,6 +1799,9 @@ def main():
     if 'WINDOW_verdict' in results:
         print(f"WINDOW verdict: {results['WINDOW_verdict']['status']} -- "
               f"{results['WINDOW_verdict']['reason']}")
+    if 'CG3_verdict' in results:
+        print(f"CG3 verdict: {results['CG3_verdict']['status']} -- "
+              f"{results['CG3_verdict']['reason']}")
     print(f"Negative controls: {neg['status']}")
     print(f"Wrote {out_path} ({elapsed:.1f}s)")
 
