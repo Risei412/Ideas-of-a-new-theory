@@ -1,6 +1,6 @@
 # プロジェクト現況（圧縮版）
 
-**最終更新:** 2026-07-25 ／ 新規セッション・引き継ぎ用の1枚要約。詳細は各リンク先。
+**最終更新:** 2026-07-26 ／ 新規セッション・引き継ぎ用の1枚要約。詳細は各リンク先。
 
 ---
 
@@ -23,7 +23,10 @@
 | `docs/literature-audit-report.md` | **文献監査 Pass 1**（30件、競合族A–G） |
 | `docs/literature-audit-addendum.md` | **文献監査 Pass 2**（26件、H compatibility / L 下界） |
 | `docs/literature-audit-specification.md` | 監査の基準 |
-| `docs/literature-master-table.csv` | 全56件の索引（threat level・decisive difference つき） |
+| `docs/literature-master-table.csv` | 全76件の索引（threat level・decisive difference つき）。**族N（受動実現可能性）20件を追加** |
+| `docs/literature-audit-cirt-passive-realizability.md` | **文献監査 Pass 3**（族N・20件）。CIRT降格の根拠 |
+| `docs/cirt-*.md`（5件） | **CIRT監査一式**（CG2／vacuousness／Edge iii／window honesty／CG3） |
+| `scripts/cirt_gauge_audit.py` | CIRT検証の実装（T1–T8、負制御NC0–NC10、判定基準は実行前凍結） |
 | `docs/reduction-targets.md` | 族ごとの target object / kill test / survival certificate |
 | `docs/p0-certificate-spec.md` | **P0の証明書仕様と実行順序**（ベクトル値判定・入れ子条件・7ステップ） |
 | `references/` | `references.bib` + `manifest.csv`（PDFは未取得、URL索引のみ） |
@@ -88,6 +91,51 @@ Tube calculus も固有現象とは判定されていないが、**棄却では�
 
 **計算環境** — Python/NumPy/SciPy/SymPy/mpmath 可、**QuTiP・CVXPY・Mathematica 不可**。
 GKSL simulationは custom Liouville 実装、symbolic は SymPy で代替。
+
+---
+
+## CIRT（提案19）— 監査完了・降格確定【2026-07-26】
+
+**判定: 🔻 降格。** 新理論としては成立しない。多ポート量子デバイスの**較正診断ツール**として
+PRApplied / PRA 水準。詳細は `Blueprints-of-theories/19_causal_interface_realizability_theory_proposal.md`
+の冒頭ステータスヘッダ。**提案番号19は却下ではないので欠番にしない**（ガイド §9 の番号規約）。
+
+**§9.1 の6停止条件のうち、発火したのは「先行研究」の1つだけ:**
+
+| 停止条件 | 検証 | 結果 |
+|---|---|---|
+| 反例族が測度ゼロ／fine-tuning | T6 | 発火せず（可行幅36.6%） |
+| C4が偽 | T8 | 発火せず（C4は真。ただし既知） |
+| 行列条件が対角条件から自動的に従う | T5/T6 | 発火せず |
+| 透明窓の理想化でマージン消失 | T7 | 発火せず（有効幅4桁） |
+| ポート基底再定義／secular緩和で消失 | T3/T5 | 発火せず |
+| **先行研究で同一の判定問題が既出** | **Pass 3** | **発火** ← これだけ |
+
+**理論は数学的・構造的には健全で、失ったのは新規性だけである。**
+
+**再提案禁止の中身（族N、`docs/literature-audit-cirt-passive-realizability.md`）:**
+自己エネルギー↔インピーダンスの辞書で、次はすべて先行研究である。
+
+- 因果的Loewner定理／Lamb shift の作用素反単調性 → **Löwner 1934**、多ポートFoster定理（Cauer 1931）
+- $P_n$ 階層・「有限予算で反証可能・検証不能」 → Löwner 1934、Hansen–Ji–Tomiyama 2004
+- 最小bathモード数 $=\mathrm{rank}\,L=$ McMillan次数 → **Youla–Saito 1967**（"minimum number of
+  reactances"）、**Mayo–Antoulas 2007**（rank Loewner = McMillan次数）、退化行列Nevanlinna–Pick
+- 有限判定・dual witness・全解パラメトリゼーション → Nevanlinna–Pick/Schur。
+  **Fei–Yeh–Zgid–Gull, PRB 104, 165111 (2021)** が行列値で「solutions exist iff Pick matrix is PSD」を
+  物理誌で述べ、`Nevanlinna.jl`/`TRIQS` に実装済み
+- 「サンプル点の正値性≠受動性」 → passivity enforcement 分野の存在理由（Grivet-Talocia 2004 ほか）
+- 自己エネルギー↔インピーダンス辞書そのもの → **Solgun–DiVincenzo 2015**（circuit QED の実用手法）
+- ancilla閉性（C4） → 正実類のSchur補元閉性、Anderson & Vongpanitlerd 1973
+
+**「quantum surplus」は量子効果ではない。** 成分ごとのKKが行列受動性を含意しないのは
+古典多ポート受動性の定義そのもの。**この語を新現象の名として使わないこと。**
+
+**残る最小の空白:** 「Bohr周波数の $(\gamma,S)$ データに対する行列境界Nevanlinna–Pick
+実行可能性問題」という定式化のみ。方法論的寄与であり、新理論でも新現象でも新数学でもない。
+
+**監査の限界（要再実行）:** egressポリシーにより **DOIのresolver検証が1件もできていない**
+（arXiv:2604.17058 のみユーザー供給PDFで通読）。`references/references.bib` は未更新のまま。
+egressが通る環境でDOI解決を再実行することが必須の残作業。
 
 ---
 

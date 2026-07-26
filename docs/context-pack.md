@@ -159,6 +159,16 @@
 | Held-out quotient predictor | compact-group synchronization | 中立latent-frame estimatorと目的関数が完全一致（残差0） | 2026-07-23 |
 | Global cycle-consistent quotient atlas（cycle threshold / abstention） | compact-group synchronization / 構造化系同定 | 予測値・fit residual・abstention判定が完全一致 | 2026-07-23 |
 | Tube calculus（regular branch）全般 | Riesz理論 + Schur complement + Zeno型縮約 + 制御/realization理論 | 個別の再構成による説明可能性（凍結・保留、棄却ではない） | — |
+| **因果的Loewner障害／Lamb shift の作用素反単調性（CIRT C2）** | **Löwner 1934**、多ポートFosterリアクタンス定理（Cauer 1931） | 自己エネルギー↔インピーダンスの辞書で逐語一致。透明窓＝$\mathrm{supp}\,\mu$外の実区間＝Löwnerの標準仮定 | 2026-07-26 |
+| **最小bathモード数 $=\mathrm{rank}\,L=$ McMillan次数（CIRT C6）** | **Youla–Saito 1967**／**Mayo–Antoulas 2007**／退化行列Nevanlinna–Pick | 前者のabstractに"minimum number of reactances"、後者の看板定理が rank(Loewner)=McMillan次数 | 2026-07-26 |
+| **有限判定手続き・dual witness・全解パラメトリゼーション（CIRT §6.1）** | Nevanlinna–Pick/Schurアルゴリズム。**Fei–Yeh–Zgid–Gull, PRB 104, 165111 (2021)** | 行列値で「solutions exist iff Pick matrix is PSD」を物理誌で既述。`Nevanlinna.jl`/`TRIQS`に実装済み | 2026-07-26 |
+| **「サンプル点の正値性≠受動性」（CIRT C3の枠組み）** | passivity enforcement（Grivet-Talocia 2004 ほか） | 分野の存在理由そのもの。違反は点でなく**帯**構造 | 2026-07-26 |
+| **ancilla閉性（CIRT C4）** | 正実類のSchur補元・受動的相互接続での閉性（Anderson & Vongpanitlerd 1973） | $h=-\Sigma$ の符号で4行。CIRT §4.5 の符号は逆 | 2026-07-26 |
+| **自己エネルギー↔インピーダンスの辞書そのもの** | **Solgun–DiVincenzo 2015**（Multiport impedance quantization） | Brune合成→量子ハミルトニアン＋最小bathモード。circuit QEDの実用手法 | 2026-07-26 |
+
+> **⚠️ 「quantum surplus」は量子効果ではない。** 成分ごとのKramers–Kronigが行列受動性を
+> 含意しないのは古典多ポート受動性の定義そのもの（$Z+Z^*\succeq0$ であって成分ごとではない）。
+> **この語を新現象の名として使わないこと。** 出典 `docs/literature-audit-cirt-passive-realizability.md`。
 
 > **探索順序の教訓：** 競合理論族を先に固定し、それが満たす恒等式・resource lower boundを先に抽出してから、
 > それを破るwitnessを逆設計する順序に転換すること（現象を先に構成して後から還元監査する順序は非効率）。

@@ -1,0 +1,65 @@
+{
+  "T8": {
+    "status": "PASS",
+    "certificate": {
+      "verdict_reason": "Herglotz closure under passive finite-ancilla dilation holds: the Schur identity is exact, chains up to N=4 stay in the cone, the hand-written Lindblad escape is itself cone-legal, and a gain ancilla does break closure (so the test discriminates). C4 holds with the corrected sign. NOT NEW: a corollary of positive-real closure under Schur complement and passive interconnection (Anderson & Vongpanitlerd 1973).",
+      "schur_identity": {
+        "Im(D^-1) == -D^-1 Im(D) (D^-1)^dagger": true
+      },
+      "passive_chain": {
+        "chains_tested": 24,
+        "max_ancillas": 4,
+        "all_stayed_herglotz": true
+      },
+      "handwritten_lindblad_escape": {
+        "M_from_flat_wideband_bath": "[[0, 0], [0, 0]]",
+        "is_PSD": true,
+        "note": "Flat gamma, S = 0: Herglotz-legal, M = 0 >= 0. The shared-ancilla escape is built from legal parts only, so by closure it cannot fire."
+      },
+      "gain_ancilla_control": {
+        "negative_weight_ancilla_breaks_closure": true,
+        "note": "Confirms the test discriminates: only PASSIVE ancillas are closed. Matches the mechanism table (only negative spectral weight violates)."
+      }
+    },
+    "witness": {}
+  },
+  "negative_controls": {
+    "status": "PASS",
+    "checks": {
+      "1_realizable_data_never_violates": {
+        "status": "PASS"
+      },
+      "2_scalar_case_never_violates": {
+        "status": "PASS"
+      },
+      "3_constant_congruence_never_restores_psd": {
+        "status": "PASS"
+      },
+      "4_no_float_in_decisions": {
+        "status": "PASS"
+      },
+      "5_stability_under_perturbation": {
+        "status": "PASS"
+      },
+      "6_constant_diag_rescale_never_creates_violation": {
+        "status": "PASS",
+        "note": "Constant (omega-independent) diagonal rescaling D applied identically at both frequencies is a special case of the T1/T4 congruence family and must preserve PSD-ness of PSD-realizable data. This is distinct from -- and does not contradict -- T3's finding that INDEPENDENT D(w1) != D(w2) can erase a violation: that is the very failure of gauge invariance T3 investigates, not a bug in this control."
+      }
+    }
+  },
+  "CG2_verdict": {
+    "status": "ABSTAIN",
+    "reason": "Not all of T5/T1/T3 were run."
+  },
+  "CG3_verdict": {
+    "status": "PASS",
+    "reason": "Herglotz closure under passive finite-ancilla dilation holds: the Schur identity is exact, chains up to N=4 stay in the cone, the hand-written Lindblad escape is itself cone-legal, and a gain ancilla does break closure (so the test discriminates). C4 holds with the corrected sign. NOT NEW: a corollary of positive-real closure under Schur complement and passive interconnection (Anderson & Vongpanitlerd 1973)."
+  },
+  "_meta": {
+    "elapsed_seconds": 6.4406397342681885,
+    "seed": 20260725,
+    "tests_run": [
+      "T8"
+    ]
+  }
+}

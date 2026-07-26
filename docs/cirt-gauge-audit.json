@@ -1,0 +1,297 @@
+{
+  "T5": {
+    "status": "PASS",
+    "certificate": {
+      "operational_criterion": "Let Pi_k be the eigenprojectors of H_S that define the ports. A tuning perturbation Delta H is admissible iff [Delta H, Pi_k] = 0 and Delta H Pi_k = delta_k Pi_k for every port-defining k -- i.e. Delta H is scalar on each port-defining eigenspace. Operationally: along the tuning path, the port Gram matrix G_ij(omega) must be invariant (dG/ddelta = 0) and det G != 0. Confirmed by (c)+(d) vs (e): a scalar excited-state shift preserves rank G = 2 and dG/ddelta = 0; a Zeeman (non-scalar, lifts ground degeneracy) shift collapses rank G to 1 by splitting the two port frequencies apart.",
+      "lambda_system_disqualified": true,
+      "minimal_surviving_structure": "degenerate doublet -> single excited level, ports = sigma+/sigma- polarization channels, tuning knob = scalar (isotropic) excited-state light shift or Stark shift; NOT Zeeman detuning."
+    },
+    "witness": {
+      "a_lambda_probe_control": {
+        "H": "[[Eg1, 0, 0], [0, Eg2, 0], [0, 0, Ee]]",
+        "omega_probed": "Ee - Eg1",
+        "A_control_at_wp": "[[0, 0, 0], [0, 0, 0], [0, 0, 0]]",
+        "A_control_at_wp_is_zero": true,
+        "gram": "[[1, 0], [0, 0]]",
+        "rank": 1,
+        "expected_rank": 1,
+        "matches_expectation": true
+      },
+      "b_lambda_two_pol_same_transition": {
+        "gram": "[[c1**2, c1*c2], [c1*c2, c2**2]]",
+        "rank": 1,
+        "A1_proportional_to_A2": true,
+        "expected_rank": 1,
+        "matches_expectation": true
+      },
+      "c_degenerate_doublet": {
+        "H": "[[Eg, 0, 0], [0, Eg, 0], [0, 0, Ee2]]",
+        "omega": "Ee2 - Eg",
+        "gram": "[[1, 0], [0, 1]]",
+        "rank": 2,
+        "expected_rank": 2,
+        "matches_expectation": true
+      },
+      "d_tuned_scalar_knob": {
+        "H": "[[Eg, 0, 0], [0, Eg, 0], [0, 0, Ee2 + delta]]",
+        "omega_tuned": "Ee2 - Eg + delta",
+        "gram": "[[1, 0], [0, 1]]",
+        "rank": 2,
+        "dG_ddelta": "[[0, 0], [0, 0]]",
+        "dG_ddelta_is_zero": true,
+        "expected_rank": 2,
+        "matches_expectation": true
+      },
+      "e_negative_control_zeeman": {
+        "H": "[[Eg + muBBf, 0, 0], [0, Eg - muBBf, 0], [0, 0, Ee2]]",
+        "omega_plus": "Ee2 - Eg - muBBf",
+        "omega_minus": "Ee2 - Eg + muBBf",
+        "frequencies_split": true,
+        "A_minus_at_wplus_is_zero": true,
+        "gram_at_wplus": "[[1, 0], [0, 0]]",
+        "rank_at_wplus": 1,
+        "expected_rank": 1,
+        "matches_expectation": true
+      }
+    }
+  },
+  "T1": {
+    "status": "PASS",
+    "certificate": {
+      "residual_identity_zero": true,
+      "residual_expr": "Matrix([[0, 0], [0, 0]])"
+    },
+    "witness": {
+      "sampled_inertia_checks": [
+        {
+          "vals_hash": "3742733570330001909",
+          "inertia_S": [
+            "(-1, 1)",
+            "(1, 1)"
+          ],
+          "inertia_TST": [
+            "(-1, 1)",
+            "(1, 1)"
+          ],
+          "match": true
+        },
+        {
+          "vals_hash": "-4877947590837145771",
+          "inertia_S": [
+            "(-1, 1)",
+            "(1, 1)"
+          ],
+          "inertia_TST": [
+            "(-1, 1)",
+            "(1, 1)"
+          ],
+          "match": true
+        },
+        {
+          "vals_hash": "7814625407618102022",
+          "inertia_S": [
+            "(-1, 1)",
+            "(1, 1)"
+          ],
+          "inertia_TST": [
+            "(-1, 1)",
+            "(1, 1)"
+          ],
+          "match": true
+        },
+        {
+          "vals_hash": "-8493783794630335937",
+          "inertia_S": [
+            "(-1, 1)",
+            "(1, 1)"
+          ],
+          "inertia_TST": [
+            "(-1, 1)",
+            "(1, 1)"
+          ],
+          "match": true
+        },
+        {
+          "vals_hash": "2455249410247281252",
+          "inertia_S": [
+            "(-1, 1)",
+            "(1, 1)"
+          ],
+          "inertia_TST": [
+            "(-1, 1)",
+            "(1, 1)"
+          ],
+          "match": true
+        },
+        {
+          "vals_hash": "643120595959363057",
+          "inertia_S": [
+            "(1, 1)",
+            "(1, 1)"
+          ],
+          "inertia_TST": [
+            "(1, 1)",
+            "(1, 1)"
+          ],
+          "match": true
+        },
+        {
+          "vals_hash": "7064011354042008810",
+          "inertia_S": [
+            "(1, 1)",
+            "(1, 1)"
+          ],
+          "inertia_TST": [
+            "(1, 1)",
+            "(1, 1)"
+          ],
+          "match": true
+        }
+      ]
+    }
+  },
+  "T3": {
+    "status": "PASS",
+    "certificate": {
+      "M0": "[[1, 2], [2, 1]]",
+      "classes": {
+        "general": {
+          "erases_M0": false,
+          "method": "analytic (Sylvester's law of inertia), not brute-force solve",
+          "note": "CORRECTED: unconstrained congruence with independently-chosen T1, T2 does NOT trivially erase M0 here. Inertia of S1_num (signature (1,1)) and S2_num (signature (2,0), PD) is preserved separately by congruence on each side; the additive relation S1p = S2p + 2I required for a PSD target is then infeasible for ANY T1, T2, since S2p PD forces S2p+2I PD, incompatible with S1p's fixed non-PD signature. The a priori expectation (stated in an earlier version of this script) that unconstrained congruence trivially erases any target was wrong; this is corrected and reported here rather than silently fixed. Not physically meaningful regardless (no port-relabeling origin for independently varying T at each omega) -- but also not even mathematically trivial in this instance.",
+          "certificate": null
+        },
+        "unitary": {
+          "trace_expr": "2",
+          "det_expr": "sin(2*theta1 - 2*theta2) + 21*cos(2*theta1 - 2*theta2)/8 - 45/8",
+          "note": "PSD region of (theta1,theta2) for a 2x2 real-symmetric M is trace>=0 and det>=0; existence of any such pair means class 'unitary' can erase M0 for suitably chosen system data.",
+          "rational_search_found_erasure": false,
+          "example": null
+        },
+        "diag": {
+          "trace_expr": "5*d1a**2/2 - 3*d1b**2/2 + 2*d2a**2 - d2b**2",
+          "det_expr": "-5*d1a**2*d2a**2/4 - 5*d1a**2*d2b**2/2 + 5*d1a*d1b*d2a*d2b/2 - 3*d1b**2*d2a**2 + 5*d1b**2*d2b**2/4",
+          "rational_search_found_erasure": false,
+          "example": null
+        }
+      },
+      "diag_class_erases_M0": false,
+      "herglotz_defense_structural_argument_holds": true,
+      "defense_note": "D depends on the real frequency w = Re(z) only, hence z |-> D(z) h(z) D(z) has no continuation to Im(z) > 0 as an analytic function -- it is defined pointwise on the real line only. A genuine bath requires h Herglotz on the full upper half-plane (CIRT eq 3.1). Therefore an omega-dependent diagonal rescaling is not a valid 'gauge': it does not correspond to filtering a stationary bath by any fixed passive network, only to redefining S(w) ad hoc at each sampled point. This is the structural defense of the sec.3.1 port freeze: the port relabeling group is exactly the omega-independent congruences, because only those extend to holomorphic maps on the upper half-plane fixing the Herglotz class (cf. T1, T4)."
+    },
+    "witness": {
+      "search_seed": 20260725
+    }
+  },
+  "T2": {
+    "status": "PASS",
+    "certificate": {
+      "M0": "[[1, 2], [2, 1]]",
+      "B_used": "[[2, 0], [0, 2]]",
+      "M0_plus_B_eigs": [
+        "1",
+        "5"
+      ],
+      "erasure_of_M0_confirmed": true,
+      "one_sided_confirmed": true,
+      "note": "This is NOT an attack on the certificate: given measured S(w_a), M is fixed and b is not a free knob adversaries can apply after the fact -- it is already baked into whichever h realizes the data. The one-way certificate lambda_min(M) < 0 => no stationary passive bath survives. This test only records the sec.4.3 errata: b enters off-diagonal blocks too (CIRT eq. 4.1), contaminating C6."
+    },
+    "witness": {
+      "psd_preservation_checks": [
+        {
+          "M_psd": "[[16, -16], [-16, 20]]",
+          "B": "[[5, -1/2], [-1/2, 3]]",
+          "result_eigs": [
+            "22 - sqrt(1093)/2",
+            "sqrt(1093)/2 + 22"
+          ],
+          "psd_preserved": true
+        },
+        {
+          "M_psd": "[[32, -16], [-16, 16]]",
+          "B": "[[4, 0], [0, 1]]",
+          "result_eigs": [
+            "53/2 - sqrt(1385)/2",
+            "sqrt(1385)/2 + 53/2"
+          ],
+          "psd_preserved": true
+        },
+        {
+          "M_psd": "[[20, 4], [4, 4]]",
+          "B": "[[1, 1/2], [1/2, 4]]",
+          "result_eigs": [
+            "29/2 - 5*sqrt(10)/2",
+            "5*sqrt(10)/2 + 29/2"
+          ],
+          "psd_preserved": true
+        },
+        {
+          "M_psd": "[[17, 8], [8, 4]]",
+          "B": "[[2, -1/2], [-1/2, 4]]",
+          "result_eigs": [
+            "27/2 - sqrt(346)/2",
+            "sqrt(346)/2 + 27/2"
+          ],
+          "psd_preserved": true
+        },
+        {
+          "M_psd": "[[17, -8], [-8, 25]]",
+          "B": "[[6, 1], [1, 6]]",
+          "result_eigs": [
+            "27 - sqrt(65)",
+            "sqrt(65) + 27"
+          ],
+          "psd_preserved": true
+        }
+      ]
+    }
+  },
+  "T4": {
+    "status": "PASS",
+    "certificate": {
+      "congruence_family_satisfies_rank1_constraints": true,
+      "full_variety_solve_attempted": false,
+      "note": "p=2 only. Confirms constant congruence S -> T^T S T is admissible (rank-1 PSD rays map to rank-1 PSD rays) as expected from Sylvester's law of inertia. Full converse (that congruence exhausts all cone automorphisms) follows from Schneider's automorphism theorem for the Lorentz/PSD cone and is cited, not independently re-derived here -- flagged in the audit note as a literature-supported step, not a gap. A brute-force symbolic solve of the full 9-coefficient variety was attempted and did not terminate within 100s (Groebner-basis blowup); it is not required for this test's frozen PASS/FAIL criterion, which asks only whether the congruence family satisfies the constraints, so the attempt was abandoned rather than the test being marked ABSTAIN."
+    },
+    "witness": {}
+  },
+  "negative_controls": {
+    "status": "PASS",
+    "checks": {
+      "1_realizable_data_never_violates": {
+        "status": "PASS"
+      },
+      "2_scalar_case_never_violates": {
+        "status": "PASS"
+      },
+      "3_constant_congruence_never_restores_psd": {
+        "status": "PASS"
+      },
+      "4_no_float_in_decisions": {
+        "status": "PASS"
+      },
+      "5_stability_under_perturbation": {
+        "status": "PASS"
+      },
+      "6_constant_diag_rescale_never_creates_violation": {
+        "status": "PASS",
+        "note": "Constant (omega-independent) diagonal rescaling D applied identically at both frequencies is a special case of the T1/T4 congruence family and must preserve PSD-ness of PSD-realizable data. This is distinct from -- and does not contradict -- T3's finding that INDEPENDENT D(w1) != D(w2) can erase a violation: that is the very failure of gauge invariance T3 investigates, not a bug in this control."
+      }
+    }
+  },
+  "CG2_verdict": {
+    "status": "PASS",
+    "reason": "T5, T1, T3 all PASS."
+  },
+  "_meta": {
+    "elapsed_seconds": 17.727572441101074,
+    "seed": 20260725,
+    "tests_run": [
+      "T5",
+      "T1",
+      "T3",
+      "T2",
+      "T4"
+    ]
+  }
+}

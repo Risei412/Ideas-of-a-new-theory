@@ -1,0 +1,123 @@
+{
+  "edge3_controls": {
+    "status": "PASS",
+    "checks": {
+      "NC0_lemma0_matrix_structure_only_on_multiplet": {
+        "status": "PASS",
+        "lowering_branch_is_scalar_trS": true,
+        "raising_branch_is_full_S_on_doublet": true,
+        "gram_rank_lowering": 2,
+        "note": "Gram rank is 2 for BOTH conventions, so T5's rank test is necessary but NOT sufficient for observability of S_12. The matrix structure lives at the negative Bohr frequency, on the degenerate multiplet."
+      },
+      "NC1_psd_measure_never_violates": {
+        "status": "PASS",
+        "M": "[[8/99, 0], [0, 676/3465]]"
+      },
+      "NC2_isotropic_gain_gives_no_surplus": {
+        "status": "PASS",
+        "M_offdiag": "0",
+        "delta": "0"
+      },
+      "NC3_scalar_case_never_violates": {
+        "status": "PASS",
+        "m": "8/99"
+      },
+      "NC4_gamma_to_zero_kills_offdiag": {
+        "status": "PASS",
+        "delta_bar": "3/5",
+        "note": "As Gamma -> 0 every kernel suppresses the cross term: no window, no surplus."
+      },
+      "NC5_kernel_monotonicity": {
+        "status": "PASS"
+      },
+      "NC6_no_float_in_decisions": {
+        "status": "PASS"
+      },
+      "NC7_analytic_bound_at_delta_eq_gamma": {
+        "status": "PASS",
+        "argmax_beta": "13/10",
+        "delta_bar_over_Gamma_at_max": "26/25",
+        "note": "Lorentzian suppression peaks at delta_bar/Gamma = 1 (analytic prediction)."
+      }
+    }
+  },
+  "T6": {
+    "status": "ALIVE",
+    "certificate": {
+      "verdict_reason": "A robust exact-rational witness survives all three kernels, the traceless sensitivity variant, and +/-1% perturbation of every parameter. Edge (iii) closes in CIRT's favour, at the cost of a new necessary experimental condition Gamma_residual >~ s.",
+      "grid": {
+        "points_scanned": 14400,
+        "witness_counts": {
+          "lorentzian": 444,
+          "root": 471,
+          "hard": 486
+        }
+      },
+      "kernel_agreement": {
+        "witness_in_all_three_kernels": 444,
+        "witness_in_at_least_one": 486,
+        "kernel_dependent": false
+      },
+      "robust_witness": {
+        "alpha": "1",
+        "alpha_prime": "1",
+        "beta": "1/2",
+        "u_weierstrass": "2/5",
+        "t_gain_pole": "2",
+        "Gamma_residual": "7/20"
+      },
+      "witness_detail": {
+        "S_w1": "[[60479/416295, 84/841], [84/841, 11284/83259]]",
+        "S_w2": "[[11189/83259, 140/841], [140/841, 9836/83259]]",
+        "delta_bar": "1/3",
+        "M_bare": "[[4534/416295, -56/841], [-56/841, 1448/83259]]",
+        "M_eff_lorentzian": "[[4534/416295, -24696/707281], [-24696/707281, 1448/83259]]",
+        "det_M_eff": "-25244313991888/24514575467153805",
+        "commutator_norm_S1_S2": "0",
+        "theta_deg_approx": "43.6028",
+        "beta_over_alpha": "1/2",
+        "Gamma_over_Mdiag": "582813/18136"
+      }
+    },
+    "witness": {}
+  },
+  "negative_controls": {
+    "status": "PASS",
+    "checks": {
+      "1_realizable_data_never_violates": {
+        "status": "PASS"
+      },
+      "2_scalar_case_never_violates": {
+        "status": "PASS"
+      },
+      "3_constant_congruence_never_restores_psd": {
+        "status": "PASS"
+      },
+      "4_no_float_in_decisions": {
+        "status": "PASS"
+      },
+      "5_stability_under_perturbation": {
+        "status": "PASS"
+      },
+      "6_constant_diag_rescale_never_creates_violation": {
+        "status": "PASS",
+        "note": "Constant (omega-independent) diagonal rescaling D applied identically at both frequencies is a special case of the T1/T4 congruence family and must preserve PSD-ness of PSD-realizable data. This is distinct from -- and does not contradict -- T3's finding that INDEPENDENT D(w1) != D(w2) can erase a violation: that is the very failure of gauge invariance T3 investigates, not a bug in this control."
+      }
+    }
+  },
+  "CG2_verdict": {
+    "status": "ABSTAIN",
+    "reason": "Not all of T5/T1/T3 were run."
+  },
+  "EDGE3_verdict": {
+    "status": "ALIVE",
+    "reason": "A robust exact-rational witness survives all three kernels, the traceless sensitivity variant, and +/-1% perturbation of every parameter. Edge (iii) closes in CIRT's favour, at the cost of a new necessary experimental condition Gamma_residual >~ s."
+  },
+  "_meta": {
+    "elapsed_seconds": 206.0532705783844,
+    "seed": 20260725,
+    "tests_run": [
+      "T6"
+    ]
+  }
+}
