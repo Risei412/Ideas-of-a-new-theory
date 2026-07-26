@@ -250,16 +250,35 @@ egressが通る環境でDOI解決を再実行することが必須の残作業�
 このうちどれかが「還元成功」なら stop condition（同文書§4）を適用してから残りを回す。
 **まだ実際の赤チーム投入（Stage 2）は行われていない。**
 
-**提案24（LKCT・持ち上げ核クロスオーバー理論）— Stage 0 完了、スモーク全PASS:**
-`Blueprints-of-theories/24_lifted_kernel_crossover_theory_proposal.md`、
-スモークは `scripts/crossover_ridge_smoke.py`（seed 20260726 を新規割当、T1–T6 全PASS）。
+**提案24（LKCT・持ち上げ核クロスオーバー理論）— A2内部監査完了・⚠️判断待ち【2026-07-26】**
+`Blueprints-of-theories/24_lifted_kernel_crossover_theory_proposal.md`。
 ガイド §6.1 **P1「Exact-to-approximate kernel crossover」**（壊す仮定: exact protected kernel）を
 占有する初の草案。固有現象は**保護回復稜線**（核持ち上げ補正と Schur 漏洩補正が
-`Γ²ε = α_leak/κ_lift` 上で厳密相殺）と**稜線二分律**（存在は係数符号 `sign(κ_lift·α_leak)` で決まり、
-Newton fan／tropical データに盲目 — fan-identical 対を構成済み、存在率 48.8%）。
-自己評価 **L2**（L3未主張）。最大の脅威は2パラメータ特異摂動論への還元（同文書§4.2 A1）。
-次工程は (1) fan盲目性の exact arithmetic 化（Claude単独で可能・最短）、
-(2) GKSL物理実現の系統探索（stop condition 2 の判定）、(3) 赤チーム Stage 1–2。
+`Γ²ε = α_leak/κ_lift` 上で相殺）と**稜線二分律**（`sign(κ_lift·α_leak)` による二分）。
+
+**A2 内部監査（exact arithmetic、`scripts/lkct_exact_audit.py` X0–X6 全PASS、
+判定に浮動小数点不使用、証明書 `certificates/lkct_fan_blindness_2026-07-26.txt`、
+評価 `docs/lkct-fan-blindness-exact-audit.md`）の結果は両面である。**
+
+- **🆙 得たもの:** **C1・C2 が Conditional → Exact へ昇格。**
+  2-jet は近似ではなく**厳密 Schur 還元恒等式**`R = p_P†S(u,v)^{-1}c_P` の解析的 Taylor 展開
+  （残差厳密に 0）。稜線は陰関数定理により**厳密な解析曲線**として存在し、
+  物理域へ入る条件が `sign(κ_lift·α_leak)=+1` と同値であることが証明された。
+  Sturm 法による厳密根計数で錐内一意性と符号反転を認証、2-jet 予測との相対差は
+  `2.67e-3 → 2.68e-5`（1 decade あたり厳密に 1/10）。
+- **⚠️ 失ったもの:** **C3（fan 盲目性）の広い版は否定。stop condition 1 が文字通りの読みで発火。**
+  Newton 指数台も `ν(θ)` も ± 対で完全一致する（＝非署名トロピカル化には確かに不可視）が、
+  **差は角 θ=2 の initial form `−e₀κ_lift+α_leak` の根の符号にすべて集約される。**
+  initial form は標準的な係数付きトロピカル対象であり、**符号付き／実トロピカル幾何**
+  （Viro patchworking 等）が正面から扱う層に落ちる。
+  **「fan に盲目だから固有」という新規性の論法は使えない。**
+- 副産物: `ν(θ) = clamp(θ−1,0,1)` で**折れ点は2個**（θ=1 と θ=2）と判明し本文を訂正。
+  二分律の頻度は厳密有理数で **27/54 = 1/2**（float の 48.8% と整合）。
+
+**判断待ち（ユーザー決定事項、監査文書 §5）:** (a) stop condition 1 を適用して却下
+（番号24は欠番）／**(b) 重心を「GKSL 物理クラス内で `sign(κ_lift·α_leak)=+1` が実現可能か」
+という分類問題へ移して縮小継続**（監査者の推奨）／(c) 実トロピカル幾何の文献監査を待って決定。
+**次工程の最優先は符号付きトロピカル幾何の文献監査**（egress 必要）と GKSL 物理実現。
 
 > **番号規約の訂正（2026-07-26）：** RRTは当初「提案21」を名乗っていたが、
 > 番号21は`21_resource_bounded_mechanism_separation_proposal.md`（FRRG）が先に占有しており、
