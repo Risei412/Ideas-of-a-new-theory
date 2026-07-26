@@ -1,0 +1,76 @@
+========================================================================
+Gate N1: 三準位 Λ 系 GKSL の回復曲線 (exact arithmetic)
+========================================================================
+
+[Stage 0] 規約テスト
+  PASS  T0a trace preservation
+  PASS  T0b hermiticity preservation
+  PASS  T1 dephasing convention
+  PASS  T2 dark state stationary
+  PASS  T4 凍結EIT §9.6 閉形式と一致 [gamma_31 = Gamma_e/2 + gamma_12/4]
+  PASS  T4 凍結EIT §9.6 閉形式と一致 [gamma_31 = Gamma_e/2 (naive)]  <- 不一致は想定どおり
+  PASS  T3 sign convention (Im chi > 0 = absorption)
+
+[Gate N1/N2/N3] 記号的証明（スキャンではなく恒等式）
+  PASS  P1 定常状態 rho^(0) = |g1><g1|（厳密・全パラメータ）
+  PASS      chi = (i/2) gamma_g / [(gamma_31 - i Delta_p) gamma_g + beta], gamma_31 = Gamma_e/2 + gamma_12/4
+  PASS      chi_inf = 0（beta -> oo, gamma_12 = 0）
+  PASS  P2 Im chi の分子 = gamma_31(gamma_12^2 + delta^2) + beta*gamma_12
+  PASS  P2 その分子は全単項式係数が正 [1/2, 1/2, 1/2, 1/2, 1/4, 1/4, 1/4] => gamma_12 > 0 で厳密に正 => 吸収回復曲線は存在しない
+  PASS  P3 Re chi の分子 = -(Delta_p(gamma_12^2 + delta^2) - beta*delta)
+  PASS  P3 分散稜線: beta = Delta_p*(delta**2 + gamma_12**2)/delta  -> gamma_12 -> 0 で beta = Delta_p*delta（ac-Stark 零点）
+
+[Stage 1-4] 基準点での chi と回復条件
+  chi_dark(gamma_12=0)      = 5/(70*beta - 2 - 5*I)
+  chi_inf (beta -> oo)      = 0
+  定常 population (g1,g2,e) = [1, 0, 0]
+  beta=1/4:  F_disp 正根=[sqrt(31)/14]   F_abs 正根=[]
+  beta=1:  F_disp 正根=[sqrt(34)/7]   F_abs 正根=[]
+  beta=4:  F_disp 正根=[sqrt(139)/7]   F_abs 正根=[]
+  beta=25:  F_disp 正根=[sqrt(874)/7]   F_abs 正根=[]
+  beta=100:  F_disp 正根=[sqrt(3499)/7]   F_abs 正根=[]
+  => class = D only
+
+[Stage 6] パラメータスキャン（4軸、exact）
+  G1=1/4 G2=3/4 Dp=0 d2=0  ->  none
+  G1=1/4 G2=3/4 Dp=0 d2=1/7  ->  none
+  G1=1/4 G2=3/4 Dp=0 d2=-1  ->  none
+  G1=1/4 G2=3/4 Dp=1/5 d2=0  ->  none
+  G1=1/4 G2=3/4 Dp=1/5 d2=1/7  ->  D only
+  G1=1/4 G2=3/4 Dp=1/5 d2=-1  ->  none
+  G1=1/4 G2=3/4 Dp=-1 d2=0  ->  none
+  G1=1/4 G2=3/4 Dp=-1 d2=1/7  ->  none
+  G1=1/4 G2=3/4 Dp=-1 d2=-1  ->  D only
+  G1=1/4 G2=3/4 Dp=2 d2=0  ->  none
+  G1=1/4 G2=3/4 Dp=2 d2=1/7  ->  D only
+  G1=1/4 G2=3/4 Dp=2 d2=-1  ->  none
+  G1=1/2 G2=1/2 Dp=0 d2=0  ->  none
+  G1=1/2 G2=1/2 Dp=0 d2=1/7  ->  none
+  G1=1/2 G2=1/2 Dp=0 d2=-1  ->  none
+  G1=1/2 G2=1/2 Dp=1/5 d2=0  ->  none
+  G1=1/2 G2=1/2 Dp=1/5 d2=1/7  ->  D only
+  G1=1/2 G2=1/2 Dp=1/5 d2=-1  ->  none
+  G1=1/2 G2=1/2 Dp=-1 d2=0  ->  none
+  G1=1/2 G2=1/2 Dp=-1 d2=1/7  ->  none
+  G1=1/2 G2=1/2 Dp=-1 d2=-1  ->  D only
+  G1=1/2 G2=1/2 Dp=2 d2=0  ->  none
+  G1=1/2 G2=1/2 Dp=2 d2=1/7  ->  D only
+  G1=1/2 G2=1/2 Dp=2 d2=-1  ->  none
+  G1=9/10 G2=1/10 Dp=0 d2=0  ->  none
+  G1=9/10 G2=1/10 Dp=0 d2=1/7  ->  none
+  G1=9/10 G2=1/10 Dp=0 d2=-1  ->  none
+  G1=9/10 G2=1/10 Dp=1/5 d2=0  ->  none
+  G1=9/10 G2=1/10 Dp=1/5 d2=1/7  ->  D only
+  G1=9/10 G2=1/10 Dp=1/5 d2=-1  ->  none
+  G1=9/10 G2=1/10 Dp=-1 d2=0  ->  none
+  G1=9/10 G2=1/10 Dp=-1 d2=1/7  ->  none
+  G1=9/10 G2=1/10 Dp=-1 d2=-1  ->  D only
+  G1=9/10 G2=1/10 Dp=2 d2=0  ->  none
+  G1=9/10 G2=1/10 Dp=2 d2=1/7  ->  D only
+  G1=9/10 G2=1/10 Dp=2 d2=-1  ->  none
+
+  集計: {'none': 27, 'D only': 9}
+
+[判定]
+  吸収側の正の回復曲線はスキャン全点で存在しない。
+  => 三準位 no-go（クラス D only / none）。Delta_split は定義されない。
