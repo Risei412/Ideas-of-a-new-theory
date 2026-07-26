@@ -15,7 +15,7 @@
 |---|---|
 | `THEORY_PROPOSAL_GUIDE.md` | **作業基準の本体**（約900行）。提案前に必読 |
 | `Frozen-Theories/` | 確定理論3件（RISEI・SMRT・EIT）。書き換えない |
-| `Blueprints-of-theories/` | 草案8件（DCIT・トロピカル付値異常・因果インターフェース(19, 🔻降格確定)・実現可能性錐・保護の熱力学・凍結資源実現ギャップ(21)・**分岐指数応答理論(22, RRT)**・**暗界面盲点理論(23, DIBT)**） |
+| `Blueprints-of-theories/` | 草案9件（DCIT・トロピカル付値異常・因果インターフェース(19, 🔻降格確定)・実現可能性錐・保護の熱力学・凍結資源実現ギャップ(21)・分岐指数応答理論(22, RRT)・暗界面盲点理論(23, DIBT)・**持ち上げ核クロスオーバー理論(24, LKCT)**） |
 | `docs/context-pack.md` | **ChatGPTにアップロードする資料層**（命令は書かない） |
 | `docs/redteam-instructions.md` | ChatGPTのカスタム指示欄に貼る（還元／文献／校正の3種） |
 | `docs/claim-template.md` | 各チャットに貼る主張の雛形 |
@@ -249,6 +249,17 @@ egressが通る環境でDOI解決を再実行することが必須の残作業�
 **PRX候補として探索する価値がある**と自己評価。送付順序はシート1→4→5を先行させ、
 このうちどれかが「還元成功」なら stop condition（同文書§4）を適用してから残りを回す。
 **まだ実際の赤チーム投入（Stage 2）は行われていない。**
+
+**提案24（LKCT・持ち上げ核クロスオーバー理論）— Stage 0 完了、スモーク全PASS:**
+`Blueprints-of-theories/24_lifted_kernel_crossover_theory_proposal.md`、
+スモークは `scripts/crossover_ridge_smoke.py`（seed 20260726 を新規割当、T1–T6 全PASS）。
+ガイド §6.1 **P1「Exact-to-approximate kernel crossover」**（壊す仮定: exact protected kernel）を
+占有する初の草案。固有現象は**保護回復稜線**（核持ち上げ補正と Schur 漏洩補正が
+`Γ²ε = α_leak/κ_lift` 上で厳密相殺）と**稜線二分律**（存在は係数符号 `sign(κ_lift·α_leak)` で決まり、
+Newton fan／tropical データに盲目 — fan-identical 対を構成済み、存在率 48.8%）。
+自己評価 **L2**（L3未主張）。最大の脅威は2パラメータ特異摂動論への還元（同文書§4.2 A1）。
+次工程は (1) fan盲目性の exact arithmetic 化（Claude単独で可能・最短）、
+(2) GKSL物理実現の系統探索（stop condition 2 の判定）、(3) 赤チーム Stage 1–2。
 
 > **番号規約の訂正（2026-07-26）：** RRTは当初「提案21」を名乗っていたが、
 > 番号21は`21_resource_bounded_mechanism_separation_proposal.md`（FRRG）が先に占有しており、
