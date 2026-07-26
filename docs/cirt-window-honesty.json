@@ -1,0 +1,351 @@
+{
+  "edge3_controls": {
+    "status": "PASS",
+    "checks": {
+      "NC0_lemma0_matrix_structure_only_on_multiplet": {
+        "status": "PASS",
+        "lowering_branch_is_scalar_trS": true,
+        "raising_branch_is_full_S_on_doublet": true,
+        "gram_rank_lowering": 2,
+        "note": "Gram rank is 2 for BOTH conventions, so T5's rank test is necessary but NOT sufficient for observability of S_12. The matrix structure lives at the negative Bohr frequency, on the degenerate multiplet."
+      },
+      "NC1_psd_measure_never_violates": {
+        "status": "PASS",
+        "M": "[[8/99, 0], [0, 676/3465]]"
+      },
+      "NC2_isotropic_gain_gives_no_surplus": {
+        "status": "PASS",
+        "M_offdiag": "0",
+        "delta": "0"
+      },
+      "NC3_scalar_case_never_violates": {
+        "status": "PASS",
+        "m": "8/99"
+      },
+      "NC4_gamma_to_zero_kills_offdiag": {
+        "status": "PASS",
+        "delta_bar": "3/5",
+        "note": "As Gamma -> 0 every kernel suppresses the cross term: no window, no surplus."
+      },
+      "NC5_kernel_monotonicity": {
+        "status": "PASS"
+      },
+      "NC6_no_float_in_decisions": {
+        "status": "PASS"
+      },
+      "NC7_analytic_bound_at_delta_eq_gamma": {
+        "status": "PASS",
+        "argmax_beta": "13/10",
+        "delta_bar_over_Gamma_at_max": "26/25",
+        "note": "Lorentzian suppression peaks at delta_bar/Gamma = 1 (analytic prediction)."
+      },
+      "NC8_broadened_reduces_to_point_mass": {
+        "status": "PASS",
+        "relative_error_at_GL_1e-5": "1.3144887e-10"
+      },
+      "NC9_in_window_weight_is_negative_contribution": {
+        "status": "PASS",
+        "M_from_a_PSD_pole_at_omega_0": "[[-4, 0], [0, -4]]",
+        "note": "PSD weight inside (w1,w2) contributes negatively: the false-positive channel that window honesty must exclude."
+      },
+      "NC10_window_leakage_monotone_in_GL": {
+        "status": "PASS",
+        "eps_at_GL_0.01": "3.64261e-5",
+        "eps_at_GL_0.2": "0.0139442"
+      }
+    }
+  },
+  "T7": {
+    "status": "ALIVE",
+    "certificate": {
+      "verdict_reason": "A finite range of nonzero broadenings keeps the passive control PSD while the gain witness still fires under all three kernels. The witness survives removal of the point-mass idealization.",
+      "sweep": [
+        {
+          "Gamma_L": "1/10000",
+          "passive_2pole_PSD": true,
+          "passive_3pole_PSD": true,
+          "no_false_positive": true,
+          "witness_fires_all_kernels": true,
+          "witness_fires_any_kernel": true,
+          "eps_window_residual": "4664594806878499997/1280420374037340385581500002",
+          "eps_window_float": 3.6430182620561524e-09,
+          "max_gamma_in_W": 7.286036520781636e-05,
+          "delta_bar": "1/3",
+          "quasi_degeneracy_guard": true
+        },
+        {
+          "Gamma_L": "1/3000",
+          "passive_2pole_PSD": true,
+          "passive_3pole_PSD": true,
+          "no_false_positive": true,
+          "witness_fires_all_kernels": true,
+          "witness_fires_any_kernel": true,
+          "eps_window_residual": "37783217475314997/933426546698364239835002",
+          "eps_window_float": 4.0477976137598404e-08,
+          "max_gamma_in_W": 0.00024286785674121347,
+          "delta_bar": "6750000/20250001",
+          "quasi_degeneracy_guard": true
+        },
+        {
+          "Gamma_L": "1/1000",
+          "passive_2pole_PSD": true,
+          "passive_3pole_PSD": true,
+          "no_false_positive": true,
+          "witness_fires_all_kernels": true,
+          "witness_fires_any_kernel": true,
+          "eps_window_residual": "27438789707941/75318919817081959706",
+          "eps_window_float": 3.6430142369425766e-07,
+          "max_gamma_in_W": 0.0007286028467206052,
+          "delta_bar": "750000/2250001",
+          "quasi_degeneracy_guard": true
+        },
+        {
+          "Gamma_L": "1/300",
+          "passive_2pole_PSD": true,
+          "passive_3pole_PSD": true,
+          "no_false_positive": true,
+          "witness_fires_all_kernels": true,
+          "witness_fires_any_kernel": true,
+          "eps_window_residual": "944579184693/233359193954189588",
+          "eps_window_float": 4.047747886204434e-06,
+          "max_gamma_in_W": 0.002428648731438443,
+          "delta_bar": "67500/202501",
+          "quasi_degeneracy_guard": true
+        },
+        {
+          "Gamma_L": "1/100",
+          "passive_2pole_PSD": true,
+          "passive_3pole_PSD": true,
+          "no_false_positive": true,
+          "witness_fires_all_kernels": true,
+          "witness_fires_any_kernel": true,
+          "eps_window_residual": "11661346493/320136980810788",
+          "eps_window_float": 3.6426115059384756e-05,
+          "max_gamma_in_W": 0.007285223007784225,
+          "delta_bar": "7500/22501",
+          "quasi_degeneracy_guard": true
+        },
+        {
+          "Gamma_L": "1/50",
+          "passive_2pole_PSD": true,
+          "passive_3pole_PSD": true,
+          "no_false_positive": true,
+          "witness_fires_all_kernels": true,
+          "witness_fires_any_kernel": true,
+          "eps_window_residual": "93287398954/640465310913389",
+          "eps_window_float": 0.0001456556622088101,
+          "max_gamma_in_W": 0.014565566219971515,
+          "delta_bar": "1875/5626",
+          "quasi_degeneracy_guard": true
+        },
+        {
+          "Gamma_L": "1/30",
+          "passive_2pole_PSD": true,
+          "passive_3pole_PSD": true,
+          "no_false_positive": true,
+          "witness_fires_all_kernels": true,
+          "witness_fires_any_kernel": true,
+          "eps_window_residual": "12089010666/29902713021757",
+          "eps_window_float": 0.0004042780551571923,
+          "max_gamma_in_W": 0.02425668330397457,
+          "delta_bar": "675/2026",
+          "quasi_degeneracy_guard": true
+        },
+        {
+          "Gamma_L": "1/20",
+          "passive_2pole_PSD": true,
+          "passive_3pole_PSD": true,
+          "no_false_positive": true,
+          "witness_fires_all_kernels": true,
+          "witness_fires_any_kernel": true,
+          "eps_window_residual": "1097221/1208103572",
+          "eps_window_float": 0.0009082176602532854,
+          "max_gamma_in_W": 0.03632870642468333,
+          "delta_bar": "300/901",
+          "quasi_degeneracy_guard": true
+        },
+        {
+          "Gamma_L": "1/15",
+          "passive_2pole_PSD": true,
+          "passive_3pole_PSD": true,
+          "no_false_positive": true,
+          "witness_fires_all_kernels": true,
+          "witness_fires_any_kernel": true,
+          "eps_window_residual": "386692872/240015600773",
+          "eps_window_float": 0.0016111155728140147,
+          "max_gamma_in_W": 0.04833346715895459,
+          "delta_bar": "675/2029",
+          "quasi_degeneracy_guard": true
+        },
+        {
+          "Gamma_L": "1/10",
+          "passive_2pole_PSD": true,
+          "passive_3pole_PSD": true,
+          "no_false_positive": true,
+          "witness_fires_all_kernels": true,
+          "witness_fires_any_kernel": true,
+          "eps_window_residual": "5963482/1655279405",
+          "eps_window_float": 0.0036027041605848353,
+          "max_gamma_in_W": 0.07205408322624862,
+          "delta_bar": "75/226",
+          "quasi_degeneracy_guard": true
+        },
+        {
+          "Gamma_L": "3/20",
+          "passive_2pole_PSD": true,
+          "passive_3pole_PSD": true,
+          "no_false_positive": true,
+          "witness_fires_all_kernels": true,
+          "witness_fires_any_kernel": true,
+          "eps_window_residual": "82701/10344100",
+          "eps_window_float": 0.007994992309249938,
+          "max_gamma_in_W": 0.10659989749547094,
+          "delta_bar": "100/303",
+          "quasi_degeneracy_guard": true
+        },
+        {
+          "Gamma_L": "1/5",
+          "passive_2pole_PSD": true,
+          "passive_3pole_PSD": true,
+          "no_false_positive": true,
+          "witness_fires_all_kernels": true,
+          "witness_fires_any_kernel": true,
+          "eps_window_residual": "594183784/42611652953",
+          "eps_window_float": 0.01394416180846747,
+          "max_gamma_in_W": 0.13944161823019385,
+          "delta_bar": "75/229",
+          "quasi_degeneracy_guard": true
+        },
+        {
+          "Gamma_L": "3/10",
+          "passive_2pole_PSD": true,
+          "passive_3pole_PSD": true,
+          "no_false_positive": true,
+          "witness_fires_all_kernels": true,
+          "witness_fires_any_kernel": true,
+          "eps_window_residual": "16404474/551539253",
+          "eps_window_float": 0.029743076156591997,
+          "max_gamma_in_W": 0.19828717433847487,
+          "delta_bar": "25/78",
+          "quasi_degeneracy_guard": true
+        },
+        {
+          "Gamma_L": "2/5",
+          "passive_2pole_PSD": true,
+          "passive_3pole_PSD": true,
+          "no_false_positive": true,
+          "witness_fires_all_kernels": true,
+          "witness_fires_any_kernel": true,
+          "eps_window_residual": "18734624/380732125",
+          "eps_window_float": 0.04920683801174164,
+          "max_gamma_in_W": 0.2460341900587082,
+          "delta_bar": "75/241",
+          "quasi_degeneracy_guard": true
+        },
+        {
+          "Gamma_L": "1/2",
+          "passive_2pole_PSD": true,
+          "passive_3pole_PSD": true,
+          "no_false_positive": true,
+          "witness_fires_all_kernels": true,
+          "witness_fires_any_kernel": true,
+          "eps_window_residual": "3617745850/51390953861",
+          "eps_window_float": 0.07039654988329858,
+          "max_gamma_in_W": 0.2815861995331943,
+          "delta_bar": "3/10",
+          "quasi_degeneracy_guard": true
+        },
+        {
+          "Gamma_L": "3/4",
+          "passive_2pole_PSD": true,
+          "passive_3pole_PSD": true,
+          "no_false_positive": true,
+          "witness_fires_all_kernels": false,
+          "witness_fires_any_kernel": true,
+          "eps_window_residual": "48209925/401340628",
+          "eps_window_float": 0.12012221454642713,
+          "max_gamma_in_W": 0.320325905457139,
+          "delta_bar": "4/15",
+          "quasi_degeneracy_guard": true
+        },
+        {
+          "Gamma_L": "1",
+          "passive_2pole_PSD": true,
+          "passive_3pole_PSD": true,
+          "no_false_positive": true,
+          "witness_fires_all_kernels": false,
+          "witness_fires_any_kernel": false,
+          "eps_window_residual": "13031823400/85243020761",
+          "eps_window_float": 0.15287847956642509,
+          "max_gamma_in_W": 0.30575695913285017,
+          "delta_bar": "3/13",
+          "quasi_degeneracy_guard": true
+        }
+      ],
+      "valid_broadenings": [
+        "1/10000",
+        "1/3000",
+        "1/1000",
+        "1/300",
+        "1/100",
+        "1/50",
+        "1/30",
+        "1/20",
+        "1/15",
+        "1/10",
+        "3/20",
+        "1/5",
+        "3/10",
+        "2/5",
+        "1/2"
+      ],
+      "valid_range": {
+        "min_Gamma_L": "1/10000",
+        "max_Gamma_L": "1/2",
+        "relative_width": 1.9992001596838236,
+        "eps_window_at_max": 0.07039654988329858
+      },
+      "first_false_positive_at": null
+    },
+    "witness": {}
+  },
+  "negative_controls": {
+    "status": "PASS",
+    "checks": {
+      "1_realizable_data_never_violates": {
+        "status": "PASS"
+      },
+      "2_scalar_case_never_violates": {
+        "status": "PASS"
+      },
+      "3_constant_congruence_never_restores_psd": {
+        "status": "PASS"
+      },
+      "4_no_float_in_decisions": {
+        "status": "PASS"
+      },
+      "5_stability_under_perturbation": {
+        "status": "PASS"
+      },
+      "6_constant_diag_rescale_never_creates_violation": {
+        "status": "PASS",
+        "note": "Constant (omega-independent) diagonal rescaling D applied identically at both frequencies is a special case of the T1/T4 congruence family and must preserve PSD-ness of PSD-realizable data. This is distinct from -- and does not contradict -- T3's finding that INDEPENDENT D(w1) != D(w2) can erase a violation: that is the very failure of gauge invariance T3 investigates, not a bug in this control."
+      }
+    }
+  },
+  "CG2_verdict": {
+    "status": "ABSTAIN",
+    "reason": "Not all of T5/T1/T3 were run."
+  },
+  "WINDOW_verdict": {
+    "status": "ALIVE",
+    "reason": "A finite range of nonzero broadenings keeps the passive control PSD while the gain witness still fires under all three kernels. The witness survives removal of the point-mass idealization."
+  },
+  "_meta": {
+    "elapsed_seconds": 2.931905508041382,
+    "seed": 20260725,
+    "tests_run": [
+      "T7"
+    ]
+  }
+}

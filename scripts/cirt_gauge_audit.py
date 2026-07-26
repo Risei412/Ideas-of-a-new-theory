@@ -82,6 +82,24 @@ Frozen policy (this file is the record; do not edit criteria after running):
              variant and the +/-1% perturbation (fine-tuning; report as
              G4-adjacent, not survival).
 
+  T7 (window honesty) -- does the point-mass idealization do all the work?
+     Replace every point mass by a Lorentzian line of HWHM Gamma_L, using the
+     exact broadened Herglotz form h(z) = mu/(t0 - i*Gamma_L - z), i.e.
+     S(w) = mu (w-t0)/((w-t0)^2+GL^2) and gamma(w) = 2 mu GL/((w-t0)^2+GL^2).
+     Decisive mechanism: M = int dmu(t)/((t-w1)(t-w2)); for t INSIDE (w1,w2) the
+     denominator is negative, so leaked in-window weight from a PSD measure
+     pushes M toward indefiniteness and can make the witness fire on a purely
+     PASSIVE medium (false positive).
+
+       DEAD  iff NO nonzero Gamma_L in the frozen sweep admits BOTH (i) the
+             passive controls (2-pole and 3-pole all-PSD) staying PSD, AND
+             (ii) T6's robust gain witness still firing under all three
+             kernels. The transparency-window idealization is then carrying
+             the result: CIRT sec.9.1 stop condition "the margin vanishes once
+             the transparency-window idealization is removed" fires.
+       ALIVE iff a range of at least two frozen broadenings satisfies both.
+       ABSTAIN iff exactly one broadening qualifies (range unresolved).
+
 Global CG2 verdict (frozen): PASS requires T5 PASS and T1 PASS and T3 PASS.
 T5 FAIL or T3 FAIL -> CIRT demoted per sec.9.1. T2/T4 outcomes are recorded as
 errata against sec.4.3 regardless of the global verdict.
@@ -1050,6 +1068,165 @@ def run_T6():
     return {"status": status, "certificate": {"verdict_reason": reason, **out}, "witness": {}}
 
 
+# ----------------------------------------------------------------------
+# T7 -- window honesty: does the delta-function idealization do all the work?
+# ----------------------------------------------------------------------
+
+# Exact Herglotz form of a Lorentzian-broadened line of HWHM Gamma_L (verified
+# numerically by quadrature against the residue result):
+#     h(z) = mu / (t0 - i*Gamma_L - z)          for Im z > 0
+#     S(w) = mu * (w - t0) / ((w - t0)^2 + Gamma_L^2)      (dispersive)
+#     gamma(w) = 2 * mu * Gamma_L / ((w - t0)^2 + Gamma_L^2)  (absorptive)
+# Gamma_L -> 0 recovers the point-mass formulas used by T6.
+
+E3_WGRID = [Rational(k, 20) for k in range(-19, 20)]   # sample grid inside W=(-1,1)
+
+
+def _S_gamma_broadened(measure, w, GL):
+    """(S(w), gamma(w)) for a Lorentzian-broadened measure. Exact rational."""
+    S = zeros(2, 2)
+    gam = zeros(2, 2)
+    for t_k, mu_k in measure:
+        den = (w - t_k) ** 2 + GL ** 2
+        S += mu_k * (w - t_k) / den
+        gam += 2 * mu_k * GL / den
+    return sp.simplify(S), sp.simplify(gam)
+
+
+def _opnorm2(A):
+    """Exact operator norm of a real-symmetric 2x2: max |eigenvalue|."""
+    a, b, c = A[0, 0], A[0, 1], A[1, 1]
+    half_tr = (a + c) / 2
+    disc = sp.sqrt(((a - c) / 2) ** 2 + b ** 2)
+    return sp.simplify(sp.Max(sp.Abs(half_tr + disc), sp.Abs(half_tr - disc)))
+
+
+def _M_broadened(measure, GL):
+    """M assembled from the BROADENED S at the two frozen sample points."""
+    S1, _ = _S_gamma_broadened(measure, E3_W1, GL)
+    S2, _ = _S_gamma_broadened(measure, E3_W2, GL)
+    return sp.simplify(-(S1 - S2) / (E3_W1 - E3_W2)), S1, S2
+
+
+def _window_residual(measure, GL):
+    """eps_win = max_{w in W} ||gamma(w)|| / (peak line absorption).
+
+    Peak absorption of line k is 2*||mu_k||/Gamma_L (at w = t_k)."""
+    worst = sp.Integer(0)
+    for w in E3_WGRID:
+        _, gam = _S_gamma_broadened(measure, w, GL)
+        n = _opnorm2(gam)
+        if (sp.simplify(n - worst) > 0) == True:
+            worst = n
+    peak = sp.Integer(0)
+    for t_k, mu_k in measure:
+        p = sp.simplify(2 * _opnorm2(mu_k) / GL)
+        if (sp.simplify(p - peak) > 0) == True:
+            peak = p
+    return sp.simplify(worst / peak), worst
+
+
+def run_T7():
+    """Window honesty: replace the point masses by Lorentzians of HWHM Gamma_L.
+
+    Decisive mechanism: M = int dmu(t)/((t-w1)(t-w2)). For t INSIDE (w1,w2) the
+    denominator is NEGATIVE, so in-window spectral weight from a PSD measure
+    pushes M toward indefiniteness. Broadened lines therefore leak weight into
+    the window and can make the witness fire on a PURELY PASSIVE medium -- a
+    false positive. The test is only meaningful at broadenings where the passive
+    control stays PSD while the gain witness still fires.
+    """
+    out = {}
+    kernels = _kernels()
+
+    # T6's robust witness, carried over verbatim.
+    alpha, alphap, beta = Rational(1), Rational(1), Rational(1, 2)
+    u, t_g, Gam_res = E3_U45, Rational(2), Rational(7, 20)
+    meas_gain = _e3_measure(alpha, alphap, beta, u, t_g)
+
+    # Passive controls: same geometry, no negative weight.
+    meas_p1 = [(-E3_T_ABS, alpha * eye(2)), (E3_T_ABS, alphap * eye(2))]
+    meas_p2 = [(-E3_T_ABS, alpha * eye(2)), (E3_T_ABS, alphap * eye(2)),
+               (t_g, beta * _P_theta(u))]          # gain pole flipped POSITIVE
+
+    GLs = [Rational(1, 10000), Rational(1, 3000), Rational(1, 1000),
+           Rational(1, 300), Rational(1, 100), Rational(1, 50),
+           Rational(1, 30), Rational(1, 20), Rational(1, 15), Rational(1, 10),
+           Rational(3, 20), Rational(1, 5), Rational(3, 10), Rational(2, 5),
+           Rational(1, 2), Rational(3, 4), Rational(1)]
+
+    rows = []
+    for GL in GLs:
+        Mp1, _, _ = _M_broadened(meas_p1, GL)
+        Mp2, _, _ = _M_broadened(meas_p2, GL)
+        p1_psd, p2_psd = _psd2(Mp1), _psd2(Mp2)
+
+        Mg, S1g, S2g = _M_broadened(meas_gain, GL)
+        dbar = sp.simplify(sp.Max(_spread(S1g), _spread(S2g)))
+        guard = (sp.simplify(dbar - Gam_res) <= 0) == True
+        diag_pos = ((sp.simplify(Mg[0, 0]) > 0) == True
+                    and (sp.simplify(Mg[1, 1]) > 0) == True)
+        fires = {}
+        for kn, kf in kernels.items():
+            K = kf(sp.simplify(dbar / Gam_res))
+            Me = _M_eff(Mg, K, 'offdiag')
+            fires[kn] = (guard and diag_pos
+                         and (sp.simplify(Me.det()) < 0) == True
+                         and (sp.simplify(Me[0, 0]) > 0) == True
+                         and (sp.simplify(Me[1, 1]) > 0) == True)
+        eps_win, gam_max = _window_residual(meas_gain, GL)
+
+        rows.append({
+            "Gamma_L": str(GL),
+            "passive_2pole_PSD": bool(p1_psd),
+            "passive_3pole_PSD": bool(p2_psd),
+            "no_false_positive": bool(p1_psd and p2_psd),
+            "witness_fires_all_kernels": bool(all(fires.values())),
+            "witness_fires_any_kernel": bool(any(fires.values())),
+            "eps_window_residual": str(sp.nsimplify(eps_win)),
+            "eps_window_float": float(sp.N(eps_win, 8)),
+            "max_gamma_in_W": float(sp.N(gam_max, 8)),
+            "delta_bar": str(sp.nsimplify(dbar)),
+            "quasi_degeneracy_guard": bool(guard),
+        })
+
+    out['sweep'] = rows
+    valid = [r for r in rows if r["no_false_positive"] and r["witness_fires_all_kernels"]]
+    out['valid_broadenings'] = [r["Gamma_L"] for r in valid]
+
+    if valid:
+        lo = sp.Rational(valid[0]["Gamma_L"])
+        hi = sp.Rational(valid[-1]["Gamma_L"])
+        rel_width = float(sp.N((hi - lo) / ((hi + lo) / 2), 8)) if hi != lo else 0.0
+        out['valid_range'] = {"min_Gamma_L": str(lo), "max_Gamma_L": str(hi),
+                              "relative_width": rel_width,
+                              "eps_window_at_max": valid[-1]["eps_window_float"]}
+    else:
+        out['valid_range'] = None
+
+    # Where does the false positive first appear? (the idealization's price tag)
+    fp = [r["Gamma_L"] for r in rows if not r["no_false_positive"]]
+    out['first_false_positive_at'] = fp[0] if fp else None
+
+    if not valid:
+        status = "DEAD"
+        reason = ("No nonzero broadening admits BOTH a PSD passive control and a firing "
+                  "gain witness. The point-mass idealization is doing all the work: "
+                  "CIRT sec.9.1 stop condition 'the margin vanishes once the "
+                  "transparency-window idealization is removed' fires.")
+    elif len(valid) == 1:
+        status = "ABSTAIN"
+        reason = ("Exactly one broadening in the frozen sweep is valid; the admissible "
+                  "range is not resolved. Refine the sweep before claiming survival.")
+    else:
+        status = "ALIVE"
+        reason = ("A finite range of nonzero broadenings keeps the passive control PSD "
+                  "while the gain witness still fires under all three kernels. The "
+                  "witness survives removal of the point-mass idealization.")
+
+    return {"status": status, "certificate": {"verdict_reason": reason, **out}, "witness": {}}
+
+
 def run_edge3_controls():
     """NC0-NC7: Edge(iii)-specific negative controls. All must PASS or the run is void."""
     checks = {}
@@ -1189,6 +1366,40 @@ def run_edge3_controls():
         "note": "Lorentzian suppression peaks at delta_bar/Gamma = 1 (analytic prediction).",
     }
 
+    # --- NC8: broadened -> point-mass limit must reproduce T6's M exactly ---
+    meas = _e3_measure(Rational(1), Rational(1), Rational(1, 2), E3_U45, Rational(2))
+    M_point = _M_of(meas, E3_W1, E3_W2)
+    M_tiny, _, _ = _M_broadened(meas, Rational(1, 100000))
+    err = sp.simplify(_opnorm2(M_tiny - M_point) / _opnorm2(M_point))
+    nc8_ok = (sp.simplify(err - Rational(1, 1000)) < 0) == True
+    checks['NC8_broadened_reduces_to_point_mass'] = {
+        "status": "PASS" if nc8_ok else "FAIL",
+        "relative_error_at_GL_1e-5": str(sp.N(err, 8)),
+    }
+
+    # --- NC9: in-window weight really does push M toward indefiniteness ---
+    # A PSD measure placed strictly BETWEEN w1 and w2 must give a NEGATIVE-definite
+    # contribution, since (t-w1)(t-w2) < 0 there. This is the mechanism T7 tests.
+    meas_inside = [(Rational(0), eye(2))]
+    M_inside = _M_of(meas_inside, E3_W1, E3_W2)
+    nc9_ok = (sp.simplify(M_inside[0, 0]) < 0) == True
+    checks['NC9_in_window_weight_is_negative_contribution'] = {
+        "status": "PASS" if nc9_ok else "FAIL",
+        "M_from_a_PSD_pole_at_omega_0": str(M_inside.tolist()),
+        "note": "PSD weight inside (w1,w2) contributes negatively: the false-positive "
+                "channel that window honesty must exclude.",
+    }
+
+    # --- NC10: monotone leakage -- eps_win must grow with Gamma_L ---
+    e_small, _ = _window_residual(meas, Rational(1, 100))
+    e_big, _ = _window_residual(meas, Rational(1, 5))
+    nc10_ok = (sp.simplify(e_big - e_small) > 0) == True
+    checks['NC10_window_leakage_monotone_in_GL'] = {
+        "status": "PASS" if nc10_ok else "FAIL",
+        "eps_at_GL_0.01": str(sp.N(e_small, 6)),
+        "eps_at_GL_0.2": str(sp.N(e_big, 6)),
+    }
+
     allpass = all(v["status"] == "PASS" for v in checks.values())
     return {"status": "PASS" if allpass else "FAIL", "checks": checks}
 
@@ -1325,7 +1536,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                   formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--tests', default='T5,T1,T3,T2,T4',
-                     help='comma-separated subset of T1,T2,T3,T4,T5,T6')
+                     help='comma-separated subset of T1,T2,T3,T4,T5,T6,T7')
     ap.add_argument('--p', type=int, default=2, help='port count (only p=2 implemented)')
     ap.add_argument('--tclass', default='all', choices=['all', 'general', 'unitary', 'diag'])
     ap.add_argument('--seed', type=int, default=SEED)
@@ -1361,7 +1572,7 @@ def main():
         results['T4'] = run_T4()
         if args.verbose:
             print(f"T4: {results['T4']['status']}")
-    if 'T6' in tests:
+    if 'T6' in tests or 'T7' in tests:
         results['edge3_controls'] = run_edge3_controls()
         if args.verbose:
             print(f"Edge(iii) controls NC0-NC7: {results['edge3_controls']['status']}")
@@ -1374,10 +1585,19 @@ def main():
                                 "the run is void and no verdict may be read off it."},
                 "witness": {},
             }
-        else:
+        elif 'T6' in tests:
             results['T6'] = run_T6()
-        if args.verbose:
+        if 'T6' in results and args.verbose:
             print(f"T6 (Edge iii): {results['T6']['status']}")
+    if 'T7' in tests:
+        if results.get('edge3_controls', {}).get('status') != "PASS":
+            results['T7'] = {"status": "VOID", "certificate": {"verdict_reason":
+                             "Edge(iii)/T7 controls NC0-NC10 did not all pass; run is void."},
+                             "witness": {}}
+        else:
+            results['T7'] = run_T7()
+        if args.verbose:
+            print(f"T7 (window honesty): {results['T7']['status']}")
 
     neg = run_negative_controls()
     results['negative_controls'] = neg
@@ -1402,6 +1622,11 @@ def main():
 
     results['CG2_verdict'] = {"status": cg2, "reason": reason}
 
+    if 'T7' in results:
+        results['WINDOW_verdict'] = {
+            "status": results['T7']['status'],
+            "reason": results['T7']['certificate'].get('verdict_reason', ''),
+        }
     if 'T6' in results:
         results['EDGE3_verdict'] = {
             "status": results['T6']['status'],
@@ -1419,6 +1644,9 @@ def main():
     if 'EDGE3_verdict' in results:
         print(f"EDGE3 verdict: {results['EDGE3_verdict']['status']} -- "
               f"{results['EDGE3_verdict']['reason']}")
+    if 'WINDOW_verdict' in results:
+        print(f"WINDOW verdict: {results['WINDOW_verdict']['status']} -- "
+              f"{results['WINDOW_verdict']['reason']}")
     print(f"Negative controls: {neg['status']}")
     print(f"Wrote {out_path} ({elapsed:.1f}s)")
 
