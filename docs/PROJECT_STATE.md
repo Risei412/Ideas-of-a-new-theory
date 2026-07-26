@@ -321,6 +321,18 @@ egressが通る環境でDOI解決を再実行することが必須の残作業�
 4準位 GKSL `D=diag(0,0,1/2)` と EIT §9.2 の Λ系）、(3) 赤チーム Stage 1–2。
 **`scripts/` に GKSL/Liouvillian 実装は存在せず、superoperator 層は新規に書く必要がある。**
 
+**提案25（FHOT・機能階層障害理論）— Stage 0 起草完了・赤チーム未投入【2026-07-26】**
+`Blueprints-of-theories/25_functional_hierarchy_obstruction_theory_proposal.md`。
+ガイド §6.1 **P1「Nonlinear functional hierarchy」**（壊す仮定: linear response functional）を
+占有する初の草案。固有現象は**Φ階層排他ゼロ**——線形応答差分 `δχ_S` が exact zero かつ FCS的
+counting cumulant差分も消える sector で、QFI sector 応答差分 `δF_S` が非零かつ保護される、という
+現象（Stage 0仮説、未証明）。分類は SLD 作用素と sector 射影の非可換性 rank `r_{nc}` による。
+**自己評価 L2。最大の脅威は精製二重化（purification doubling）による線形応答化**——QFIが
+二重化空間上の Kubo 形式に一般に書き直せ、sector cutがGKSL-admissibleな形に写るなら
+SMRT/EITの既存定理に吸収される。**この二重化還元テストを Stage 2 最初の kill test とする方針。**
+`scripts/` にSLD/QFI実装は存在せず新規に書く必要がある。文献監査は未実施（egress必要、
+Escher–Davidovich系のdissipative quantum metrology境界が最優先候補）。
+
 > **番号規約の訂正（2026-07-26）：** RRTは当初「提案21」を名乗っていたが、
 > 番号21は`21_resource_bounded_mechanism_separation_proposal.md`（FRRG）が先に占有しており、
 > ガイド§9の「番号は重複させない」に反する重複だった。RRTを**22**、DIBTを**23**へ繰り上げて解消した
