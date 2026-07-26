@@ -15,7 +15,7 @@
 |---|---|
 | `THEORY_PROPOSAL_GUIDE.md` | **作業基準の本体**（約900行）。提案前に必読 |
 | `Frozen-Theories/` | 確定理論3件（RISEI・SMRT・EIT）。書き換えない |
-| `Blueprints-of-theories/` | 草案9件（DCIT・トロピカル付値異常・因果インターフェース(19, 🔻降格確定)・実現可能性錐・保護の熱力学・凍結資源実現ギャップ(21)・分岐指数応答理論(22, RRT)・暗界面盲点理論(23, DIBT)・**持ち上げ核クロスオーバー理論(24, LKCT)**） |
+| `Blueprints-of-theories/` | 草案9件（DCIT・トロピカル付値異常・因果インターフェース(19, 🔻降格確定)・実現可能性錐・**保護の熱力学(計画20, TPR, ⚠️段階1監査済)**・凍結資源実現ギャップ(21)・分岐指数応答理論(22, RRT)・暗界面盲点理論(23, DIBT)・**持ち上げ核クロスオーバー理論(24, LKCT)**） |
 | `docs/context-pack.md` | **ChatGPTにアップロードする資料層**（命令は書かない） |
 | `docs/redteam-instructions.md` | ChatGPTのカスタム指示欄に貼る（還元／文献／校正の3種） |
 | `docs/claim-template.md` | 各チャットに貼る主張の雛形 |
@@ -29,9 +29,12 @@
 | `docs/cirt-*.md`（5件） | **CIRT監査一式**（CG2／vacuousness／Edge iii／window honesty／CG3） |
 | `scripts/cirt_gauge_audit.py` | CIRT検証の実装（T1–T8、負制御NC0–NC10、判定基準は実行前凍結） |
 | `docs/reduction-targets.md` | 族ごとの target object / kill test / survival certificate |
+| `docs/tpr-kill-plan.md` | **計画20（TPR）の生死判定手順 W1–W10 と投稿先決定フロー**（PRX8ゲート・降格条件6件に写す） |
+| `docs/tpr-stage-a-report.md` | **計画20 段階1 内部還元監査の判定**（T1 の証明経路失効・T2 自己矛盾・T4 修復） |
+| `scripts/tpr_thermo_audit.py` | 計画20 段階1 の実装（W1a–W4b、負制御2種、seed 20260728、判定に float 不使用） |
 | `docs/p0-certificate-spec.md` | **P0の証明書仕様と実行順序**（ベクトル値判定・入れ子条件・7ステップ） |
 | `docs/claims/` | Stage 1 の主張リスト（赤チーム投入用・中立記法） |
-| `certificates/` | P0-D の exact 証明書（有理数データ＋C1–C5 判定） |
+| `certificates/` | P0-D・LKCT・**TPR** の exact 証明書（有理数データ＋ゲート判定） |
 | `references/` | `references.bib` + `manifest.csv`（PDFは未取得、URL索引のみ） |
 | `docs/source-material/` | 内部資料4件（RISEI改訂版PDF・競合監査tex・Tubeロードマップ・SMRTスモーク） |
 
@@ -319,7 +322,55 @@ egressが通る環境でDOI解決を再実行することが必須の残作業�
 **次工程:** (1) 符号付き／実トロピカル幾何の文献監査（**未実施・egress 必要**）、
 (2) **GKSL 物理実現の系統探索**（現在の新規性の重心。出発点は SMRT `prop:phase-h` の
 4準位 GKSL `D=diag(0,0,1/2)` と EIT §9.2 の Λ系）、(3) 赤チーム Stage 1–2。
-**`scripts/` に GKSL/Liouvillian 実装は存在せず、superoperator 層は新規に書く必要がある。**
+**superoperator 層は新規に書く必要がある。**
+ただし「`scripts/` に GKSL/Liouvillian 実装は存在せず」は**訂正**（2026-07-26）：
+`scripts/wpot_null_smoke.py:186` の `_thermal_gksl` が列スタック vectorization・
+KMS 詳細釣合いレート規約・3種の非熱的負制御（inverted/gain/negweight）を実装済みで、
+`gibbs()`・`_kraus_to_super()` も揃っている。**新規に書く前にこの規約を継承すること。**
+
+---
+
+## 計画20（TPR・保護応答の熱力学）— 段階1 内部還元監査 完了・⚠️判断待ち【2026-07-26】
+
+`Blueprints-of-theories/plan20_thermodynamics_of_protection_proposal.md`。
+2026-07-24 のアップロード以来 §11 ループに未投入だったが、**内部還元監査を実施した。**
+手順 `docs/tpr-kill-plan.md`、判定 `docs/tpr-stage-a-report.md`、
+実装 `scripts/tpr_thermo_audit.py`（seed 20260728、W1a–W4b 全9ゲート PASS、判定に float 不使用）、
+証明書 `certificates/tpr_reduction_2026-07-26.txt`。
+
+**判定: 撤回ではない。ただし中心の2定理 T1・T2 は中心命題の座を失った。
+現時点で PRX 候補ではない**（§1.1 ゲート8項目中 Novelty・Theoretical closure が不合格）。
+
+- **⚠️ T1 の証明経路が失効。** 提案は「`ass:singular` の非自明核仮定は有限温度 Davies では
+  満たせない」と書くが、`ass:singular` は `0∉spec D_j` の場合を**明示的に許容**する。
+  正しい機構は**減衰床補題** `Λ_j = ½(Γ_out(j)+Γ_out(1))`（凍結の `prop:phase-n`・`prop:phase-h` の
+  `D` を厳密再現）で、有限温度の逆過程が応答ブロック全体に一律の減衰床を敷く。
+  そこから先は **T1(a) = 赤線5 の系、T1(c) = 赤線7 の系**。新規なのは辞書
+  `ε=½e^{−βΔ}`・**持ち上げ行列 = 恒等行列**のみ。
+- **⚠️ 仮定 (E3) が load-bearing。** 斜交 Riesz 射影を許すと有限温度でも Class III が成立する
+  明示反例を構成（負制御で直交射影では消えることを確認）。提案は (E3) を装飾扱いしている。
+- **⚠️ T2 は自己矛盾。** `ass:singular` より `Ran P = Ker D` なので `R_{S,0}` の担い手は
+  Γ スケールで減衰しない。「Γ位相緩和が `c_⊥` を破壊し再生成電流が要る」という導出は
+  設定と両立しない。**Conditional ですらなく Conjecture。**
+- **🆙 T4 は修復可能。** `σ = σ_bath + σ_cut` と分離すれば `σ_bath` は `ass:bivariate` を満たし
+  `thm:polyhedral-selection` を継承できる。log 補正は `σ_cut`（＝T7 の対象）のみ。
+  **提案 §6 Stop条件4 はこの分離で先回り解消される。**
+- **🆕 μ の起源が変わる。** 2準位2浴の厳密解で `μ=0 ⟺ Γスケール浴が詳細釣合い`
+  （単一温度なら `σ≡0` が全 Γ で厳密）。T3 の言う「dark 支持か否か」ではない。
+  ただし保護ブロック上での判定は段階2（W6）の課題。
+- **T1(c) と提案24 LKCT は重複しない。** 融解端 `ε^{−1}` と LKCT 稜線 `ε^{−1/2}` は別スケール（厳密確認）。
+  **提案24 への寄与:** 熱的切片は `D_L = I` なので LKCT の `κ_lift` が `c_P†B_PP^{-2}c_P` に確定する。
+- **📌 §10「参照ファイル一覧（実在確認済み）」は 8件中6件が偽。**
+  `Theorem and proofs/` `PhaseH/` `PhaseN/` `PhaseM/` `RoomT/` `results/` は一度もコミットされていない。
+  Gate P1 はモデル逆解きが要り、**P6・T6 は突合先が存在しない**。`prop:phase-n` のみ即実行可。
+  §0 の「熱力学0件」全域監査も提案19・23 の着地以降は失効。
+
+**推奨は (b) 縮小継続** — 重心を **T7 ＋ μ軸（EP分離則）** へ移し、T1 を辞書へ格下げ、T2 を撤回。
+投稿先は **PRA**（切断の熱力学的価格表）。
+
+**次工程（最優先）:** **housekeeping entropy production（Hatano–Sasa / Speck–Seifert 系）との文献照合。**
+W4b の μ 軸がこれに還元されれば新規性が消える。**現時点の最大の脅威で、egress が要る。**
+その判定が出るまで PRX/PRL を名乗らない。次いで W6（三分岐の構造判定）、W10（T7 単独路線）。
 
 > **番号規約の訂正（2026-07-26）：** RRTは当初「提案21」を名乗っていたが、
 > 番号21は`21_resource_bounded_mechanism_separation_proposal.md`（FRRG）が先に占有しており、
