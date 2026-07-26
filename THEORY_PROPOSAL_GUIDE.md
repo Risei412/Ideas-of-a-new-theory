@@ -446,7 +446,7 @@ Supplemental Materialは補助的導出、追加図、パラメータ表、再�
 | **P0** | **Resource-bounded mechanism separation** | unrestricted representation criterion | bounded competitorでは分離不能な最小protocol・functional・shots |
 | P1 | **Multiparameter scaling geometry** | fixed scaling path | physical resource pathによるresponse law・face・class選択 |
 | P1 | **Exact-to-approximate kernel crossover** | exact protected kernel | 有限窓保護と真の漸近抑制を分けるdouble-scaling law |
-| P1 | **Nonlinear functional hierarchy** | linear response functional | mean/energyでは消え、work/QFI/noiseでのみ現れる不可約機構 |
+| ~~P1~~ | ~~**Nonlinear functional hierarchy**~~ ⛔ **閉鎖（2026-07-26）** | ~~linear response functional~~ | **この枠は使用禁止。** 凍結 RISEI が `ν_Φ`・`k_min^(n,Φ)`・Gate G4 で内容を占有済み。§6.4 および `docs/literature-audit-family-O-functional-hierarchy.md` を参照 |
 | P2 | **Nonsemisimple protected geometry** | semisimple kernel | fractional valuation、Jordan-sensitive response class |
 | P2 | **Bounded-memory extension** | time-local Markovity | 有限memoryで初めて生じるprotocol-exclusive witness |
 | P3 | **Strong-probe extension** | weak-probe approximation | response orderによって初めて可視化されるsector |
@@ -520,6 +520,7 @@ Supplemental Materialは補助的導出、追加図、パラメータ表、再�
 | Continuous quantum gauge / tree calibration atlas（\(SU(d)\) scaling production） | （非還元性未確立）tree calibrationでの予測圧縮則が破綻 | production FAIL | **`K≥q` は必要条件だが十分条件でない**という否定的知見。破綻要因の分類（local rank不足・非線形branch・tree伝播誤差・global chart inconsistency） | 2026-07-23 |
 | Held-out quotient predictor（observational stabilizerによる quotient class） | compact-group latent-frame estimatorと目的関数が完全一致（残差0） | **最終監査** | **quotient class** `[P_i]=P_iH_i`。「内部chartの非一意性 ⇏ 予測の非一意性」という方法論 | 2026-07-23 |
 | Global cycle-consistent quotient atlas（cycle threshold / predict-or-abstain） | compact-group synchronization / 構造化系同定と予測・棄却判定が完全一致 | **最終監査** | **predict-or-abstain certificate**（点推定を強制せずABSTAINを返す安全機構）。cycle冗長度1.5での予測可能性境界 | 2026-07-23 |
+| **汎関数階層の段差（`ν_Φ` の離散跳躍・「観測の組み合わせでのみ出る信号」）** | **凍結 RISEI 自身**（`def:valuation` L271／`def:protection-depth` L335／`k_min^(1,pt)>k_min^(2,noise)` L345／Gate G4 の判定式 L1238）。外部は KD準確率＝一般化文脈依存性（族O）と観測エントロピーの粗視化単調性 | **着手前kill**（提案文書を作る前に死亡。番号未消費） | **否定的知見:** ガイド §6.1 の P1「Nonlinear functional hierarchy」枠が空いていたのは未探索だからではなく、**凍結理論が内容を占有しているから**である。残余は「GKSL構造が段差を強制／禁止するかの分類定理」一点のみで、具体化は既に §6.4 第2行で FCS へ還元済み。設計するなら WPOT の両側挟み込み要件が前提 | 2026-07-26 |
 | **語領域受動性障害（WPOT／提案23、次元自由受動排除 DFPE）** | **還元ではなく反証。** 受動実現自身が主張を破る（400/400試行） | **早期kill**（Stage A、作成同日） | **機構的必要条件:** `source ρ₀` と `readout E` を独立に選べる functional では、受動性は片側正値性として語領域に降りない（`R=Σc_k e^{θλ_k}` の `λ_k≤0` は熱性から従うが `c_k≥0` は従わない）。**次に受動性witnessを設計するなら両側挟み込み（`E`と`ρ₀`をKMS内積で結ぶ）が必須。** 検定器 `scripts/wpot_null_smoke.py` は再利用可 | 2026-07-26 |
 
 > **Tube calculus（regular branch）についての注記：** 上表とは別に、Tube calculus自体も現時点ではRISEI固有現象とは判定されていない。

@@ -66,6 +66,22 @@ functional では、受動性は片側正値性として語領域に降りない
 `scripts/wpot_null_smoke.py`（負制御4モード）。
 **CIRT C4（周波数領域の ancilla 閉性）とは矛盾しない** — 死んだのは周波数領域→語領域の写像。
 
+**族O監査・P1「Nonlinear functional hierarchy」枠を閉鎖【2026-07-26】** —
+`docs/literature-audit-family-O-functional-hierarchy.md`（Pass 4、文献10件を追加し計86件）。
+「観測の組み合わせでのみ信号が得られる」型の理論は**着手前kill**。**内部killが決定的:**
+凍結 RISEI が `ν_Φ`（`def:valuation` L271）・`k_min^(n,Φ)`（`def:protection-depth` L335）・
+`k_min^(1,pt)>k_min^(2,noise)`（L345、「平均に隠れ揺らぎに見える機構」と明記）・
+**Gate G4 の判定式 `k_min^(1,Φ)≠k_min^(2,Φ)`**（L1238）を既に持つ。ガイド §4.1 規則3 に抵触。
+その具体化は §6.4 第2行で既に FCS へ還元済み（早期kill）。
+外部（族O）も飽和 — **KD非正値性 ⟺ 一般化文脈依存性**（→ §6.4 第1行 shared ancilla へ再着地）、
+KD古典性は非生成的、mean-blind/QFI-visible は資源理論として定理化済み、
+観測エントロピーは粗視化細粒化の単調性＋後処理単調性・十分性判定を持つ。
+**提案番号は未消費**（提案文書作成前に死亡、欠番なし）。
+⚠️ **副産物: 族O は計画20（TPR）への脅威でもある** — KD 仕事分布の実部/虚部と
+エネルギー・エントロピーのトレードオフ（O05/O06）。housekeeping entropy production 照合と併せて実施すること。
+⚠️ **監査限界: 本 Pass は全文を1件も開けていない**（arXiv/ar5iv/export API/Semantic Scholar がすべて 403）。
+外部側は要約水準。**判定の重心は内部kill にあり egress 不要**だが、族Oを根拠に他方向を殺してはならない。
+
 **却下済み6候補**（2026-07-23 競合監査完了、再提案禁止 → ガイド §6.4）
 shared ancilla / tilted-GKSL・FCS / compact-group synchronization / 構造化系同定 へ還元。
 うち4件は**最終監査まで生き延びた「惜しかった」候補**で、死因はすべて

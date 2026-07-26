@@ -189,6 +189,7 @@ genuinely non-Markovian memory kernel・colored noise・初期system–environme
 | **「サンプル点の正値性≠受動性」（CIRT C3の枠組み）** | passivity enforcement（Grivet-Talocia 2004 ほか） | 分野の存在理由そのもの。違反は点でなく**帯**構造 | 2026-07-26 |
 | **ancilla閉性（CIRT C4）** | 正実類のSchur補元・受動的相互接続での閉性（Anderson & Vongpanitlerd 1973） | $h=-\Sigma$ の符号で4行。CIRT §4.5 の符号は逆 | 2026-07-26 |
 | **自己エネルギー↔インピーダンスの辞書そのもの** | **Solgun–DiVincenzo 2015**（Multiport impedance quantization） | Brune合成→量子ハミルトニアン＋最小bathモード。circuit QEDの実用手法 | 2026-07-26 |
+| **汎関数階層の段差（`ν_Φ` の離散跳躍。「観測の組み合わせでのみ信号が得られる」）** | **凍結 RISEI 自身**＋族O（KD準確率／観測エントロピー） | 凍結 tex に `ν_Φ`（`def:valuation`）、`k_min^(n,Φ)`（`def:protection-depth`）、`k_min^(1,pt)>k_min^(2,noise)`、Gate G4 の判定式 `k_min^(1,Φ)≠k_min^(2,Φ)` が既存。外部では KD 非正値性＝一般化文脈依存性（→ 本表第1行の shared ancilla へ再着地）、観測エントロピーは粗視化細粒化に関する単調性定理を持つ | 2026-07-26 |
 | **語領域受動性条件 WP1（提案23／WPOT）— 「受動実現の存在 ⇒ 語領域Loewner行列 `Π_n ⪰ 0`」** | **還元ではなく反証。先行研究は不要** | 受動（KMS）実現自身が 400/400 試行で `Π_n` の両符号半正定値性を破る。語なし 1×1 スカラーで既に破れる。`R=Σ_k c_k e^{θλ_k}` で `λ_k≤0` は熱性から従うが、`c_k=⟨E,v_k⟩⟨w_k,ρ₀⟩` の正値性は従わない（source と readout が独立に選べる） | 2026-07-26 |
 
 > **⚠️ 「quantum surplus」は量子効果ではない。** 成分ごとのKramers–Kronigが行列受動性を
