@@ -15,10 +15,11 @@
 |---|---|
 | `THEORY_PROPOSAL_GUIDE.md` | **作業基準の本体**（約900行）。提案前に必読 |
 | `Frozen-Theories/` | 確定理論3件（RISEI・SMRT・EIT）。書き換えない |
-| `Blueprints-of-theories/` | 草案6件（DCIT・トロピカル付値異常・因果インターフェース・実現可能性錐・保護の熱力学・**凍結資源実現ギャップ(21)**） |
+| `Blueprints-of-theories/` | 草案8件（DCIT・トロピカル付値異常・因果インターフェース(19, 🔻降格確定)・実現可能性錐・保護の熱力学・凍結資源実現ギャップ(21)・**分岐指数応答理論(22, RRT)**・**暗界面盲点理論(23, DIBT)**） |
 | `docs/context-pack.md` | **ChatGPTにアップロードする資料層**（命令は書かない） |
 | `docs/redteam-instructions.md` | ChatGPTのカスタム指示欄に貼る（還元／文献／校正の3種） |
 | `docs/claim-template.md` | 各チャットに貼る主張の雛形 |
+| `docs/redteam-packet-23.md` | 提案23（DIBT）Stage A 送付シート一式（A1/A2、シート1〜7） |
 | `docs/stage0-checklist.md` | Stage 0 準備チェックリスト |
 | `docs/literature-audit-report.md` | **文献監査 Pass 1**（30件、競合族A–G） |
 | `docs/literature-audit-addendum.md` | **文献監査 Pass 2**（26件、H compatibility / L 下界） |
@@ -243,6 +244,24 @@ egressが通る環境でDOI解決を再実行することが必須の残作業�
 検証対象は §2 の枠内のみを各チャットに貼る。**主張3 → 1 → 2 → 5 の順に各3チャット、計12チャット。**
 
 > **Stage 2 は Claude では代行できない**（ガイド §11.0 の役割非対称性）。別モデル・別セッションで実行する。
+
+**提案22（RRT・分岐指数応答理論）— Stage 0 のみ完了、赤チーム未投入:**
+`Blueprints-of-theories/22_ramification_response_theory_proposal.md`。
+自己評価は **L2**（既存枠組みでは自然に出ないが原理的には導出可能）。**L3 を主張していない。**
+理論固有性の最大の脅威は例外点(EP)／Lidskii摂動論への還元（§5.1 A1）。
+未通過のため現時点で**PRX候補ではない**。判定は「還元リスク高。ただし kill test が短距離で実行可能」。
+
+**提案23（DIBT・暗界面盲点理論）— Stage A 送付パケット準備完了:**
+`Blueprints-of-theories/23_dark_interface_blindness_theory_proposal.md`、
+送付シートは `docs/redteam-packet-23.md`（シート1〜7、A1: シート1-3・6、A2: シート4-5、文献調査: シート7）。
+**PRX候補として探索する価値がある**と自己評価。送付順序はシート1→4→5を先行させ、
+このうちどれかが「還元成功」なら stop condition（同文書§4）を適用してから残りを回す。
+**まだ実際の赤チーム投入（Stage 2）は行われていない。**
+
+> **番号規約の訂正（2026-07-26）：** RRTは当初「提案21」を名乗っていたが、
+> 番号21は`21_resource_bounded_mechanism_separation_proposal.md`（FRRG）が先に占有しており、
+> ガイド§9の「番号は重複させない」に反する重複だった。RRTを**22**、DIBTを**23**へ繰り上げて解消した
+> （ファイル名・文書内自己参照・`docs/redteam-packet-22.md`→`-23.md`・関連スクリプトのコメントを含め一括修正）。
 
 **共通の作業**（`literature-audit-report.md` §6）: 候補を固定する前に neutral notation で
 calibration/held-out tensor を定義し、generalized Hankel matrix と temporal operator-Schmidt matrix を
