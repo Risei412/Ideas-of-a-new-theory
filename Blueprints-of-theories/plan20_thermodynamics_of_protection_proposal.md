@@ -1,5 +1,41 @@
 # 計画20: 保護応答の熱力学（PRX投稿を見据えた新理論提案）
 
+---
+
+## ⚠️ 段階1 内部還元監査済み（2026-07-26）— 本文には失効箇所がある
+
+**判定: 撤回ではない。ただし中心の2定理 T1・T2 は中心命題の座を失った。**
+**現時点で PRX 候補ではない**（ガイド §1.1 判定ゲート8項目中、Novelty と Theoretical closure が不合格）。
+
+- 手順: [`docs/tpr-kill-plan.md`](../docs/tpr-kill-plan.md)
+- 判定: [`docs/tpr-stage-a-report.md`](../docs/tpr-stage-a-report.md)（W1a–W4b 全9ゲート PASS）
+- 実装: `scripts/tpr_thermo_audit.py`（seed 20260728、判定に浮動小数点不使用）
+- 証明書: `certificates/tpr_reduction_2026-07-26.txt`
+
+**失効した記述（読む際に必ず差し引くこと）:**
+
+| 箇所 | 失効内容 | 正しい記述 |
+|---|---|---|
+| §0 L.40–43 | 「熱力学は本リポジトリに存在しない（全域監査で0件）」 | 2026-07-24 時点では真。提案19・23 の着地以降は**偽**。`scripts/wpot_null_smoke.py` が KMS 詳細釣合い GKSL・Gibbs 状態・3種の非熱的負制御を実装済み |
+| §0 L.45–46 | 「`ass:scope`（A1–A5）は KMS 構造・非Markovメモリを除外条項として留保」 | `ass:scope` は **A1–A6**。KMS の除外条項は**存在しない**。TPR は除外を外すのではなく仮定を**追加**している |
+| §3 T1(a) L.164–166 | 「`ass:singular` の半単純・非自明核仮定は満たせない」 | **誤り。** `ass:singular` は `0∉spec D_j` の場合に `P_j=0, Q_j=I` と置くことを**明示的に許容**する。プリミティブな Davies 生成子はこの仮定を満たす。括弧内の「核1次元 ⇒ 差が消える」も `eq:R0` が `P_full`・`P_cut` を別々に持つため成立しない |
+| §3 T1 全体 | 証明経路（核次元の勘定） | 正しい機構は**減衰床補題** `Λ_j = ½(Γ_out(j)+Γ_out(1))`。T1(a) は ガイド §4.2 **赤線5** の系、T1(c) は **赤線7** の系。新規なのは辞書 `ε=½e^{−βΔ}`・持ち上げ行列 `=I` のみ |
+| §3 T1 (E3) | 「比較の対称性のため」（装飾扱い） | **load-bearing。** (E3) を外すと斜交 Riesz 射影により有限温度でも Class III が成立する（W1d の明示反例。負制御 W1e で直交射影では消えることを確認） |
+| §3 T2 全体 | 仮定 (P2) と証明経路 | **自己矛盾。** `ass:singular` より `Ran P = Ker D` なので `R_{S,0}` の担い手は Γ スケールで減衰しない。「Γ位相緩和が `c_⊥` を破壊し再生成電流が要る」という導出は設定と両立しない。**T2 は Conditional ですらなく Conjecture** |
+| §3 T4 L.212–215 | 「重み付きNewton次数機構をそのまま流用できる」 | `σ` 全体では流用不可（`ass:bivariate` は `ℕ²` 有限単項式台を要求）。ただし `σ = σ_bath + σ_cut` と**分離すれば** `σ_bath` は `thm:polyhedral-selection` を継承できる。log 補正は `σ_cut` のみ ⇒ §6 Stop条件4 は分離で回避可能 |
+| §6 T3/T5 の含意 | 「無償 ⟺ dark 支持」 | W4b（2準位2浴の厳密解）は `μ=0 ⟺ Γスケール浴が詳細釣合い` を示す。二分律が「dark 支持」で引かれるかは**未確定**（段階2 W6 の課題） |
+| §10 全体 | 「参照ファイル一覧（本リポジトリ内・実在確認済み）」 | **8件中6件が偽。** `Theorem and proofs/` `PhaseH/` `PhaseN/` `PhaseM/` `RoomT/` `results/` は一度もコミットされていない。詳細は `docs/tpr-kill-plan.md` §1 F1 |
+| §0 表 L.36 | Phase N「全gate PASS」 | 過大表示。`docs/source-material/SMRT_PRIORITY123_SMOKE_REPORT_2026-07-24.md` は 5準位 GKSL ではなく有理式サロゲートで実行したと明記し `publication_claim_ready=false` を返している |
+
+**生きている主張:** T7（介入の実装コスト）は本監査で一切触れておらず無傷。
+T3・T5・T6 も未検証。T1(a) の命題自体も真である（撤回したのは証明経路）。
+
+**次の一手（報告書 §5）:** 最優先は **housekeeping entropy production（Hatano–Sasa / Speck–Seifert 系）
+との文献照合**。W4b の μ 軸がこれに還元されれば新規性が消える。現時点の最大の脅威であり、
+egress が要るため Claude では判定できない。
+
+---
+
 **作成日:** 2026-07-24
 **位置づけ:** これは実行構成でも数値計画でもなく、SMRT（Sector-Master-Resolved-Theory）の
 既存定理・認証済み数値証拠を土台として、応答分類理論に**熱力学軸**を導入する新理論を
