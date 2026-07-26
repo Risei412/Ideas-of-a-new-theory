@@ -15,7 +15,7 @@
 |---|---|
 | `THEORY_PROPOSAL_GUIDE.md` | **作業基準の本体**（約900行）。提案前に必読 |
 | `Frozen-Theories/` | 確定理論3件（RISEI・SMRT・EIT）。書き換えない |
-| `Blueprints-of-theories/` | 草案5件（DCIT・トロピカル付値異常・因果インターフェース・実現可能性錐・保護の熱力学） |
+| `Blueprints-of-theories/` | 草案6件（DCIT・トロピカル付値異常・因果インターフェース・実現可能性錐・保護の熱力学・**凍結資源実現ギャップ(21)**） |
 | `docs/context-pack.md` | **ChatGPTにアップロードする資料層**（命令は書かない） |
 | `docs/redteam-instructions.md` | ChatGPTのカスタム指示欄に貼る（還元／文献／校正の3種） |
 | `docs/claim-template.md` | 各チャットに貼る主張の雛形 |
@@ -26,6 +26,7 @@
 | `docs/literature-master-table.csv` | 全56件の索引（threat level・decisive difference つき） |
 | `docs/reduction-targets.md` | 族ごとの target object / kill test / survival certificate |
 | `docs/p0-certificate-spec.md` | **P0の証明書仕様と実行順序**（ベクトル値判定・入れ子条件・7ステップ） |
+| `docs/claims/` | Stage 1 の主張リスト（赤チーム投入用・中立記法） |
 | `references/` | `references.bib` + `manifest.csv`（PDFは未取得、URL索引のみ） |
 | `docs/source-material/` | 内部資料4件（RISEI改訂版PDF・競合監査tex・Tubeロードマップ・SMRTスモーク） |
 
@@ -111,6 +112,7 @@ GKSL simulationは custom Liouville 実装、symbolic は SymPy で代替。
 **実行順序:**
 1. ~~shot予算とprotocol数の整合性を修正~~ — **完了（凍結、下記）**
 2. ~~理想データで到達可能な `σ₇` をスモーク~~ — **完了・判定 GO**
+2bis. ~~認証対象を凍結予算で測れる部分行列へ移す~~ — **完了（2026-07-26、下記）**
 3. P0-D用の6状態以下HMMをcalibration側に明示構成 ← **現在ここ**
 4. full側のrank-7 minorをexact arithmeticで認証
 5. 統計模型から `τ_H(α)` を導出
@@ -135,6 +137,23 @@ GKSL simulationは custom Liouville 実装、symbolic は SymPy で代替。
 - **ランダム構成では届かない** — 合格率は1 settingで6.8%、2 settingで1.7%
 - **最適化すればクリア** — 射影付き山登り120反復で 0.402 → **0.609**（settings≤4まで許容）
 - → **ステップ3–4の構成は最適化して作ること。ランダム試行では失敗する**
+
+**ステップ2bis の結果（`p0-certificate-spec.md` §4quater）— 認証対象を差し替え:**
+- **43×43 Hankel は凍結予算で測れない。** 全成分に深さ4語 1296 個が要り、held-out 凍結値
+  （深さ4を64 protocol）の **20.25倍**。§1 の prefix–suffix 閉包の警告の具体例
+- **calibration の protocol 設計も Hankel の語構造と不一致だった**（深さ2を16/36しか測らず、
+  Hankel が使わない深さ3に24 protocol を割いていた）
+- → **認証対象を「行・列語がすべて長さ2の 8×8 部分行列 `H_wit` の `σ₇`」へ変更。**
+  深さ4語がちょうど64個で凍結 held-out 予算と一致し、**予算変更は不要**
+- → **calibration を「長さ2以下の全語＝43 protocol」へ引き直し**（深さ3を除外）。prefix–suffix 閉包が成立
+- 実測（`scripts/minor7_smoke.py`）: `σ₇(H_wit) = 0.1934`（要求 `2τ_H(8) = 0.1265`、余裕 **1.53×**）。
+  **交錯不等式により部分行列版は構成側に不利**（同点で `σ₇(H_full)=0.66–0.75`）、ランダム合格率は **0%**
+- **確定予算（m=6）:** calibration 43 + held-out 64 = **107 protocol、214,000 shots**（1 setting）。
+  settings=2 も可だが held-out が 1000 shots/setting となり余裕 1.08×。**標準は settings=1**
+- 副次効果: 認証対象が exact minor 認証の対象と一致し、Hankel 成分間の相関問題も消えた
+
+**提案21（Stage 0/1 完了）:** `Blueprints-of-theories/21_resource_bounded_mechanism_separation_proposal.md`、
+主張リストは `docs/claims/21_claims.md`（5主張・計13チャット）。**次は Stage 2（赤チーム還元試行）**。
 
 **共通の作業**（`literature-audit-report.md` §6）: 候補を固定する前に neutral notation で
 calibration/held-out tensor を定義し、generalized Hankel matrix と temporal operator-Schmidt matrix を
