@@ -1,9 +1,21 @@
 # dark-ridge（吸収・分散回復点分裂）の新規性判定
 
-**判定日:** 2026-07-26
+**判定日:** 2026-07-26（同日中に Gate P1 まで完了）
 **対象:** `docs/dark-ridge-calculation-plan.md`（提案24 LKCT の Step 1–2）
-**実装:** `scripts/dark_ridge_lambda_model.py`（exact arithmetic、判定に浮動小数点不使用）
-**証明書:** `certificates/dark_ridge_three_level_2026-07-26.txt`
+**実装:** `scripts/dark_ridge_lambda_model.py`・`scripts/dark_ridge_pump_probe.py`
+（いずれも exact arithmetic、判定に浮動小数点不使用）
+**証明書:** `certificates/dark_ridge_three_level_2026-07-26.txt`・`certificates/dark_ridge_nogo_2026-07-26.txt`
+
+> ## 最終判定（2026-07-26）: 路線全体を FREEZE する
+>
+> 三準位で現象が死んだ後に残った唯一の経路
+> 「**受動性が吸収回復曲線を禁じる**」という no-go 定理も、**同日中に反例で死んだ。**
+> `g₁` の sink 性を壊す jump operator を**一本だけ**追加すると、
+> **population inversion を一切伴わずに `Im χ` が符号を変える**（下記 §5）。
+> これは反転なしの利得＝ **lasing without inversion (LWI)** そのものであり、
+> 本リポジトリが新規性として主張できる対象ではない。
+>
+> 詳細は §5。以下の §1–§4 は三準位本体の判定として残す。
 
 ---
 
@@ -18,8 +30,8 @@
 （「分裂が単なる detuning shift または既知のEIT linewidth式へ完全還元される」）が
 **分散側で発火**した。
 
-残る唯一の生存経路は **§14 GO-2（三準位 no-go ＋ 最小四準位 go）** である。
-ただし下記 §4 の理由により、その見込みも当初より低い。
+残る唯一の生存経路は **§14 GO-2（三準位 no-go ＋ 最小四準位 go）** であった。
+**→ §5 で反例により死亡。路線全体を FREEZE する。**
 
 ---
 
@@ -132,7 +144,93 @@ Step 2 で実際に導出するまで no-go 分岐を捨ててはならない」
 
 ---
 
-## 5. 未実施のまま残る監査
+## 5. Gate P1: no-go 経路も死んだ（2026-07-26、同日）
+
+§4 が示した唯一の生存経路
+「`Im χ ≥ 0` を強制している最小条件は何か。熱性か、dark-state 構造か」を、
+**反証優先**で判定した（`scripts/dark_ridge_pump_probe.py`、
+証明書 `certificates/dark_ridge_nogo_2026-07-26.txt`）。
+
+### 5.1 判定した命題
+
+> **命題 N.** 有限次元 GKSL・weak probe・unique steady state のもとで、probe 遷移の下位準位に
+> dark state が存在するなら、`Im(χ − χ_∞)` は物理パラメータ領域で符号を変えない。
+
+### 5.2 反例（命題 N は偽）
+
+ガイド §4.4 の予算に従い、外す仮定は一つだけ —— **`g₁` が流出のない sink である**という構造。
+jump operator を一度に一本だけ追加した（計算計画 §13.1「原因C」に対応）。
+
+- **P1a:** `L_w = √w |g₂⟩⟨g₁|`（ground-state population transfer）
+- **P1b:** `L_r = √r |e⟩⟨g₁|`（incoherent optical pump）
+
+規約テストは全 PASS（trace/Hermiticity 保存、`dissipator_rate` の恒等性、
+そしてガイド §4.2 no-go 12 のレート規約 —— 追加チャネルは `ρ_{eg₁}` と `ρ_{g₁g₂}` の
+**どちらも `w/2` で減衰させる**ことを単体テストで確定した）。
+`rate → 0`（`10⁻⁶`）では三準位の結果（`F_abs` に正根なし）を厳密に回収する。
+
+**結果: `F_abs = Im(χ − χ_∞) = 0` の正根が存在する。** 例（`Ω_c = 2`, `w = 1/10`）:
+
+| `γ₁₂` | `Im χ` | 符号 | `ρ_ee − ρ_{g₁g₁}` |
+|---|---|---|---|
+| 1/100 | −1.66e-2 | **利得** | −0.5514（反転なし） |
+| 1/50 | −1.17e-2 | **利得** | −0.5513（反転なし） |
+| 1/20 | −3.30e-3 | **利得** | −0.5510（反転なし） |
+| 1/10 | +9.96e-3 | 吸収 | −0.5505（反転なし） |
+| 1/5 | +3.40e-2 | 吸収 | −0.5496（反転なし） |
+
+`γ₁₂` を下げると `Im χ` は零点を横切って**負（利得）へ抜ける**。
+そのとき `ρ_ee − ρ_{g₁g₁} ≈ −0.55` であり、**probe 遷移に population inversion は全く無い**。
+P1b（incoherent pump）でも同様の根が出る（`w` 側の方が低い rate で出る）。
+
+### 5.3 なぜこれで路線が終わるか
+
+`χ_∞ = 0` なので `F_abs = 0` は `Im χ = 0`、すなわち**透明化**であり、
+その先は**利得**である。したがって我々が「吸収回復点」と呼んでいたものは、
+**反転なし利得（LWI）の利得閾値**にほかならない。
+
+- 命題 N は偽 ⇒ **no-go 定理は成立しない**（PRL 分岐は消滅）。
+- 反例は inversion を伴わない ⇒ 一見すると文献 `docs/literature-master-table.csv` 行 N15
+  （Liu 2026、"only gain/inversion/parametric amplification … violate passivity"）を
+  逃れているように見える。**しかしそれは LWI という確立した分野に入ることを意味するだけである。**
+  Λ 系＋非コヒーレントポンプ＋制御場での反転なし利得は、EIT と同時期に確立した中心的主題である
+  （Kocharovskaya–Khanin 1988、Harris 1989、Scully–Zhu–Gavrielides 1989、
+  Mompart–Corbalán レビュー 2000。**いずれも DOI 未確認**。ガイド §11.2 Stage 3 に従い、
+  実在確認までは確定文献として扱わない）。
+- リポジトリ内でも LWI は
+  `Blueprints-of-theories/plan20_thermodynamics_of_protection_proposal.md` L349 に
+  「一般分類定理は存在しない」として既に登録されている。
+- ガイド §4.3 は **gain medium を凍結理論の適用範囲外**と明記しており、
+  ここから先は凍結理論の保証が一切効かない領域である。
+
+### 5.4 したがって
+
+計算計画 §21 の停止条件のうち **3（既知式への完全還元）** が分散側で、
+**4 に相当する事態（機構が dark-state 固有でない）** が吸収側で発火した。
+§14 の GO-1・GO-2・GO-3 はいずれも成立しない。**路線全体を FREEZE する。**
+
+残す資産は次の3点。
+
+1. `scripts/dark_ridge_lambda_model.py` — 三準位 Λ の exact weak-probe 感受率。
+   `ρ⁰ = |g₁⟩⟨g₁|` の厳密性と `γ_31 = Γ_e/2 + γ_12/4` を含む。
+2. `scripts/dark_ridge_pump_probe.py` — 上に jump を一本足して符号を破る**負制御**。
+   「dark state があっても受動性は構造的に強制されない」ことの構成的証拠。
+   実装上の教訓として、`Matrix.LUsolve` は結果を正規化せず 9×9 でも式が爆発するため、
+   `DomainMatrix` の分数体上で解く必要がある（`_solve_exact`）。
+3. 機構的必要条件: **`Im χ` の符号を固定していたのは dark-state 構造ではなく、
+   `ρ⁰` が probe 下位準位に集中しているという population 配置である。**
+   次に受動性由来の no-go を設計するなら、population 配置を仮定に明記しなければならない
+   （ガイド §4.2 no-go 14 が要求する「detailed balance を明示せよ」の具体形）。
+
+### 5.5 記録しておく規約の食い違い（実害なし）
+
+`scripts/wpot_null_smoke.py:186` `_thermal_gksl` の docstring と `docs/tpr-kill-plan.md` L326 は
+vectorization を「列スタック」と呼んでいるが、実装は `rho.reshape(-1)`（C order = 行優先）であり、
+生成子の式は `dark_ridge_lambda_model.py` と同一である。式が一致しているため継承に問題はない。
+
+---
+
+## 6. 未実施のまま残る監査
 
 **族O（EIT/ATS ラインシェープ）の文献監査は未実施。**
 `docs/literature-master-table.csv` 全76件に EIT・transparency・Λ系の行が1件も存在しない。

@@ -191,6 +191,14 @@ genuinely non-Markovian memory kernel・colored noise・初期system–environme
 | **自己エネルギー↔インピーダンスの辞書そのもの** | **Solgun–DiVincenzo 2015**（Multiport impedance quantization） | Brune合成→量子ハミルトニアン＋最小bathモード。circuit QEDの実用手法 | 2026-07-26 |
 | **語領域受動性条件 WP1（提案23／WPOT）— 「受動実現の存在 ⇒ 語領域Loewner行列 `Π_n ⪰ 0`」** | **還元ではなく反証。先行研究は不要** | 受動（KMS）実現自身が 400/400 試行で `Π_n` の両符号半正定値性を破る。語なし 1×1 スカラーで既に破れる。`R=Σ_k c_k e^{θλ_k}` で `λ_k≤0` は熱性から従うが、`c_k=⟨E,v_k⟩⟨w_k,ρ₀⟩` の正値性は従わない（source と readout が独立に選べる） | 2026-07-26 |
 
+| **暗状態の吸収・分散回復点分裂（提案24 の物理 pullback／dark ridge）— 「吸収と分散は異なる制御条件で理想 dark-state 値へ戻り、その分裂幅が局所 Schur 係数で予言できる」** | **分散側:** 制御場の ac-Stark シフトによる既知の分散零点。**吸収側:** 反転なし利得（LWI） | 三準位 Λ の厳密解で `Re χ = 0 ⇔ β = Δ_p(γ_12²+δ²)/δ`、`γ_12→0` で `β=Δ_pδ`（既知の ac-Stark 零点）。`Im χ` の分子は全単項式係数が正で三準位では零点なし。`g₁` の sink 性を壊す jump を1本足すと、`ρ_ee−ρ_{g₁g₁}≈−0.55`（**反転なし**）のまま `Im χ` が符号を変え利得へ抜ける | 2026-07-26 |
+
+> **⚠️ dark state があっても受動性は構造的に強制されない。** `Im χ ≥ 0` を固定していたのは
+> dark-state 構造ではなく、`ρ⁰` が probe 下位準位に集中しているという **population 配置**である。
+> 受動性由来の no-go を設計するときは、population 配置を仮定に明記すること
+> （ガイド §4.2 no-go 14「detailed balance を明示せよ」の具体形）。
+> 出典 `docs/dark-ridge-novelty-verdict.md` §5。
+
 > **⚠️ 「quantum surplus」は量子効果ではない。** 成分ごとのKramers–Kronigが行列受動性を
 > 含意しないのは古典多ポート受動性の定義そのもの（$Z+Z^*\succeq0$ であって成分ごとではない）。
 > **この語を新現象の名として使わないこと。** 出典 `docs/literature-audit-cirt-passive-realizability.md`。

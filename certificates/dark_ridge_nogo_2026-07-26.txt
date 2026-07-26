@@ -1,0 +1,77 @@
+========================================================================
+Gate P1: 三準位 Λ + 一機構での吸収回復曲線探索 (exact arithmetic)
+========================================================================
+
+[規約テスト]
+  PASS  [w] T0a trace preservation
+  PASS  [w] T0b hermiticity preservation
+  PASS  [w] T5 dissipator_rate == superop_dissipator(sqrt(rate)*A)
+  PASS  [w] no-go 12: rho_eg1 の減衰率 = -w/2
+  PASS  [w] no-go 12: rho_g1g2 の減衰率 = -w/2
+  PASS  [r] T0a trace preservation
+  PASS  [r] T0b hermiticity preservation
+  PASS  [r] T5 dissipator_rate == superop_dissipator(sqrt(rate)*A)
+  PASS  [r] no-go 12: rho_eg1 の減衰率 = -w/2
+  PASS  [r] no-go 12: rho_g1g2 の減衰率 = -w/2
+
+[P1a: L_w = sqrt(w)|g2><g1|  ground-state transfer]
+  rate=1/100 beta=1/4: chi_inf=0  F_disp 正根=[CRootOf(96040000*x**3 + 192165400*x**2 - 15368199*x - 30841170, 2)]  F_abs 正根=[]
+  rate=1/100 beta=1: chi_inf=0  F_disp 正根=[CRootOf(96040000*x**3 + 192165400*x**2 - 66818199*x - 132901170, 2)]  F_abs 正根=[]
+  rate=1/100 beta=4: chi_inf=0  F_disp 正根=[CRootOf(96040000*x**3 + 192165400*x**2 - 272618199*x - 541141170, 2)]  F_abs 正根=[CRootOf(4802000000*x**4 + 19303060000*x**3 + 96326015450*x**2 + 153648698501*x - 396341598, 1)]   <== 吸収回復根あり  inversion=[False]
+  rate=1/100 beta=25: chi_inf=0  F_disp 正根=[CRootOf(96040000*x**3 + 192165400*x**2 - 1713218199*x - 3398821170, 2)]  F_abs 正根=[CRootOf(4802000000*x**4 + 19303060000*x**3 + 499694015450*x**2 + 958285538501*x - 4594661598, 1)]   <== 吸収回復根あり  inversion=[False]
+  rate=1/10 beta=1/4: chi_inf=0  F_disp 正根=[CRootOf(39200*x**3 + 77945*x**2 - 8832*x - 15150, 2)]  F_abs 正根=[CRootOf(196000*x**4 + 818300*x**3 + 1041085*x**2 + 366973*x - 11418, 3)]   <== 吸収回復根あり  inversion=[False]
+  rate=1/10 beta=1: chi_inf=0  F_disp 正根=[CRootOf(39200*x**3 + 77945*x**2 - 29832*x - 52950, 2)]  F_abs 正根=[CRootOf(196000*x**4 + 818300*x**3 + 1629085*x**2 + 1498873*x - 99618, 1)]   <== 吸収回復根あり  inversion=[False]
+  rate=1/10 beta=4: chi_inf=0  F_disp 正根=[CRootOf(39200*x**3 + 77945*x**2 - 113832*x - 204150, 2)]  F_abs 正根=[CRootOf(196000*x**4 + 818300*x**3 + 3981085*x**2 + 6026473*x - 452418, 1)]   <== 吸収回復根あり  inversion=[False]
+  rate=1/10 beta=25: chi_inf=0  F_disp 正根=[CRootOf(39200*x**3 + 77945*x**2 - 701832*x - 1262550, 2)]  F_abs 正根=[CRootOf(196000*x**4 + 818300*x**3 + 20445085*x**2 + 37719673*x - 2922018, 1)]   <== 吸収回復根あり  inversion=[False]
+  rate=1 beta=1/4: chi_inf=0  F_disp 正根=[]  F_abs 正根=[]
+  rate=1 beta=1: chi_inf=0  F_disp 正根=[CRootOf(980*x**3 + 3815*x**2 + 3765*x - 138, 0)]  F_abs 正根=[]
+  rate=1 beta=4: chi_inf=0  F_disp 正根=[CRootOf(980*x**3 + 3815*x**2 + 1665*x - 7698, 0)]  F_abs 正根=[]
+  rate=1 beta=25: chi_inf=0  F_disp 正根=[CRootOf(980*x**3 + 3815*x**2 - 13035*x - 60618, 0)]  F_abs 正根=[]
+  rate=10 beta=1/4: chi_inf=0  F_disp 正根=[]  F_abs 正根=[]
+  rate=10 beta=1: chi_inf=0  F_disp 正根=[]  F_abs 正根=[]
+  rate=10 beta=4: chi_inf=0  F_disp 正根=[]  F_abs 正根=[]
+  rate=10 beta=25: chi_inf=0  F_disp 正根=[CRootOf(1862*x**3 + 23219*x**2 + 54078*x - 14592, 2)]  F_abs 正根=[]
+
+[P1b: L_r = sqrt(r)|e><g1|   incoherent optical pump]
+  rate=1/100 beta=1/4: chi_inf=0  F_disp 正根=[CRootOf(96040000*x**3 + 192602900*x**2 - 14317499*x - 30608184, 2)]  F_abs 正根=[]
+  rate=1/100 beta=1: chi_inf=0  F_disp 正根=[CRootOf(96040000*x**3 + 192602900*x**2 - 65767499*x - 133088184, 2)]  F_abs 正根=[]
+  rate=1/100 beta=4: chi_inf=0  F_disp 正根=[CRootOf(96040000*x**3 + 192602900*x**2 - 271567499*x - 543008184, 2)]  F_abs 正根=[]
+  rate=1/100 beta=25: chi_inf=0  F_disp 正根=[CRootOf(96040000*x**3 + 192602900*x**2 - 1712167499*x - 3412448184, 2)]  F_abs 正根=[]
+  rate=1/10 beta=1/4: chi_inf=0  F_disp 正根=[CRootOf(78400*x**3 + 160265*x**2 - 7094*x - 27354, 2)]  F_abs 正根=[]
+  rate=1/10 beta=1: chi_inf=0  F_disp 正根=[CRootOf(78400*x**3 + 160265*x**2 - 49094*x - 107154, 2)]  F_abs 正根=[CRootOf(392000*x**4 + 1661100*x**3 + 3362295*x**2 + 3211171*x - 1462, 1)]   <== 吸収回復根あり  inversion=[False]
+  rate=1/10 beta=4: chi_inf=0  F_disp 正根=[CRootOf(78400*x**3 + 160265*x**2 - 217094*x - 426354, 2)]  F_abs 正根=[CRootOf(392000*x**4 + 1661100*x**3 + 8066295*x**2 + 12560371*x - 119062, 1)]   <== 吸収回復根あり  inversion=[False]
+  rate=1/10 beta=25: chi_inf=0  F_disp 正根=[CRootOf(78400*x**3 + 160265*x**2 - 1393094*x - 2660754, 2)]  F_abs 正根=[CRootOf(392000*x**4 + 1661100*x**3 + 40994295*x**2 + 78004771*x - 942262, 1)]   <== 吸収回復根あり  inversion=[False]
+  rate=1 beta=1/4: chi_inf=0  F_disp 正根=[]  F_abs 正根=[]
+  rate=1 beta=1: chi_inf=0  F_disp 正根=[CRootOf(1960*x**3 + 6755*x**2 + 5290*x - 1008, 0)]  F_abs 正根=[]
+  rate=1 beta=4: chi_inf=0  F_disp 正根=[CRootOf(1960*x**3 + 6755*x**2 + 1090*x - 12768, 0)]  F_abs 正根=[]
+  rate=1 beta=25: chi_inf=0  F_disp 正根=[CRootOf(1960*x**3 + 6755*x**2 - 28310*x - 95088, 2)]  F_abs 正根=[]
+  rate=10 beta=1/4: chi_inf=0  F_disp 正根=[]  F_abs 正根=[]
+  rate=10 beta=1: chi_inf=0  F_disp 正根=[]  F_abs 正根=[]
+  rate=10 beta=4: chi_inf=0  F_disp 正根=[]  F_abs 正根=[]
+  rate=10 beta=25: chi_inf=0  F_disp 正根=[]  F_abs 正根=[]
+
+[回収テスト] rate -> 0 で三準位の結果（F_abs に正根なし）を再現するか
+  [w] rate=1e-6, beta=1: F_abs 正根=[]  -> PASS
+  [r] rate=1e-6, beta=1: F_abs 正根=[]  -> PASS
+
+[符号反転の直接確認] Omega_c = 2 (beta = 1), rate = 1/10
+  根の存在だけでなく、Im chi が実際に負（＝利得）へ抜けることと、
+  そのとき probe 遷移に population inversion が無いことを同時に示す。
+  --- mode w
+    gamma_12=1/100  Im chi=-16555246083040000/1139874506899692869 [gain ]  rho_ee - rho_g1g1 = -31516800/57159649 (NOT inverted)
+    gamma_12=1/50   Im chi=-3380134083760000/289790545536413129 [gain ]  rho_ee - rho_g1g1 = -7918400/14363449 (NOT inverted)
+    gamma_12=1/20   Im chi=-257128480000/78021697543037 [gain ]  rho_ee - rho_g1g1 = -1285760/2333473 (NOT inverted)
+    gamma_12=1/10   Im chi=42272056960/4243712037373 [absorb]  rho_ee - rho_g1g1 = -65856/119621 (NOT inverted)
+    gamma_12=1/5    Im chi=13336820/392439413 [absorb]  rho_ee - rho_g1g1 = -86240/156913 (NOT inverted)
+    gamma_12=1/2    Im chi=3674223056000/41487120017057 [absorb]  rho_ee - rho_g1g1 = -392000/716881 (NOT inverted)
+  --- mode r
+    gamma_12=1/100  Im chi=6073570485920000/2239760450974479269 [absorb]  rho_ee - rho_g1g1 = -63033600/112314049 (NOT inverted)
+    gamma_12=1/50   Im chi=1047288262160000/189789078957791443 [absorb]  rho_ee - rho_g1g1 = -15836800/28220649 (NOT inverted)
+    gamma_12=1/20   Im chi=701261344000/51085025887519 [absorb]  rho_ee - rho_g1g1 = -2571520/4583553 (NOT inverted)
+    gamma_12=1/10   Im chi=222642421120/8332286157997 [absorb]  rho_ee - rho_g1g1 = -131712/234869 (NOT inverted)
+    gamma_12=1/5    Im chi=12889940/256630111 [absorb]  rho_ee - rho_g1g1 = -172480/307833 (NOT inverted)
+    gamma_12=1/2    Im chi=2798184592000/27062368053019 [absorb]  rho_ee - rho_g1g1 = -784000/1402881 (NOT inverted)
+
+[判定]
+  [w] 反転を伴わない符号反転あり => LWI 領域。族O 監査が必須。
+  [r] 反転を伴わない符号反転あり => LWI 領域。族O 監査が必須。

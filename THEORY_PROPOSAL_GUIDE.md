@@ -522,6 +522,11 @@ Supplemental Materialは補助的導出、追加図、パラメータ表、再�
 | Global cycle-consistent quotient atlas（cycle threshold / predict-or-abstain） | compact-group synchronization / 構造化系同定と予測・棄却判定が完全一致 | **最終監査** | **predict-or-abstain certificate**（点推定を強制せずABSTAINを返す安全機構）。cycle冗長度1.5での予測可能性境界 | 2026-07-23 |
 | **語領域受動性障害（WPOT／提案23、次元自由受動排除 DFPE）** | **還元ではなく反証。** 受動実現自身が主張を破る（400/400試行） | **早期kill**（Stage A、作成同日） | **機構的必要条件:** `source ρ₀` と `readout E` を独立に選べる functional では、受動性は片側正値性として語領域に降りない（`R=Σc_k e^{θλ_k}` の `λ_k≤0` は熱性から従うが `c_k≥0` は従わない）。**次に受動性witnessを設計するなら両側挟み込み（`E`と`ρ₀`をKMS内積で結ぶ）が必須。** 検定器 `scripts/wpot_null_smoke.py` は再利用可 | 2026-07-26 |
 
+| **暗状態の吸収・分散回復点分裂（提案24 LKCT の物理 pullback／dark ridge）** | 分散側は **ac-Stark シフトによる既知の分散零点** `β=Δ_pδ` へ厳密に還元。吸収側は三準位では存在せず、`g₁` の sink 性を壊すと**反転なし利得（LWI）**として出現する | **早期kill**（作成同日、Stage 0 のみで決着） | **exact 資産:** 三準位 Λ の厳密 weak-probe 感受率（`ρ⁰=|g₁⟩⟨g₁|` の厳密性、`γ_31=Γ_e/2+γ_12/4`）`scripts/dark_ridge_lambda_model.py`、および符号を破る負制御 `scripts/dark_ridge_pump_probe.py`。**機構的必要条件:** `Im χ` の符号を固定するのは dark-state 構造ではなく `ρ⁰` の population 配置。**次に受動性由来の no-go を設計するなら population 配置を仮定に明記すること。** 判定は `docs/dark-ridge-novelty-verdict.md` | 2026-07-26 |
+
+> **提案24（LKCT）自体は上表に含めない。** 死んだのは物理 pullback（Step 1–2）であり、
+> 抽象応答族での稜線・分裂幅の数学は生きている。番号24は消費・欠番化しない。
+
 > **Tube calculus（regular branch）についての注記：** 上表とは別に、Tube calculus自体も現時点ではRISEI固有現象とは判定されていない。
 > regular tube geometryとその主要な発生機構は、Riesz理論・Schur complement・Zeno型縮約・制御/realization理論の組合せで再構成できるためである。
 > ただし棄却ではなく、**完成済みの計算基盤・実験予言系として凍結**し、固有現象探索とは別の資産として保持する方針が取られている（§4.1参照）。
