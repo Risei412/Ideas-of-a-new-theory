@@ -335,14 +335,38 @@ egressが通る環境でDOI解決を再実行することが必須の残作業�
   切片の閉形式盲予測）。**RISEI はステータス表 L.1616 で `Positive κ_eff, α_eff` を
   適用条件として宣言しており、本提案はその除外レジームを占有する位置づけ。**
 
-**次工程:** (1) 符号付き／実トロピカル幾何の文献監査（**未実施・egress 必要**）、
-(2) **GKSL 物理実現の系統探索**（現在の新規性の重心。出発点は SMRT `prop:phase-h` の
-4準位 GKSL `D=diag(0,0,1/2)` と EIT §9.2 の Λ系）、(3) 赤チーム Stage 1–2。
-**superoperator 層は新規に書く必要がある。**
-ただし「`scripts/` に GKSL/Liouvillian 実装は存在せず」は**訂正**（2026-07-26）：
-`scripts/wpot_null_smoke.py:186` の `_thermal_gksl` が列スタック vectorization・
-KMS 詳細釣合いレート規約・3種の非熱的負制御（inverted/gain/negweight）を実装済みで、
-`gibbs()`・`_kraus_to_super()` も揃っている。**新規に書く前にこの規約を継承すること。**
+**GKSL 物理実現の判定 完了【2026-07-26】— 次元二分律。stop condition 2 は不発火。**
+`docs/lkct-gksl-realizability-audit.md`、`scripts/lkct_gksl_realize.py`（seed 20260729、
+Z0–Z9 全 PASS、判定に float 不使用）、`certificates/lkct_gksl_realizability_2026-07-26.txt`。
+
+- **`k = dim P = 1` は禁止（T1, Exact）。** `α_leak = −(m/d_L)·κ_lift` が厳密に成立し比が
+  **負の実数**（`p_P, c_P, B_PP` と全離調に非依存）。よって **Re/Im に限らずあらゆる実線型汎関数**で
+  `Φ(κ)Φ(α) ≤ 0`、稜線座標が負で物理域外。
+- **`k ≥ 2` は実現可能（T2, Exact・構成的）。** 物理的 `B_PP = S+iT` の下でも Re 19.7%・Im 18.5%。
+  明示的な厳密有理数 witness を構成した。
+- **起源:** 実 PSD 行列 `M = J D_F⁻¹ Jᵀ` と `(D_L)_PP` の**非比例性**（比例させると 0/2000 で T1 に退化）。
+- **補題 L2:** `H=H†` ⇒ `C_leak = −J D_F⁻¹ Jᵀ` は**実の負半定値**、`arg C_leak = π` が厳密。
+- **補題 L1:** `D₀⪰0` かつ `(D₀)_PP=0` ⇒ `(D₀)_PF=0`。直交射影で足りるのは**帰結**であり仮定ではない。
+- **負制御 NC1:** 非 Hermitian `H` で L2 が破れる ⇒ **`k=1` の no-go は Hermiticity が原因**。
+- **🆕 ⚠️ 着手時の作業仮説は2つとも否定された。** (i) `α_leak` に `(ΓD_F+B_FF)⁻¹` を使う読みは
+  **次数混同**（`Ω_FF` は `O(v²)`）。「離調窓」の予想は棄却。(ii) **§3.3 の実験翻訳が誤り** —
+  標準 EIT の透過・位相シフトは**光学コヒーレンス＝F ブロック**に載り、LKCT の支持条件
+  `c=(c_P,0), p=(p_P,0)` と**正反対**。Λ 系は `k=1` でもあり**二重に排除**される。
+  正しい観測量は基底コヒーレンスの直接読み出し（Raman/RF/スピン）で、かつ `k≥2` が要るので
+  **tripod / double-Λ 等、基底コヒーレンスを2本以上持つ系**が必要。§3.3 に訂正ブロックを追記済み。
+- **⇒ 投稿先は PRA**（分類定理＋設計則「`dim P ≥ 2` が必要」＋実験提案）。**PRL 分岐は不発火。PRX は不可。**
+
+**次工程:** (1) **`k=2` witness を具体的 GKSL へ pullback**（最優先。SMRT `prop:phase-n` の
+5準位で `d_j` を2つ 0 にすると `D=½diag(0,0,d₄,d₅)` で `k=2` が直接得られる。全データ有理数。
+完全 Liouvillian との突合が未実施＝**まだ具体的な準位系を書き下したとは言えない**）、
+(2) `k≥3` と一般 `k` の定理、(3) path-coherent な低速 jump による L2 回避経路の列挙、
+(4) 符号付き／実トロピカル幾何の文献監査（**未実施・egress 必要**）、(5) A1/A3/A4 判別と赤チーム Stage 1–2。
+
+**計算環境の訂正（2026-07-26）:** 本セッションのコンテナには sympy/numpy/scipy/mpmath が
+**一つも入っていなかった**（既存スクリプトが実行不能だった）。PyPI は到達可能で
+`pip install sympy==1.14.0 numpy scipy mpmath` で解決する。sympy 1.14.0 は既存証明書と同一版。
+GKSL superoperator 規約は `scripts/wpot_null_smoke.py:186` の `_thermal_gksl`（`kron(X,Y.T)` と
+row-major `.reshape(-1)` を**対で**使う。片方だけ真似ると壊れる）を継承すること。
 
 ---
 
