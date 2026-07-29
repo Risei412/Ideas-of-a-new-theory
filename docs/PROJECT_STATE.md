@@ -15,7 +15,7 @@
 |---|---|
 | `THEORY_PROPOSAL_GUIDE.md` | **作業基準の本体**（約900行）。提案前に必読 |
 | `Frozen-Theories/` | 確定理論3件（RISEI・SMRT・EIT）。書き換えない |
-| `Blueprints-of-theories/` | 草案9件（DCIT・トロピカル付値異常・因果インターフェース(19, 🔻降格確定)・実現可能性錐・**保護の熱力学(計画20, TPR, ⚠️段階1監査済)**・凍結資源実現ギャップ(21)・分岐指数応答理論(22, RRT)・暗界面盲点理論(23, DIBT)・**持ち上げ核クロスオーバー理論(24, LKCT)**） |
+| `Blueprints-of-theories/` | 草案10件（DCIT・トロピカル付値異常・因果インターフェース(19, 🔻降格確定)・実現可能性錐・**保護の熱力学(計画20, TPR, ⚠️段階1監査済)**・凍結資源実現ギャップ(21)・分岐指数応答理論(22, RRT)・暗界面盲点理論(23, DIBT)・**持ち上げ核クロスオーバー理論(24, LKCT)**・**錐検閲応答理論(25, CCRT, Stage 0)**） |
 | `docs/context-pack.md` | **ChatGPTにアップロードする資料層**（命令は書かない） |
 | `docs/redteam-instructions.md` | ChatGPTのカスタム指示欄に貼る（還元／文献／校正の3種） |
 | `docs/claim-template.md` | 各チャットに貼る主張の雛形 |
@@ -327,6 +327,41 @@ egressが通る環境でDOI解決を再実行することが必須の残作業�
 `scripts/wpot_null_smoke.py:186` の `_thermal_gksl` が列スタック vectorization・
 KMS 詳細釣合いレート規約・3種の非熱的負制御（inverted/gain/negweight）を実装済みで、
 `gibbs()`・`_kraus_to_super()` も揃っている。**新規に書く前にこの規約を継承すること。**
+
+---
+
+## 提案25（CCRT・錐検閲応答理論）— Stage 0 完了【2026-07-29】
+
+`Blueprints-of-theories/25_cone_censored_response_theory_proposal.md`。
+ガイド §6.1 **P0「Interface realizability」**（壊す仮定: ideal cut primacy）を、
+CIRT（周波数領域受動性 → 族N prior art で降格）とも DIBT（語領域転写）とも別の
+**generator データの錐制約**ルートで占有する。P0-1 の命題ラベルとして
+**IMPL-CONE**（宣言介入クラス内の実装存在。資源上限に依存しないため
+literature-audit-addendum §1 の「無制限資源で常に構成できる」空虚化が構造的に起きない）を新設。
+
+**中核（厳密スモーク S1–S6 全PASS、`scripts/ccrt_cone_smoke.py`、判定に float 不使用）:**
+
+- **補題1（Exact）:** 母集団保存 time-local GKSL 切断 ⇒ jump は対角に限る。
+- **補題2（Exact・既知数学の輸入と自白）:** 対角 jump のコヒーレンス減衰プロファイルは
+  条件付き負定値（cnd）錐 𝒩 に一致（Schoenberg／Christensen–Evans 系）。
+- **定理1（Exact）:** 単一コヒーレンス切断は n≥3 で 𝒩 の外 —
+  **jump 数・対角 ancilla によらず実装不能**（三角剛性）。n=2 は可能（対照）。
+- **定理2（判定式は Exact）:** 背景床が cnd 内部点なら検閲パターンも `κ ≤ κ*` まで救済。
+  n=3・一様床・単一辺で **κ\*=3 厳密**。
+- **定理3候補（Conditional）:** 床が Γ 比例なら SMRT 経路 `κ=κ₀Γ^q` は
+  **q > q\*=1 で漸近的に錐外** — valuation 分類に「操作的定義域の壁」が立つ。
+- Z₆ 逆余弦族で許容／検閲領域が共存、境界 `B* ∈ (6831/25600, 343/1280)` を厳密に挟んだ。
+- 対照: 実装制約を落とすと検閲は恒等的に消える（§4.4 の control 要件を充足）。
+
+**自己評価 L2–L3。** 新規性の重心は錐（既知）ではなく **κ\*・q\*・検閲ギャップ Δ_cens** という
+応答理論的帰結と、凍結コーパスの cut counterfactual の REALIZABLE/CENSORED 遡及分類。
+bipartition 切断は錐内部にあり既存結果は無傷（一致領域）。
+
+**次工程（kill 優先順）:** A1 文献 kill（脱位相レート CP 制約の先行研究。**egress 必要・最優先**、
+死亡確率体感 40–50%）→ A2 ancilla 逃げ道（非対角 ancilla 媒介の time-local 実装で錐を破れるか）
+→ A3 κ\* 一般式（TPR 減衰床補題を床として接続）→ A4 検閲ギャップの実在（生死の分水嶺）
+→ A5 経路検閲の厳密 fan → A6 MAT G3 複数軌道接続（後回し可）。
+**held-out seed は 20260729 を新規割り当て**（使い回し禁止に従う）。
 
 ---
 
