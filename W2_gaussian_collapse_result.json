@@ -1,0 +1,16 @@
+{
+  "gate": "W2_GAUSSIAN_JOINT_BODY_COLLAPSE",
+  "status": "PASS_BLOCKING_GATE",
+  "repository_status": "HOLD",
+  "findings": {
+    "fixed_damping_noise_set": "K_h = Gamma_h^(1/2) (U^\u2020 N_h U) Gamma_h^(1/2)",
+    "matrix_math_absorption_risk": "high",
+    "W0_W1_qfi_independent_of_noise": false,
+    "reason": "for displacement-only passive Gaussian output at fixed response, F_disp=4 d\u2020 V^-1 d is a functional of V",
+    "W0_valid": true,
+    "W1_valid": true,
+    "standalone_joint_body_claim_ready": false
+  },
+  "next_gate": "W3: same complete response + same declared output noise, but different output-field QFI for the same declared signal, with no internal-state or bath-state gauge explanation",
+  "repo_go_condition": "W3 PASS or a physical-realizability obstruction/completeness theorem beyond classical compression theory"
+}

@@ -1,0 +1,115 @@
+{
+  "gate": "W3_SAME_RESPONSE_SAME_NOISE_DIFFERENT_OUTPUT_QFI",
+  "status": "PASS",
+  "model": "single passive cavity mode + one monitored vacuum port + two hidden thermal input channels",
+  "fixed_objects": {
+    "kappa_monitored": 0.6,
+    "gamma_hidden_total": 1.0,
+    "detuning": 0.0,
+    "analysis_frequency": 0.0,
+    "baseline_hidden_occupations": [
+      0.5,
+      0.5
+    ],
+    "bath_occupation_signal_tangent": [
+      0.6,
+      -0.3
+    ],
+    "coherent_input_signal_derivative": 0.1
+  },
+  "analytic_statements": {
+    "fixed_response": "t_mm(omega)=1-kappa_m/[A-i omega], with A=(kappa_m+gamma_h)/2+i Delta, independent of theta",
+    "fixed_baseline_noise": "n_out,0=kappa_m gamma_h |chi|^2 n0, independent of theta because N_h,0=n0 I",
+    "moving_covariance_tangent": "n_out' = kappa_m gamma_h |chi|^2 [r1 cos^2(theta)+r2 sin^2(theta)]",
+    "qfi": "F_Q=4|alpha'|^2/(2 n_out,0+1)+(n_out')^2/[n_out,0(n_out,0+1)]",
+    "no_internal_gauge": "one internal mode and fixed real monitored coupling remove nontrivial internal realization rotations",
+    "no_signal_tangent_gauge": "the declared bath tangent diag(r1,r2) is nondegenerate, so generic continuous bath rotations do not preserve the parameterized input state"
+  },
+  "derived": {
+    "baseline_output_thermal_occupation": 0.46875,
+    "fixed_coherent_response_derivative": [
+      0.025,
+      0.0
+    ],
+    "theta_covariance_tangent_cancellation": 0.9553166181245092,
+    "qfi_min": 0.0012903908220098614,
+    "qfi_max": 0.46086479066575153,
+    "qfi_ratio_max_over_min": 357.1513240832935,
+    "representative_points": [
+      {
+        "theta": 0.0,
+        "baseline_transfer": [
+          0.25,
+          0.0
+        ],
+        "baseline_output_thermal_occupation": 0.46875,
+        "coherent_response_derivative": [
+          0.025,
+          0.0
+        ],
+        "output_thermal_occupation_derivative": 0.5625,
+        "output_qfi": 0.46086479066575153
+      },
+      {
+        "theta": 0.7853981633974483,
+        "baseline_transfer": [
+          0.25,
+          0.0
+        ],
+        "baseline_output_thermal_occupation": 0.46875,
+        "coherent_response_derivative": [
+          0.025,
+          0.0
+        ],
+        "output_thermal_occupation_derivative": 0.14062500000000008,
+        "output_qfi": 0.030013726835964344
+      },
+      {
+        "theta": 0.9553166181245092,
+        "baseline_transfer": [
+          0.25,
+          0.0
+        ],
+        "baseline_output_thermal_occupation": 0.46875,
+        "coherent_response_derivative": [
+          0.025,
+          0.0
+        ],
+        "output_thermal_occupation_derivative": 5.204170427930421e-17,
+        "output_qfi": 0.0012903225806451615
+      },
+      {
+        "theta": 1.5707963267948966,
+        "baseline_transfer": [
+          0.25,
+          0.0
+        ],
+        "baseline_output_thermal_occupation": 0.46875,
+        "coherent_response_derivative": [
+          0.025,
+          0.0
+        ],
+        "output_thermal_occupation_derivative": -0.28125,
+        "output_qfi": 0.11618393960192176
+      }
+    ]
+  },
+  "checks": {
+    "internal_system_dimension_is_one": true,
+    "complete_monitored_transfer_is_theta_independent": true,
+    "baseline_hidden_damping_is_fixed": true,
+    "baseline_hidden_bath_state_is_isotropic_and_fixed": true,
+    "baseline_output_noise_is_theta_independent": true,
+    "declared_coherent_signal_response_is_theta_independent": true,
+    "declared_environmental_signal_tangent_is_fixed_in_lab_basis": true,
+    "parameterized_bath_tangent_has_no_continuous_rotation_gauge": true,
+    "output_covariance_tangent_changes": true,
+    "output_qfi_changes_at_same_baseline_response_and_noise": true
+  },
+  "interpretation": "W3 crosses the W2 collapse: the complete monitored baseline response and baseline output noise are identical, yet the output-field QFI for the same declared parameter changes because the parameter also has an environmental covariance tangent whose projection through the fixed hidden coupling orientation is designable.",
+  "claim_boundary": [
+    "The existence of base-identical but tangent-different Gaussian QFI is not itself a novelty claim; Gaussian information geometry already distinguishes base covariance from covariance tangent.",
+    "The repository target must therefore be the physical realizability/synthesis set of admissible covariance/information tangents under fixed response/noise/resource constraints.",
+    "This W3 uses bath-occupation modulation as the signal; a stronger follow-up should test dissipative-rate or Hamiltonian signals tied directly to GKSL generator derivatives."
+  ]
+}

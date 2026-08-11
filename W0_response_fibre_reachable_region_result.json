@@ -1,0 +1,106 @@
+{
+  "gate": "W0_FIXED_RESPONSE_NOISE_QFI_REACHABLE_REGION",
+  "status": "PASS",
+  "scope": "stable passive four-mode Gaussian Markov input-output systems; single analysis frequency omega=0 for the reachable-set theorem, while monitored transfer invariance is checked over frequency and slow-control grids",
+  "parameters": {
+    "gamma": 0.4,
+    "g": 0.75,
+    "hidden_c": [
+      1.0,
+      1.0
+    ],
+    "delta_star": 0.28125,
+    "omega_star": 0.0,
+    "total_hidden_occupation_budget": 4.0
+  },
+  "analytic_statements": {
+    "monitored_transfer": "T_ss(theta,omega,delta)=T_ss(0,omega,delta)",
+    "noise_covariance": "V(theta)=1/2 I + alpha R(theta) diag(n1,n2) R(theta)^T",
+    "fixed_spectrum_curve": "q=(v1+v2-S11)/(v1 v2)",
+    "fixed_total_budget_region": "1/2<=S11<=T-1/2 and 1/S11<=q<=(T-S11)/(T/2-1/4)",
+    "qfi_relation": "F_Q=|d_out/dx|^2 q for a displacement-only signal in the vacuum=I/2 quadrature convention"
+  },
+  "derived_numbers": {
+    "hidden_noise_transfer_weight_alpha": 0.9714960364311016,
+    "monitored_signal_gain_sq": 0.028503963568898654,
+    "fixed_spectrum_covariance_eigenvalues": [
+      0.5000000000000002,
+      4.385984145724407
+    ],
+    "fixed_total_budget_trace_T": 4.885984145724406,
+    "fixed_total_budget_determinant_floor": 2.192992072862203,
+    "S11_range": [
+      0.5,
+      4.385984145724406
+    ],
+    "reachable_region_area_in_S11_q_plane": 2.157423179877953,
+    "endpoint_unit_input_FQ": [
+      0.05700792713779728,
+      0.006498875194677846
+    ],
+    "endpoint_FQ_ratio": 8.771968291448811
+  },
+  "numerical_errors": {
+    "max_transfer_error": 1.2061959953473854e-15,
+    "max_vacuum_preservation_error": 1.857256326585015e-15,
+    "min_hermitian_part_eigenvalue": 0.2,
+    "minimum_controllability_observability_rank": 4,
+    "max_covariance_eigenvalue_error": 4.440892098500626e-15,
+    "max_fixed_spectrum_curve_error": 1.5543122344752192e-15,
+    "max_region_lower_violation": 0.0,
+    "max_region_upper_violation": 1.1102230246251565e-15,
+    "minimum_region_margin_sampled": -1.1102230246251565e-15
+  },
+  "representative_fixed_spectrum_points": [
+    {
+      "theta": 0.0,
+      "S11": 0.5000000000000002,
+      "q_normalized": 1.9999999999999991,
+      "FQ_unit_input": 0.05700792713779728,
+      "signal_gain_sq": 0.028503963568898654
+    },
+    {
+      "theta": 0.7853981633974483,
+      "S11": 2.4429920728622023,
+      "q_normalized": 1.1139995000865235,
+      "FQ_unit_input": 0.03175340116623757,
+      "signal_gain_sq": 0.028503963568898654
+    },
+    {
+      "theta": 1.5707963267948966,
+      "S11": 4.385984145724407,
+      "q_normalized": 0.2279990001730469,
+      "FQ_unit_input": 0.006498875194677846,
+      "signal_gain_sq": 0.028503963568898654
+    }
+  ],
+  "representative_fixed_budget_points": [
+    {
+      "n1": 2.0,
+      "n2": 2.0,
+      "theta": 0.7853981633974483,
+      "S11": 2.442992072862203,
+      "q_normalized": 0.409334115778936,
+      "FQ_unit_input": 0.011667644723670137
+    }
+  ],
+  "checks": {
+    "complete_monitored_transfer_invariant_on_frequency_control_grid": true,
+    "passive_vacuum_preservation": true,
+    "strict_stability": true,
+    "all_sampled_realizations_controllable_and_observable": true,
+    "fixed_bath_spectrum_output_covariance_eigenvalues_invariant": true,
+    "fixed_bath_spectrum_exact_noise_qfi_curve": true,
+    "fixed_total_occupation_region_lower_bound_respected": true,
+    "fixed_total_occupation_region_upper_bound_respected": true,
+    "reachable_image_has_nonzero_area": true,
+    "qfi_changes_at_fixed_response_and_fixed_bath_spectrum": true
+  },
+  "interpretation": "At exactly fixed detector-facing transfer, physical dimension and total hidden occupation budget, hidden bath anisotropy plus a response-invisible coupling orientation generates a genuine two-dimensional noise--displacement-QFI design region. With the full bath spectrum also fixed, the image collapses to an exactly solvable one-dimensional boundary curve.",
+  "claim_boundary": [
+    "This is a minimal constructive witness, not yet a general realizability theorem.",
+    "The two-dimensional region fixes only the scalar total hidden occupation budget; the full bath occupation spectrum is allowed to redistribute.",
+    "If the full bath spectrum is fixed, W0 proves an exact one-dimensional reachable curve, not a two-dimensional region.",
+    "Novelty is not assigned to Gaussian covariance rotation itself; the next gate must test whether the reachable-set structure survives beyond this isotropic stabilizer family and avoids standard spectral-factorization absorption."
+  ]
+}

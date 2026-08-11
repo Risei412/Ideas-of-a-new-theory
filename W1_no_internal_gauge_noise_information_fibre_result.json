@@ -1,0 +1,136 @@
+{
+  "gate": "W1_NO_INTERNAL_GAUGE_FIXED_TRANSFER_NOISE_INFORMATION_FIBRE",
+  "status": "PASS",
+  "scope": "two-mode passive Gaussian Markov system; fixed A, fixed monitored coupling, fixed hidden damping Gram matrix and fixed nondegenerate hidden bath occupation spectrum; only hidden channel-to-system coupling orientation varies",
+  "parameters": {
+    "Omega_system": [
+      [
+        0.35,
+        0.18
+      ],
+      [
+        0.18,
+        -0.42
+      ]
+    ],
+    "Gamma_monitored": [
+      [
+        0.4,
+        0.0
+      ],
+      [
+        0.0,
+        0.7
+      ]
+    ],
+    "Gamma_hidden": [
+      [
+        0.5,
+        0.0
+      ],
+      [
+        0.0,
+        1.1
+      ]
+    ],
+    "hidden_bath_occupations": [
+      0.15,
+      3.0
+    ]
+  },
+  "analytic_statements": {
+    "fixed_damping": "C_h(theta)^\u2020 C_h(theta)=Gamma_h",
+    "fixed_drift": "A=1/2(Gamma_m+Gamma_h)+i Omega is theta independent",
+    "fixed_transfer": "T_mm(omega)=I-C_m(A-i omega I)^(-1)C_m^\u2020 is theta independent",
+    "moving_noise": "K_h(theta)=C_h(theta)^\u2020 N_h C_h(theta) varies for nondegenerate N_h",
+    "no_internal_gauge": "A and C_m are literally fixed; invertible C_m makes C_m U=C_m imply U=I",
+    "no_continuous_bath_state_gauge": "R^T N_h R != N_h for generic R because N_h is nondegenerate"
+  },
+  "numerics": {
+    "max_hidden_damping_gram_error": 4.965082487980585e-16,
+    "max_monitored_transfer_error": 0.0,
+    "minimum_hermitian_part_eigenvalue": 0.45,
+    "hidden_noise_injection_separation_norm_theta0_vs_pi4": 2.2800000000000002,
+    "bath_state_rotation_error_theta_pi4": 2.85,
+    "information_min": 0.3652792334024697,
+    "information_max": 1.383303058276018,
+    "information_ratio_max_over_min": 3.7869742700425446,
+    "theta_at_information_min": 1.2348204457859882,
+    "theta_at_information_max": 2.7794368338009696,
+    "representative_points": [
+      {
+        "theta": 0.0,
+        "normal_noise_trace": 2.307813310018238,
+        "normal_noise_eigenvalues": [
+          0.08732340484237967,
+          2.2204899051758584
+        ],
+        "whitened_displacement_information": 1.272670631186112
+      },
+      {
+        "theta": 0.2,
+        "normal_noise_trace": 2.2583045125327845,
+        "normal_noise_eigenvalues": [
+          0.0894003248455385,
+          2.168904187687246
+        ],
+        "whitened_displacement_information": 1.12959391017647
+      },
+      {
+        "theta": 0.39269908169872414,
+        "normal_noise_trace": 2.184590376676383,
+        "normal_noise_eigenvalues": [
+          0.09269124700508719,
+          2.091899129671296
+        ],
+        "whitened_displacement_information": 0.9545241079231344
+      },
+      {
+        "theta": 0.7853981633974483,
+        "normal_noise_trace": 2.0030218418861283,
+        "normal_noise_eigenvalues": [
+          0.10199806065137518,
+          1.9010237812347532
+        ],
+        "whitened_displacement_information": 0.5775399047675769
+      },
+      {
+        "theta": 0.9,
+        "normal_noise_trace": 1.9545391258066567,
+        "normal_noise_eigenvalues": [
+          0.1048275535759613,
+          1.8497115722306954
+        ],
+        "whitened_displacement_information": 0.48874267793739706
+      },
+      {
+        "theta": 1.5707963267948966,
+        "normal_noise_trace": 1.8621630995645884,
+        "normal_noise_eigenvalues": [
+          0.1107083948052984,
+          1.7514547047592899
+        ],
+        "whitened_displacement_information": 0.49403657120349653
+      }
+    ]
+  },
+  "checks": {
+    "hidden_coupling_preserves_damping_matrix": true,
+    "complete_monitored_transfer_is_exactly_fixed": true,
+    "internal_drift_is_identical_not_merely_similar": true,
+    "monitored_coupling_is_identical": true,
+    "deterministic_internal_gauge_stabilizer_is_trivial": true,
+    "bath_occupation_spectrum_is_fixed_and_nondegenerate": true,
+    "continuous_bath_rotation_is_not_state_gauge": true,
+    "hidden_noise_injection_changes": true,
+    "strict_passive_stability": true,
+    "noise_information_target_changes_at_fixed_transfer": true
+  },
+  "interpretation": "The fixed-response noise-information freedom survives quotienting out internal-state realization gauge: every fibre member has the same deterministic state-space matrices A and C_m. The moving degree of freedom is the orientation of a fixed anisotropic environmental state relative to a coupling factorization with fixed damping Gram matrix.",
+  "claim_boundary": [
+    "This witness does not establish literature novelty by itself.",
+    "Changing environmental channel orientation can be viewed as reservoir engineering; the PRL target must be a general realizability theorem/body, not this example.",
+    "The information quantity is a shot-noise-normalized coherent-displacement information and is proportional to displacement QFI under the stated passive Gaussian convention.",
+    "The next theorem gate should characterize the image of C^\u2020 N C at fixed C^\u2020 C and then propagate it through the detector transfer to noise/QFI reachable sets."
+  ]
+}
