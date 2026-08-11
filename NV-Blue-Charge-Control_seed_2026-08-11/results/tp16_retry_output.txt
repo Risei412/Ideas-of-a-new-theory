@@ -1,0 +1,6 @@
+p=0.500, phi=1.570796327, C=0.400000000-0.200000000j, |C|=0.447213595, corrected=1.0
+p=0.400, phi=0.251327412, C=0.847444948-0.301899396j, |C|=0.899614465, corrected=1.0
+CORE_DELETION_PASS: phi=0 gives |C|=1 for all tested p
+target=0.9900, sigma_t_max=282.056 us
+target=0.9990, sigma_t_max=88.993 us
+target=0.9999, sigma_t_max=28.136 us

@@ -1,0 +1,3 @@
+generic_depth2: control_d=+1.000, DLA_dim=15, K2_coeff=+3.000000, K3_coeff=+2.100000, probability_slope=4.000041
+cancellation_depth3: control_d=-0.500, DLA_dim=15, K2_coeff=+0.000000, K3_coeff=+1.050000, probability_slope=5.999996
+PASS: same su(4) DLA with marked depth 2 -> 3 and probability slope 4 -> 6.

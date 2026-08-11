@@ -1,0 +1,17 @@
+{
+  "package": "NV-Blue-Charge-Control_seed_2026-08-11",
+  "created_date_jst": "2026-08-11",
+  "source_repositories": [
+    "Risei412/DLA-Constrained-Perturbative-Depth-Geometry",
+    "Risei412/Ideas-of-a-new-theory"
+  ],
+  "source_commits": {
+    "DLA_NV_seed_commit": "356e50bab5eb43811303fc1ceae15d77852cc24b",
+    "TP16_repository_go_commit": "92eefa381f632f4ceb55adf35059d7543ff1e19f"
+  },
+  "notion_programs": [
+    "TP-14 DLA-Constrained Perturbative Depth Geometry",
+    "TP-16 NV Charge-Trajectory Quantum Control"
+  ],
+  "status": "seed package; held-out benchmark adopted; device-level closure pending"
+}

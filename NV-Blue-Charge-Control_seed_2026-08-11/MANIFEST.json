@@ -1,0 +1,58 @@
+[
+  {
+    "path": "DLA_bridge/heldout_benchmark.md",
+    "bytes": 1118
+  },
+  {
+    "path": "NEXT_GATES.md",
+    "bytes": 1173
+  },
+  {
+    "path": "README.md",
+    "bytes": 1261
+  },
+  {
+    "path": "TP16_bridge/repository_go_certificate.md",
+    "bytes": 917
+  },
+  {
+    "path": "calculations/nv_blue_charge_two_nuclear_seed.py",
+    "bytes": 3611
+  },
+  {
+    "path": "calculations/nv_charge_transcript_retry_witness.py",
+    "bytes": 1450
+  },
+  {
+    "path": "device_models/README.md",
+    "bytes": 578
+  },
+  {
+    "path": "literature_notes/primary_anchors.md",
+    "bytes": 1325
+  },
+  {
+    "path": "negative_results/known_absorptions.md",
+    "bytes": 706
+  },
+  {
+    "path": "provenance.json",
+    "bytes": 616
+  },
+  {
+    "path": "requirements.txt",
+    "bytes": 24
+  },
+  {
+    "path": "results/dla_seed_output.txt",
+    "bytes": 307
+  },
+  {
+    "path": "results/tp16_retry_output.txt",
+    "bytes": 337
+  },
+  {
+    "path": "theory/core_principles.md",
+    "bytes": 1478
+  }
+]
