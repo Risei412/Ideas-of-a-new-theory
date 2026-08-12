@@ -1,0 +1,59 @@
+{
+  "schema_version": "0.1",
+  "repo": "Risei412/Ideas-of-a-new-theory",
+  "path": "NV-Blue-Charge-Control_seed_2026-08-11/",
+  "branch": "main",
+  "commit": "327132bd69ff0aadab821e323d868d8a8fefc189",
+  "staging_note": "Pre-repository certificate and witness staged in this monorepo. Proposed dedicated repository: Risei412/NV-Charge-Trajectory-Control (not yet created).",
+  "notion": {
+    "research_asset_page": "3ba3e759-2016-81bd-894d-f5e022f26537",
+    "research_asset_url": "https://app.notion.com/p/3ba3e759201681bd894df5e022f26537",
+    "research_question_page": "3b83e759-2016-81ab-b9d6-cb358f5551f7",
+    "theory_program_id": "TP-16",
+    "theory_program_page": "3b83e759-2016-8162-80cc-cde20d67df43"
+  },
+  "repository_creation_gate": {
+    "verdict": "GO_CREATE_REPOSITORY = PASS",
+    "run_id": "RCI-20260810-REPO01",
+    "source": "TP16_bridge/repository_go_certificate.md",
+    "date": "2026-08-10"
+  },
+  "programmes": [
+    {
+      "id": "DLA-bridge",
+      "description": "Closed-Hamiltonian two-nuclear-spin su(4) benchmark: marked perturbative depth changes d=2 -> d=3 while the DLA stays full su(4) in both settings.",
+      "status": "DLA held-out benchmark seed: ADOPT AS HELD-OUT BENCHMARK. Device-level closure with measured hyperfine tensors: not yet closed.",
+      "next_gate": "NV-DLA-H1: replace synthetic coefficients with measured/credible hyperfine tensors and physically available MW/RF/electron-mediated controls."
+    },
+    {
+      "id": "TP-16-charge-trajectory",
+      "description": "Charge-transcript completion principle: a charge-dependent nuclear Hamiltonian means a stochastic optical charge trajectory induces a transcript-conditioned nuclear operation; completion into a reusable operation is constrained by the same charge-dependent hyperfine dynamics.",
+      "status": "Dedicated development/falsification repository: GO. PRL route FAILED (absorbed by process-tensor/HMM/operational-non-Markovianity formalisms). PRA route PASS WITH NARROWING.",
+      "next_gate": "N1 / PRA-N2: quantum-instrument completion theorem plus m-cycle correlated charge-trap phase diagram with finite SPAM, charge-check time, recharge success, reset overhead; derive optimal reset interval m* and nuclear-memory fidelity gain."
+    }
+  ],
+  "core_deletion": "Delta H = H_NV0 - H_NV- -> 0 on the stored nuclear subspace removes the transcript-dependent nuclear effect; equivalently phi -> 0 in C(p,phi) = p / [1 - (1-p) exp(-i phi)].",
+  "non_claims": [
+    "deterministic switched-Hamiltonian controllability",
+    "generic dynamical Lie algebra controllability",
+    "generic first-nonzero perturbative path or path cancellation",
+    "repeat-until-success quantum control",
+    "generic quantum trajectories or unraveling dependence",
+    "generic measurement-based feedback",
+    "NV charge switching or spin-to-charge conversion",
+    "generic preservation of a nuclear memory across optical reset / charge cycling"
+  ],
+  "open_anomalies": [
+    {
+      "id": "broad-route-killed",
+      "text": "The broad claim that trajectory monitoring itself creates new computational power was killed by existing quantum-trajectory, repeat-until-success and feedback frameworks (RCI-20260810-REPO01). The surviving residue is hardware-specific: quantitative completion cost for stochastic NV charge excursions where charge-dependent hyperfine dynamics ties a classical charge transcript to a conditional nuclear operation.",
+      "kind": "narrowed_claim_after_kill"
+    },
+    {
+      "id": "prl-route-failed",
+      "text": "2026-08-11: PRL route FAILED -- single-channel/multi-time-process split absorbed by process tensor / operational non-Markovianity; charge-only observational equivalence absorbed by HMM / Markov reward lumpability. PRA route survives only as: identification bound + sign-sensitive reset decision threshold + reusable-memory fidelity gain.",
+      "kind": "journal_route_revision"
+    }
+  ],
+  "generated_by": "Claude Code, 2026-08-12, backfilled from README.md / NEXT_GATES.md / theory/core_principles.md / TP16_bridge/repository_go_certificate.md / DLA_bridge/heldout_benchmark.md / negative_results/known_absorptions.md. Not auto-maintained -- see docs/research-state-convention.md for the update rule."
+}

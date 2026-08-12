@@ -1,0 +1,98 @@
+{
+  "schema_version": "0.1",
+  "repo": "Risei412/Ideas-of-a-new-theory",
+  "path": "Fixed-Response-Operational-Synthesis/",
+  "branch": "main",
+  "commit": "327132bd69ff0aadab821e323d868d8a8fefc189",
+  "staging_note": "This directory is staged inside the monorepo. No dedicated repository has been split off.",
+  "notion": {
+    "research_asset_page": "3ba3e759-2016-8144-93d1-e4f889370e63",
+    "research_asset_url": "https://app.notion.com/p/3ba3e7592016814493d1e4f889370e63",
+    "research_question_id": "RQ-79",
+    "research_question_page": "3b83e759-2016-81a0-bf13-d296747d5ab2",
+    "theory_program_page": null
+  },
+  "repository_creation_gate": {
+    "verdict": "GO WITH CLAIM RESTRICTION",
+    "source": "REPOSITORY_CREATION_GATE.md",
+    "date": "2026-08-10"
+  },
+  "frozen_question": "Given a fixed complete detector-facing response and fixed baseline output noise, what output-field information/covariance-correlation tangents are physically realizable for the same declared signal, and what is the minimal open-system realization of each reachable boundary point?",
+  "claims": [
+    {
+      "id": "W0",
+      "statement": "A fixed monitored transfer admits a nontrivial noise-information design set in a passive Gaussian witness.",
+      "status": "verified",
+      "strength": "exact",
+      "code": "W0_response_fibre_reachable_region.py",
+      "output": "W0_response_fibre_reachable_region_result.json"
+    },
+    {
+      "id": "W1",
+      "statement": "The noise-information freedom survives removal of internal-state realization gauge: deterministic drift matrix A and monitored coupling C_m are literally identical across the fibre. Information ratio max/min = 3.7869742700425446.",
+      "status": "verified",
+      "strength": "exact",
+      "code": "W1_no_internal_gauge_noise_information_fibre.py",
+      "output": "W1_no_internal_gauge_noise_information_fibre_result.json"
+    },
+    {
+      "id": "W2",
+      "statement": "Blocking result: displacement-only passive Gaussian QFI collapses to a functional of baseline covariance, so a naive joint (noise, QFI) body is not an independent object. This forbids a naive novelty headline.",
+      "status": "verified",
+      "strength": "exact",
+      "code": "not in this listing (see results/ per README)",
+      "output": "W2_gaussian_collapse_result.json"
+    },
+    {
+      "id": "W3",
+      "statement": "Same complete baseline response, same baseline output noise, and same coherent response derivative coexist with a 357.1513240832935x change in output QFI for the same declared signal, through a physically distinct environmental covariance tangent (single passive cavity + one monitored port + two hidden thermal channels).",
+      "status": "verified",
+      "strength": "exact",
+      "code": "not in this listing (see results/ per README)",
+      "output": "W3_same_response_noise_different_qfi_result.json"
+    }
+  ],
+  "non_claims": [
+    "same response but different noise",
+    "same baseline but different QFI",
+    "transfer-function realization",
+    "power-spectrum identification",
+    "Gaussian QFI depending on covariance tangents",
+    "C^dagger N C compression itself",
+    "reservoir engineering in general"
+  ],
+  "known_absorbers": [
+    "Linear quantum stochastic transfer realization (Grivopoulos, Nurdin, Petersen et al.) -- kills transfer-function-realization novelty",
+    "Power-spectrum identification (Levitt, Guta, Nurdin) -- kills output-covariance-identification novelty",
+    "Gaussian-state QFI formulae -- kills base-vs-tangent-difference novelty",
+    "Gu and Liu, arXiv:2605.03340 (2026) -- finite-frequency response-noise-QFI bounds; open residue is whether these bounds plus realizability are sufficient",
+    "Hermitian compression / higher-rank numerical range -- kills novelty based on the compression body itself",
+    "Passive/linear reservoir engineering -- kills novelty based on environment-orientation noise engineering"
+  ],
+  "open_anomalies": [
+    {
+      "id": "gu-liu-sufficiency-gap",
+      "text": "It is open whether the Gu-Liu (2026) finite-frequency response-noise-QFI necessary bounds, together with physical realizability, are sufficient to characterize the reachable tangent set. If not, the missing inequality/obstruction is undiscovered.",
+      "kind": "unresolved_completeness_question"
+    }
+  ],
+  "next_gates": [
+    {
+      "id": "W4",
+      "description": "Generator-linked signal gate: replace bath-temperature modulation by a declared signal that changes a GKSL generator parameter (Hamiltonian or dissipative rate), same baseline response/noise/budget, different output-field QFI, no internal/bath/detector gauge explanation. PASS only if not a direct Gaussian tangent/compression corollary."
+    },
+    {
+      "id": "B0",
+      "description": "Bound completeness gate: search for a target triplet satisfying known finite-frequency response-noise-QFI bounds but violating physical realizability."
+    },
+    {
+      "id": "S0",
+      "description": "Minimal synthesis gate: lower bound and saturating construction for internal/environmental/monitored channel dimension and signal-channel resource."
+    },
+    {
+      "id": "X0",
+      "description": "Non-Gaussian holdout: smallest finite-level GKSL witness not reducible to a Gaussian covariance-compression problem."
+    }
+  ],
+  "generated_by": "Claude Code, 2026-08-12, backfilled from README.md / NEXT_GATES.md / REPOSITORY_CREATION_GATE.md / REPO_BLOCKING_NOVELTY_AUDIT.md / result JSONs. Not auto-maintained -- see docs/research-state-convention.md for the update rule."
+}

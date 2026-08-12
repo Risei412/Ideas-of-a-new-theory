@@ -37,6 +37,7 @@
 | `certificates/` | P0-D・LKCT・**TPR** の exact 証明書（有理数データ＋ゲート判定） |
 | `references/` | `references.bib` + `manifest.csv`（PDFは未取得、URL索引のみ） |
 | `docs/source-material/` | 内部資料4件（RISEI改訂版PDF・競合監査tex・Tubeロードマップ・SMRTスモーク） |
+| `docs/research-state-convention.md` | **`research_state/summary.json` 規約**（2026-08-12）。理論ディレクトリ直下に置く機械可読の現況スキーマと維持ルール。Notion `Research Assets` データソースとの対応も記載 |
 
 ## 検証工程（ガイド §11）
 
