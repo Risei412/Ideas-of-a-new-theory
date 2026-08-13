@@ -15,6 +15,16 @@
 
 現況の1枚要約は [`docs/PROJECT_STATE.md`](docs/PROJECT_STATE.md)。新規セッションはここから読むと早い。
 
+## 理論を専用リポジトリへ切り出すとき
+
+**必ず [`REPOSITORY_GATE.md`](REPOSITORY_GATE.md) を先に読むこと。**
+専用リポジトリは一時的な作業場であり、成熟した理論の家ではない（成熟＝卒業条件）。
+枠は1つで、増やすには枠の移譲を明記する。Gate A（科学）が通っても
+Gate B（分離の必要）が通らなければ monorepo に残す。
+
+理論ディレクトリの機械可読な現況は `research_state/summary.json` に置く。
+スキーマと維持ルールは [`docs/research-state-convention.md`](docs/research-state-convention.md)。
+
 ## 検証ワークフロー
 
 提案は ChatGPT を赤チーム（敵対的検証者）として回す。工程は同ガイド §11。

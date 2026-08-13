@@ -13,7 +13,8 @@
 
 | パス | 内容 |
 |---|---|
-| `THEORY_PROPOSAL_GUIDE.md` | **作業基準の本体**（約900行）。提案前に必読 |
+| `THEORY_PROPOSAL_GUIDE.md` | **作業基準の本体**（約900行）。提案前に必読。**2026-08-12: commit f6917b2 で `Fixed-Response-Operational-Synthesis/` へ誤って巻き込まれていたのをルートへ復旧** |
+| `REPOSITORY_GATE.md` | **専用リポジトリ作成ゲート**（2026-08-12）。Gate A（科学6項目）＋ Gate B（分離の必要5項目）。**枠は1つ**（Research CI が active seed を1件しか読まないため）。成熟は repo からの卒業条件であり入場条件ではない |
 | `Frozen-Theories/` | 確定理論3件（RISEI・SMRT・EIT）。書き換えない |
 | `Blueprints-of-theories/` | 草案10件（DCIT・トロピカル付値異常・因果インターフェース(19, 🔻降格確定)・実現可能性錐・**保護の熱力学(計画20, TPR, ⚠️段階1監査済)**・凍結資源実現ギャップ(21)・分岐指数応答理論(22, RRT)・暗界面盲点理論(23, DIBT)・**持ち上げ核クロスオーバー理論(24, LKCT)**・**錐検閲応答理論(25, CCRT, Stage 0)**） |
 | `docs/context-pack.md` | **ChatGPTにアップロードする資料層**（命令は書かない） |
